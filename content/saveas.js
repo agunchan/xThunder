@@ -46,48 +46,70 @@ window.addEventListener('load', function() {
         }
     }
 
+    function download() {
+        var de = document.documentElement;
+        var url = dialog.mLauncher.source.spec;
+        var referrer;
+        try {
+            referrer = dialog.mContext.QueryInterface(Components.interfaces.nsIWebNavigation).currentURI.spec;
+        }
+        catch(ex) {
+            referrer = url;
+        }
+
+        xThunder.callThunder(url, referrer);
+        de.removeAttribute('ondialogaccept');
+        de.removeAttribute('onblur');
+        de.removeAttribute('onfocus');
+        de.cancelDialog();
+    }
+
+    var ext = dialog.mLauncher.suggestedFileName.split('.');
+    ext = ext.length > 0 ? ext[ext.length -1].toLowerCase() : "";
+    var asDefExt = xThunderPref.getValue('asDefExt');
+    var extExists = asDefExt.indexOf(ext) != -1;
+    if (extExists && xThunderPref.getValue('autoStart')) {
+        download();
+        return false;
+    }
+
     forceNormal();
 
     const mode = $('mode');
     const remember = $('rememberChoice');
     const tddownload = $('thunderdownload');
 
-    if (xThunderPref.getValue('remember')) {
+    if (extExists) {
         remember.checked = true;
         mode.selectedItem = tddownload;
-    }
+    } 
 
     mode.addEventListener('select', function() {
-			if (mode.selectedItem == tddownload) {
-				remember.disabled = false;
-			}
+		if (mode.selectedItem == tddownload) {
+			remember.disabled = false;
+		}
 	}, false);
 
 	addEventListener('dialogaccept', function(evt) {
+        var remAsDefExt = false;
 		if (mode.selectedItem == tddownload) {
             if (remember.checked) {
-				xThunderPref.setValue('remember', 1);
-			} else {
-                xThunderPref.setValue('remember', 0);
+                remAsDefExt = true;
             }
 
-            var de = document.documentElement;
-            var url = dialog.mLauncher.source.spec;
-            var referrer;
-            try {
-                referrer = dialog.mContext.QueryInterface(Components.interfaces.nsIWebNavigation).currentURI.spec;
-            }
-            catch(ex) {
-                referrer = url;
-            }
+            download();
+		}
 
-            xThunder.callThunder(url, referrer);
-            de.removeAttribute('ondialogaccept');
-            de.removeAttribute('onblur');
-            de.removeAttribute('onfocus');
-            de.cancelDialog();
-		} else {
-            xThunderPref.setValue('remember', 0);
+        if (remAsDefExt) {
+            if (!extExists) {
+                xThunderPref.setValue('asDefExt', ext + ";" + asDefExt);
+            }
+        } else {
+            if (extExists) {
+                xThunderPref.setValue('asDefExt', asDefExt.replace(ext + ";", "").replace(ext, ""));
+            }
         }
+
 	}, false); // dialogaccept
+
 }, false); // load

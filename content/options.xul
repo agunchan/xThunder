@@ -25,7 +25,15 @@
 
         <preferences>
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
+            <preference id="pref_asDefExt" name="extensions.xthunder.asDefExt" type="string"/>
+            <preference id="pref_autoStart" name="extensions.xthunder.autoStart" type="bool"/>
         </preferences>
+
+        <groupbox>
+            <caption label="&asDefExt;"/>
+            <textbox id="asDefExt" preference="pref_asDefExt" multiline="true" rows="4" cols="36"/>
+            <checkbox id="autoStart" label="&autoStart;" preference="pref_autoStart"/>
+        </groupbox>
 
         <groupbox>
             <caption label="&udown;"/>

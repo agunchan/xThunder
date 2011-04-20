@@ -15,3 +15,5 @@
 <!ENTITY	tel             "电信">
 <!ENTITY	cnc             "联通">
 <!ENTITY	bak             "备份">
+<!ENTITY	asDefExt        "默认选择迅雷">
+<!ENTITY	autoStart        "自动开始下载">
