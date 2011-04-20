@@ -15,3 +15,5 @@
 <!ENTITY	tel             "TEL">
 <!ENTITY	cnc             "CNC">
 <!ENTITY	bak             "BAK">
+<!ENTITY	asDefExt        "Thunder As Default">
+<!ENTITY	autoStart        "Automatically start downloading">
