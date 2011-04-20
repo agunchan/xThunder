@@ -1,0 +1,17 @@
+<!ENTITY	download		"使用迅雷下载">
+<!ENTITY	download_all	"使用迅雷下载全部链接">
+<!ENTITY	tddownload		"迅雷下载">
+<!ENTITY	options         "xThunder 配置">
+<!ENTITY	supClick        "左键支持链接">
+<!ENTITY	pro.thunder     "迅雷 (thunder://)">
+<!ENTITY	pro.flashget    "快车 (flahget://)">
+<!ENTITY	pro.qqdl        "旋风 (qqdl://)">
+<!ENTITY	pro.fs2you      "RayFile (fs2you://)">
+<!ENTITY	pro.ed2k        "电驴 (ed2k://)">
+<!ENTITY	pro.magnet      "磁力 (magnet:?)">
+<!ENTITY	pro.115         "115优盘 (u.115.com)">
+<!ENTITY	restart         "需要重启Firefox才能保证生效!">
+<!ENTITY	udown           "115默认下载">
+<!ENTITY	tel             "电信">
+<!ENTITY	cnc             "联通">
+<!ENTITY	bak             "备份">

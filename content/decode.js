@@ -1,0 +1,169 @@
+function getDecodedNode(link, htmlDocument){
+    var url;
+
+    //In special
+    if (htmlDocument) {
+        var referrer = htmlDocument.URL;
+        var matches;
+        if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
+            if (matches = htmlDocument.getElementById('quickDown')) {
+                url = matches.href;
+            }
+        } else if (/^http:\/\/download\.pchome\.net\//i.test(referrer) || /^http:\/\/dl\.pconline\.com\.cn\//i.test(referrer)) {
+            url = link.href;
+            if (-1 != url.indexOf('javascript:') || referrer + "#" == url) {
+                url = htmlDocument.defaultView.wrappedJSObject.fUrl;
+            }
+        } else if (/^http:\/\/download\.17173\.com\//i.test(referrer)) {
+            if (matches = htmlDocument.getElementById('highdown_info')) {
+                url = matches.childNodes[0].childNodes[0].href;
+            }
+        } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
+            if (link.previousSibling && (url = link.previousSibling.value)) {
+                if (matches = url.match(/xzurl=(.*)&/)) {
+                    url = matches[1];
+                } else if (matches = url.match(/cid=(.*)&/)) {
+                    url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
+                }
+            }
+        } else if (/^http:\/\/www\.dygod\.org\/.*\/\d+\.html/i.test(referrer)) {
+            if ((matches = link.getAttribute('oncontextmenu')) && matches.indexOf("Flashget_SetHref") != -1) {
+                url = link.innerHTML;
+            }
+        }
+    }
+
+    //In gernal
+    if (!url) {
+        while (link && !link.href) {
+            link = link.parentNode;
+        }
+        if (!link) {
+            url = "";
+        } else {
+            url = link.getAttribute('thunderhref') || link.getAttribute('fg')
+                || link.getAttribute('qhref') || link.href;
+        }
+    }
+
+    return getDecodedUrl(url);
+}
+
+function getDecodedUrl(url){
+    url = url.replace(/ /g, '');
+	if (/^(?:flashget|qqdl|fs2you):\/\//i.test(url))
+	{
+		url = decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
+				.replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
+
+        if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1)
+        {
+            url = "http://" + url;
+        }
+	} else if (/^http:\/\/u\.115\.com\/file\/.+/i.test(url)) {
+		url = uDown(url);
+	}
+	return url;
+}
+
+//////////////////////////////////////////////////////////////////////
+//	Decode flashget,qqdownload and rayfile link -- Base64 Decode
+//////////////////////////////////////////////////////////////////////
+var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+function decode64(input) {
+	var output = "";
+	var chr1, chr2, chr3 = "";
+	var enc1, enc2, enc3, enc4 = "";
+	var i = 0;
+
+	// remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+	var base64test = /[^A-Za-z0-9\+\/\=]/g;
+	if (base64test.exec(input)) {
+		alert("There were invalid base64 characters in the input text.\n"
+				+ "Valid base64 characters are A-Z, a-z, 0-9, '+', '/', and '='\n"
+				+ "Expect errors in decoding.");
+	}
+	input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+	do {
+		enc1 = keyStr.indexOf(input.charAt(i++));
+		enc2 = keyStr.indexOf(input.charAt(i++));
+		enc3 = keyStr.indexOf(input.charAt(i++));
+		enc4 = keyStr.indexOf(input.charAt(i++));
+
+		chr1 = (enc1 << 2) | (enc2 >> 4);
+		chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+		chr3 = ((enc3 & 3) << 6) | enc4;
+
+		output = output + String.fromCharCode(chr1);
+
+		if (enc3 != 64) {
+			output = output + String.fromCharCode(chr2);
+		}
+		if (enc4 != 64) {
+			output = output + String.fromCharCode(chr3);
+		}
+
+		chr1 = chr2 = chr3 = "";
+		enc1 = enc2 = enc3 = enc4 = "";
+
+	} while (i < input.length);
+
+	return _utf8_decode(output);
+}
+
+// private method for UTF-8 decoding
+function _utf8_decode(utftext) {
+    var string = "";
+    var i = 0;
+    var c = c1 = c2 = 0;
+
+    while ( i < utftext.length ) {
+
+        c = utftext.charCodeAt(i);
+
+        if (c < 128) {
+            string += String.fromCharCode(c);
+            i++;
+        }
+        else if((c > 191) && (c < 224)) {
+            c2 = utftext.charCodeAt(i+1);
+            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+            i += 2;
+        }
+        else {
+            c2 = utftext.charCodeAt(i+1);
+            c3 = utftext.charCodeAt(i+2);
+            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+            i += 3;
+        }
+
+    }
+
+    return string;
+}
+
+////////////////////////////////////////////////////////////
+//	Get download link of 115u file 
+////////////////////////////////////////////////////////////
+function uDown(url){
+    var matches = url.match(/http:\/\/u\.115\.com\/file\/(.+)/i);
+	if(matches)
+	{
+		var tcode = matches[1];
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.open('GET', 'http://u.115.com/?ct=upload_api&ac=get_pick_code_info&version=1169&pickcode='+tcode, false);
+		xmlhttp.setRequestHeader('User-Agent','Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)');
+		xmlhttp.setRequestHeader('Accept-Charset','');
+		xmlhttp.setRequestHeader('Host','u.115.com');
+		xmlhttp.setRequestHeader('Cache-Control','no-cache');
+		xmlhttp.send(null);
+		var json = eval('('+xmlhttp.responseText+')');
+        if (json.DownloadUrl) {
+            return json.DownloadUrl[xThunderPref.getValue('udown')].Url;	//tel,cnc,bak
+        }
+    }
+
+	return url;
+}

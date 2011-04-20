@@ -1,0 +1,17 @@
+<!ENTITY	download		"Download By Thunder">
+<!ENTITY	download_all	"Download All By Thunder">
+<!ENTITY	tddownload		"xThunder">
+<!ENTITY	options         "xThunder Options">
+<!ENTITY	supClick        "Support Click">
+<!ENTITY	pro.thunder     "thunder (thunder://)">
+<!ENTITY	pro.flashget    "flashget (flahget://)">
+<!ENTITY	pro.qqdl        "qqdownload (qqdl://)">
+<!ENTITY	pro.fs2you      "rayfile (fs2you://)">
+<!ENTITY	pro.ed2k        "emule (ed2k://)">
+<!ENTITY	pro.magnet      "magnet (magnet:?)">
+<!ENTITY	pro.115         "115 (u.115.com)">
+<!ENTITY	restart         "Need to restart Firefox to take effect!">
+<!ENTITY	udown           "UDown Link">
+<!ENTITY	tel             "TEL">
+<!ENTITY	cnc             "CNC">
+<!ENTITY	bak             "BAK">

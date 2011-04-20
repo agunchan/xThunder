@@ -1,0 +1,11 @@
+content	thunder	content/
+skin	thunder	classic/1.0   skin/
+overlay	chrome://browser/content/browser.xul	chrome://thunder/content/main.xul
+locale	thunder	en-US	locale/en-US/
+locale	thunder	zh-CN	locale/zh-CN/
+interfaces components/IThunderComponent.xpt
+binary-component components/ThunderComponent.dll
+contract @thunder.com/thundercomponent;1 {a7fd39a5,5f8b,4d14,9e13,23cdc1903827}
+
+## toolkit ##
+overlay	chrome://mozapps/content/downloads/unknownContentType.xul	chrome://thunder/content/saveas.xul
