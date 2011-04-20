@@ -49,12 +49,12 @@ function onContentLoad(event)
         //Click support for general website
         var protocals = supstr.split(",");
         var xpath = '//a[' + xThunderProsMap[protocals[0]];
-        for (var i=1; i<protocals.length-1; i++) {
+        for (var i=1; i<protocals.length-1; ++i) {
             xpath += ' or ' + xThunderProsMap[protocals[i]];
         }
         xpath += ']';
         var links = htmlDocument.evaluate(xpath, htmlDocument, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-        for (var j=0; j<links.snapshotLength; j++){
+        for (var j=0; j<links.snapshotLength; ++j){
             var link = links.snapshotItem(j);
             link.removeAttribute("onclick", "");
             link.addEventListener("click", function(evt){
@@ -72,7 +72,7 @@ function loadPrefs() {
     if (supstr == "") {
         return;
     }
-    for (var i=0; i<xThunderPros.length; i++) {
+    for (var i=0; i<xThunderPros.length; ++i) {
         if (supstr.indexOf(xThunderPros[i]) != -1)
             document.getElementById(xThunderPros[i]).checked = true;
     }
@@ -81,7 +81,7 @@ function loadPrefs() {
 function savePrefs() {
     var oriValue = xThunderPref.getValue("supportClick");
     var supstr = "";
-    for (var i=0; i<xThunderPros.length; i++) {
+    for (var i=0; i<xThunderPros.length; ++i) {
         if (document.getElementById(xThunderPros[i]).checked) {
             supstr += (xThunderPros[i] + ",");
         }

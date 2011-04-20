@@ -25,9 +25,8 @@ function OnThunderContextMenu(event)
 function OnThunderDownload(event)
 {
     var htmlDocument = document.commandDispatcher.focusedWindow.document;
-	var referrer = htmlDocument.URL;
-
     var url;
+    
     if (gContextMenu.onLink)
     {
         // Get current link URL
@@ -52,14 +51,13 @@ function OnThunderDownload(event)
         }
     }
 
-	xThunder.callThunder(url, referrer);
+    xThunder.callThunder(url, htmlDocument.URL);
 }
 
 function OnThunderDownloadAll(event)
 {
 	// Get current page URL
     var htmlDocument = document.commandDispatcher.focusedWindow.document;
-	var referrer = htmlDocument.URL;
     var url;
 	
 	// Get all links and all image count
@@ -67,25 +65,20 @@ function OnThunderDownloadAll(event)
 	var images = htmlDocument.images;
 	var linkCount = links.length;
 	var imageCount = images.length;
-    var allCount = linkCount + imageCount;
-	var thunderStr = "";
-	
-	for (var i=0; i<linkCount; i++)
-	{
-		if (-1 != links[i].href.indexOf("javascript:"))
-		{
-            --allCount;
-			continue;
-		}
 
+    xThunder.init(htmlDocument.URL, linkCount+imageCount);
+
+	for (var i=0; i<linkCount; ++i)
+	{
         url = getDecodedNode(links[i], htmlDocument);
-		thunderStr = thunderStr.concat(xThunder.constructString(url));
+        xThunder.addTask(url);
 	}
 	
-	for (i=0; i<imageCount; i++)
+	for (var j=0; j<imageCount; ++j)
 	{
-		url = images[i].src;
-		thunderStr = thunderStr.concat(xThunder.constructString(url));
+		url = images[j].src;
+		xThunder.addTask(url);
 	}
-	xThunder.batchThunder(thunderStr, referrer, allCount);
+
+	xThunder.callAgent();
 }
