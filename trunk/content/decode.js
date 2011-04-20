@@ -63,13 +63,13 @@ function getDecodedUrl(url){
 	} else if (/^http:\/\/u\.115\.com\/file\/.+/i.test(url)) {
 		url = uDown(url);
 	}
-	return url;
+    return url;
 }
 
 //////////////////////////////////////////////////////////////////////
 //	Decode flashget,qqdownload and rayfile link -- Base64 Decode
 //////////////////////////////////////////////////////////////////////
-var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+var base64keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 function decode64(input) {
 	var output = "";
@@ -87,10 +87,10 @@ function decode64(input) {
 	input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
 	do {
-		enc1 = keyStr.indexOf(input.charAt(i++));
-		enc2 = keyStr.indexOf(input.charAt(i++));
-		enc3 = keyStr.indexOf(input.charAt(i++));
-		enc4 = keyStr.indexOf(input.charAt(i++));
+		enc1 = base64keyStr.indexOf(input.charAt(i++));
+		enc2 = base64keyStr.indexOf(input.charAt(i++));
+		enc3 = base64keyStr.indexOf(input.charAt(i++));
+		enc4 = base64keyStr.indexOf(input.charAt(i++));
 
 		chr1 = (enc1 << 2) | (enc2 >> 4);
 		chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
@@ -145,25 +145,55 @@ function _utf8_decode(utftext) {
 }
 
 ////////////////////////////////////////////////////////////
-//	Get download link of 115u file 
+//	Get download link of 115u file
 ////////////////////////////////////////////////////////////
 function uDown(url){
     var matches = url.match(/http:\/\/u\.115\.com\/file\/(.+)/i);
+    var downUrl = url;
+    
 	if(matches)
 	{
 		var tcode = matches[1];
+        url = 'http://u.115.com/?ct=upload_api&ac=get_pick_code_info&version=1169&pickcode='+tcode;
 		var xmlhttp = new XMLHttpRequest();
-		xmlhttp.open('GET', 'http://u.115.com/?ct=upload_api&ac=get_pick_code_info&version=1169&pickcode='+tcode, false);
-		xmlhttp.setRequestHeader('User-Agent','Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)');
+        if (uDown.prototype.ayncReq == undefined) {
+            uDown.prototype.ayncReq = 0;
+        }
+        //max-persistent-connections-per-server is 6
+        var asyn = uDown.prototype.ayncReq < 2;
+        if (asyn) {
+            ++uDown.prototype.ayncReq;
+            xmlhttp.open('GET', url, asyn);
+            xmlhttp.onreadystatechange = function(){
+                if (xmlhttp.readyState == 4) {
+                    --uDown.prototype.ayncReq;
+                    var json = JSON.parse(xmlhttp.responseText);
+                    if (json.DownloadUrl) {
+                        downUrl = json.DownloadUrl[xThunderPref.getValue('udown')].Url; //tel,cnc,bak
+                    }
+                    xThunder.addTask(downUrl);
+                    xThunder.callAgent();
+                }
+            };
+        } else {
+            xmlhttp.open('GET', url, asyn);
+        }
+
+        xmlhttp.setRequestHeader('User-Agent','Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)');
 		xmlhttp.setRequestHeader('Accept-Charset','');
 		xmlhttp.setRequestHeader('Host','u.115.com');
 		xmlhttp.setRequestHeader('Cache-Control','no-cache');
-		xmlhttp.send(null);
-		var json = eval('('+xmlhttp.responseText+')');
-        if (json.DownloadUrl) {
-            return json.DownloadUrl[xThunderPref.getValue('udown')].Url;	//tel,cnc,bak
+        xmlhttp.send(null);
+
+        if (asyn) {
+            return null;
+        } else {
+            var json = JSON.parse(xmlhttp.responseText);
+            if (json.DownloadUrl) {
+                downUrl = json.DownloadUrl[xThunderPref.getValue('udown')].Url; //tel,cnc,bak
+            }
         }
     }
 
-	return url;
+	return downUrl;
 }
