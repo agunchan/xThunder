@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+ 
+<!DOCTYPE overlay SYSTEM "chrome://thunder/locale/thunder.dtd">
+<overlay id="xThunder-saveas" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/javascript" src="chrome://thunder/content/xThunder.js" />
+    <script type="application/javascript" src="chrome://thunder/content/prefs.js" />
+    <script type="application/javascript" src="chrome://thunder/content/saveas.js"/>
+
+	<radiogroup id="mode">
+		<radio insertbefore="save" id="thunderdownload" label="&tddownload;"/>
+	</radiogroup>
+</overlay>
