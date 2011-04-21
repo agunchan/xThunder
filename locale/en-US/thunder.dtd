@@ -2,7 +2,7 @@
 <!ENTITY	download_all	"Download All By Thunder">
 <!ENTITY	tddownload		"xThunder">
 <!ENTITY	options         "xThunder Options">
-<!ENTITY	supClick        "Support Click">
+<!ENTITY	lbl.supClick    "Click Link">
 <!ENTITY	pro.thunder     "thunder (thunder://)">
 <!ENTITY	pro.flashget    "flashget (flahget://)">
 <!ENTITY	pro.qqdl        "qqdownload (qqdl://)">
@@ -15,5 +15,6 @@
 <!ENTITY	tel             "TEL">
 <!ENTITY	cnc             "CNC">
 <!ENTITY	bak             "BAK">
-<!ENTITY	asDefExt        "Thunder As Default">
-<!ENTITY	autoStart        "Automatically start downloading">
+<!ENTITY	remember        "Associated file type">
+<!ENTITY	lbl.monitor     "Monitor Link">
+<!ENTITY	ctrlNoMonitor   "Ctrl+Click to open link directly">

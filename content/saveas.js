@@ -65,12 +65,13 @@ window.addEventListener('load', function() {
     }
 
     var ext = dialog.mLauncher.suggestedFileName.split('.');
-    ext = ext.length > 0 ? ext[ext.length -1].toLowerCase() : "";
-    var asDefExt = xThunderPref.getValue('asDefExt');
-    var extExists = asDefExt.indexOf(ext) != -1;
-    if (extExists && xThunderPref.getValue('autoStart')) {
+    ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
+    var supportExt = xThunderPref.getValue('supportExt');
+    var rememberExt = xThunderPref.getValue('remember');
+    var extExists = supportExt.indexOf(ext) != -1;
+    if (extExists && rememberExt > 0) {
         download();
-        return false;
+        return;
     }
 
     forceNormal();
@@ -80,7 +81,7 @@ window.addEventListener('load', function() {
     const tddownload = $('thunderdownload');
 
     if (extExists) {
-        remember.checked = true;
+        remember.checked = rememberExt;
         mode.selectedItem = tddownload;
     } 
 
@@ -91,25 +92,26 @@ window.addEventListener('load', function() {
 	}, false);
 
 	addEventListener('dialogaccept', function(evt) {
-        var remAsDefExt = false;
+        var remExt = false;
 		if (mode.selectedItem == tddownload) {
             if (remember.checked) {
-                remAsDefExt = true;
+                remExt = true;
             }
 
             download();
 		}
 
-        if (remAsDefExt) {
+        if (remExt) {
+            xThunderPref.setValue('remember', 1);
             if (!extExists) {
-                xThunderPref.setValue('asDefExt', ext + ";" + asDefExt);
+                xThunderPref.setValue('supportExt', ext + supportExt);
             }
         } else {
             if (extExists) {
-                xThunderPref.setValue('asDefExt', asDefExt.replace(ext + ";", "").replace(ext, ""));
+                xThunderPref.setValue('supportExt', supportExt.replace(ext, ""));
             }
         }
 
 	}, false); // dialogaccept
-
+    
 }, false); // load

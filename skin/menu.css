@@ -4,3 +4,6 @@
 .thunder_download_all {
   list-style-image: url("downloadall.gif");
 }
+.caption-text{
+	font-weight:bold !important;
+}

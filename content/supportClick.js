@@ -2,72 +2,108 @@
 //	Click event handler,require xThunder.js,prefs.js,decode.js
 ///////////////////////////////////////////////////////////////////
 var xThunderPros = ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115"];
-var xThunderProsMap = {
-    'thunder': '@thunderhref or contains(@oncontextmenu,"ThunderNetwork_SetHref") or starts-with(@href,"thunder:") or @id="bt_down"',
-    'flashget' : '@fg or contains(@oncontextmenu,"Flashget_SetHref") or starts-with(@href,"flashget:")',
-    'qqdl' : '@qhref or starts-with(@href,"qqdl:")',
-    'fs2you' : 'starts-with(@href,"fs2you:")',
-    'ed2k' : 'starts-with(@href,"ed2k:")',
-    'magnet' : 'starts-with(@href,"magnet:")',
-    '115' : 'starts-with(@href,"http://u.115.com/file/")'
-};
 
-function addClickSupport() {
-    if (xThunderPref.getValue("supportClick") != "" && gBrowser) {
-        gBrowser.addEventListener("DOMContentLoaded", onContentLoad, false);
-    }
-}
+function addClickSupport(ev) {
+    if (xThunderPref.getValue("supportClick") != "" ||
+        xThunderPref.getValue("supportExt") != "" && xThunderPref.getValue("remember")) {
 
-function onContentLoad(event)
-{
-    // this is the content document of the loaded page.
-    var htmlDocument = event.originalTarget;
+        var win = window.gBrowser || window;
+        win.addEventListener("click", function(ev) {
+            if (ev.button != 0) {
+                return true;
+            }
 
-    if (htmlDocument instanceof HTMLDocument) {
-        var referrer = htmlDocument.URL;
-        var supstr = xThunderPref.getValue("supportClick");
-        if (supstr == "" || referrer == "about:blank") {
-            return;
-        }
-
-        //Click support for rayfile.com
-        if (supstr.indexOf("fs2you") != -1 &&
-            /^http:\/\/www\.rayfile\.com\/zh-cn\/files\/.*\/.*\//i.test(referrer)) {
-
-            htmlDocument.getElementById('vodlink').addEventListener("click", function(evt){
-                if (this.hasChildNodes()) {
-                    var url = getDecodedUrl(this.childNodes[0].href);
-                    xThunder.callThunder(url, referrer);
-                    evt.stopPropagation();
-                    evt.preventDefault();
+            var remExt = xThunderPref.getValue("remember");
+            if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor"))
+            {
+                //remember value is 0:never down, 1: auto down, -1: no down this time
+                if (remExt == 1) {
+                    xThunderPref.setValue('remember', -1);
                 }
-            }, false);
-            
-            return;
-        }
+                return true;
+            } else {
+                if (remExt == -1) {
+                    xThunderPref.setValue('remember', 1);
+                }
+            }
 
-        //Click support for general website
-        var protocals = supstr.split(",");
-        var xpath = '//a[' + xThunderProsMap[protocals[0]];
-        for (var i=1; i<protocals.length-1; ++i) {
-            xpath += ' or ' + xThunderProsMap[protocals[i]];
-        }
-        xpath += ']';
-        var links = htmlDocument.evaluate(xpath, htmlDocument, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-        for (var j=0; j<links.snapshotLength; ++j){
-            var link = links.snapshotItem(j);
-            link.removeAttribute("onclick", "");
-            link.addEventListener("click", function(evt){
-                var url = getDecodedNode(this, htmlDocument);
-                xThunder.callThunder(url, referrer);
-                evt.stopPropagation();
-                evt.preventDefault();
-            }, false);
-        }
+            var link = ev.target;
+            if (!link.href) {
+                link = link.parentNode;
+            }
+            if (!link || !link.href)
+                return true;
+            
+            var htmlDocument = link.ownerDocument;
+            var url = "";
+            var download = false;
+
+            //click support for associated file
+            var supExt = xThunderPref.getValue("supportExt");
+            if (remExt && supExt != "") {
+                var subUrls = link.href.split("?");
+                var matches = subUrls[0].match(/(?:ftp|https?):\/\/.*(\.\w+)/i);
+                if (matches && supExt.indexOf(matches[1] + ";") != -1) {
+                    url = subUrls[0];
+                    download = true;
+                } else if(subUrls.length > 1) {
+                    var subParams = subUrls[1].split("&");
+                    for (var j=0; j<subParams.length; ++j) {
+                        matches = subParams[j].match(/.*(\.\w+)/i);
+                        if (matches && supExt.indexOf(matches[1] + ";") != -1) {
+                            url = link.href;
+                            download = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //click support for protocals
+            var supstr = xThunderPref.getValue("supportClick");
+            if (!download && supstr != "") {
+                url = link.href;
+                var protocals = supstr.split(",");
+                var contextmenu;
+                for (var i=0; i<protocals.length-1; ++i) {
+                    if (protocals[i] == "thunder" && (url.indexOf("thunder:") == 0 || 
+                            link.getAttribute("thunderhref") ||
+                            (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("ThunderNetwork_SetHref") != -1)
+                     || protocals[i] == "flashget" && (url.indexOf("flashget:") == 0 ||
+                            link.getAttribute("fg") ||
+                            (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("Flashget_SetHref") != -1)
+                     || protocals[i] == "qqdl" && (url.indexOf("qqdl:") == 0 ||
+                            link.getAttribute("qhref"))
+                     || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
+                     || protocals[i] == "ed2k" && url.indexOf("ed2k:") == 0
+                     || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
+                     || protocals[i] == "115" && url.indexOf("http://u.115.com/file/") == 0
+                    ) {
+                        url = getDecodedNode(link, htmlDocument);
+                        download = true;
+                        break;
+                    }
+                }
+            }
+
+            //download url by thunder
+            if (download) {
+                xThunder.callThunder(url, htmlDocument.URL);
+                ev.preventDefault();
+                ev.stopPropagation();
+                return false;
+            } else {
+                return true;
+            }
+        }, true);
     }
 }
 
 function loadPrefs() {
+    var rem = xThunderPref.getValue("remember");
+    document.getElementById('remember').checked = rem;
+    document.getElementById('supportExt').disabled = !rem;
+
     var supstr = xThunderPref.getValue("supportClick");
     if (supstr == "") {
         return;
@@ -90,4 +126,6 @@ function savePrefs() {
     if (supstr != oriValue) {
         xThunderPref.setValue("supportClick", supstr);
     }
+
+    xThunderPref.setValue("remember", document.getElementById('remember').checked ? 1 : 0);
 }

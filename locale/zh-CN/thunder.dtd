@@ -2,7 +2,7 @@
 <!ENTITY	download_all	"使用迅雷下载全部链接">
 <!ENTITY	tddownload		"迅雷下载">
 <!ENTITY	options         "xThunder 配置">
-<!ENTITY	supClick        "左键支持链接">
+<!ENTITY	lbl.supClick    "左键支持链接">
 <!ENTITY	pro.thunder     "迅雷 (thunder://)">
 <!ENTITY	pro.flashget    "快车 (flahget://)">
 <!ENTITY	pro.qqdl        "旋风 (qqdl://)">
@@ -15,5 +15,6 @@
 <!ENTITY	tel             "电信">
 <!ENTITY	cnc             "联通">
 <!ENTITY	bak             "备份">
-<!ENTITY	asDefExt        "默认选择迅雷">
-<!ENTITY	autoStart        "自动开始下载">
+<!ENTITY	remember        "关联传统文件类型">
+<!ENTITY	lbl.monitor     "监视链接">
+<!ENTITY	ctrlNoMonitor   "Ctrl+鼠标左键直接打开链接">
