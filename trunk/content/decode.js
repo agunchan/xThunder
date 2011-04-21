@@ -14,10 +14,6 @@ function getDecodedNode(link, htmlDocument){
             if (-1 != url.indexOf('javascript:') || referrer + "#" == url) {
                 url = htmlDocument.defaultView.wrappedJSObject.fUrl;
             }
-        } else if (/^http:\/\/download\.17173\.com\//i.test(referrer)) {
-            if (matches = htmlDocument.getElementById('highdown_info')) {
-                url = matches.childNodes[0].childNodes[0].href;
-            }
         } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
             if (link.previousSibling && (url = link.previousSibling.value)) {
                 if (matches = url.match(/xzurl=(.*)&/)) {

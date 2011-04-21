@@ -3,11 +3,13 @@ var xThunder = {
 	g_thunderComponent: null,
     referrer : "",
     strUrls : "",
+    urlCount : 0,
     totalTask : 0,
 
     init : function(referrer, totalTask){
         this.referrer = referrer;
         this.strUrls = "";
+        this.urlCount = 0;
         this.totalTask = totalTask;
     },
 	callThunder: function(url, referrer){
@@ -16,25 +18,18 @@ var xThunder = {
         this.callAgent();
 	},
     callAgent: function(){
-        var linkCount = this.strUrls.split(this.strSplitter).length - 1;
-        if (linkCount % 3 != 0) {
-            alert('Parameter unformatted, cannot call thunder!');
+        if (this.urlCount != this.totalTask) {
             return false;
-        } else {
-            linkCount = linkCount / 3;
-            if (linkCount != this.totalTask) {
-                return false;
-            }
         }
 
-        //String Format: referrer + "#@$@#" + linkCount + "#@$@#" +
-        //               linkCount * (url + "#@$@#" + name + "#@$@#" + cookie + "#@$@#")
-        var paramStr = this.referrer.concat(this.strSplitter, linkCount, this.strSplitter, this.strUrls)
+        //String Format: referrer + "#@$@#" + urlCount + "#@$@#" +
+        //               urlCount * (url + "#@$@#" + name + "#@$@#" + cookie + "#@$@#")
+        var paramStr = this.referrer.concat(this.strSplitter, this.urlCount, this.strSplitter, this.strUrls)
         if (this.g_thunderComponent == null) {
             this.g_thunderComponent = Components.classes["@thunder.com/thundercomponent;1"].createInstance()
                                                 .QueryInterface(Components.interfaces.IThunderComponent);
         }
-        var n = this.g_thunderComponent.CallThunder(paramStr, "1", 0, linkCount > 1);
+        var n = this.g_thunderComponent.CallThunder(paramStr, "1", 0, this.urlCount > 1);
         return n == 1;
 	},
 	getCookie: function(href){
@@ -55,7 +50,8 @@ var xThunder = {
             --this.totalTask;
             return;
         }
-            
+
+        ++this.urlCount;
         //BUG For ThunderComponent.dll, url max length is 1024
         this.strUrls = this.strUrls.concat(url.length <= 1024 ? url : url.substring(0, 1023),
             this.strSplitter, "", this.strSplitter, this.getCookie(url), this.strSplitter);

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://thunder/skin/menu.css" type="text/css"?>
 <!DOCTYPE overlay SYSTEM "chrome://thunder/locale/thunder.dtd" >
 <prefwindow id="xThunder-prefs"
     title="&options;"
@@ -11,8 +12,14 @@
     <script type="application/javascript" src="chrome://thunder/content/supportClick.js"/>
 
     <prefpane id="prepaneMain">
+        <preferences>
+            <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
+            <preference id="pref_supportExt" name="extensions.xthunder.supportExt" type="string"/>
+            <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
+        </preferences>
+
         <groupbox>
-            <caption label="&supClick;" />
+            <caption label="&lbl.supClick;" />
             <checkbox id="thunder" label="&pro.thunder;"/>
             <checkbox id="flashget" label="&pro.flashget;"/>
             <checkbox id="qqdl" label="&pro.qqdl;"/>
@@ -20,19 +27,14 @@
             <checkbox id="magnet" label="&pro.magnet;"/>
             <checkbox id="fs2you" label="&pro.fs2you;"/>
             <checkbox id="115" label="&pro.115;"/>
+            <checkbox id="remember" label="&remember;" oncommand="document.getElementById('supportExt').disabled = !this.checked;"/>
+            <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="40"/>
             <label value="&restart;" style="color:red;"/>
         </groupbox>
 
-        <preferences>
-            <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
-            <preference id="pref_asDefExt" name="extensions.xthunder.asDefExt" type="string"/>
-            <preference id="pref_autoStart" name="extensions.xthunder.autoStart" type="bool"/>
-        </preferences>
-
         <groupbox>
-            <caption label="&asDefExt;"/>
-            <textbox id="asDefExt" preference="pref_asDefExt" multiline="true" rows="4" cols="36"/>
-            <checkbox id="autoStart" label="&autoStart;" preference="pref_autoStart"/>
+            <caption label="&lbl.monitor;"/>
+            <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
         </groupbox>
 
         <groupbox>
