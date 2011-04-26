@@ -18,7 +18,7 @@ function OnThunderContextMenu(event)
     else
     {
         var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
-        downloadItem.setAttribute("hidden", ! /(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i.test(selText));
+        downloadItem.setAttribute("hidden", !xThunderDownReg.test(selText));
     }
 }
 
@@ -30,7 +30,7 @@ function OnThunderDownload(event)
     if (gContextMenu.onLink)
     {
         // Get current link URL
-        url = getDecodedNode(gContextMenu.target, htmlDocument);
+        url = getDecodedNode(gContextMenu.target);
     }
     else if (gContextMenu.onImage)
     {
@@ -41,7 +41,7 @@ function OnThunderDownload(event)
     {
         // Get selected url
         url = document.commandDispatcher.focusedWindow.getSelection().toString();
-        if (/(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i.test(url))
+        if (xThunderDownReg.test(url))
         {
             url = getDecodedUrl(url);
         }
@@ -70,7 +70,7 @@ function OnThunderDownloadAll(event)
 
 	for (var i=0; i<linkCount; ++i)
 	{
-        url = getDecodedNode(links[i], htmlDocument);
+        url = getDecodedNode(links[i]);
         xThunder.addTask(url);
 	}
 	
