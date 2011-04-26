@@ -92,26 +92,21 @@ window.addEventListener('load', function() {
 	}, false);
 
 	addEventListener('dialogaccept', function(evt) {
-        var remExt = false;
 		if (mode.selectedItem == tddownload) {
-            if (remember.checked) {
-                remExt = true;
-            }
-
-            download();
-		}
-
-        if (remExt) {
-            xThunderPref.setValue('remember', 1);
             if (!extExists) {
                 xThunderPref.setValue('supportExt', ext + supportExt);
             }
-        } else {
+
+            if (remember.checked) {
+                xThunderPref.setValue('remember', 1);
+            }
+
+            download();
+		} else {
             if (extExists) {
                 xThunderPref.setValue('supportExt', supportExt.replace(ext, ""));
             }
         }
-
 	}, false); // dialogaccept
     
 }, false); // load

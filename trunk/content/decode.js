@@ -1,48 +1,49 @@
-function getDecodedNode(link, htmlDocument){
+var xThunderDownReg = /^\s*(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i;
+
+function getDecodedNode(link){
     var url;
+    var htmlDocument = link.ownerDocument;
+    var referrer = htmlDocument.URL;
 
     //In special
-    if (htmlDocument) {
-        var referrer = htmlDocument.URL;
-        var matches;
-        if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
-            if (matches = htmlDocument.getElementById('quickDown')) {
-                url = matches.href;
-            }
-        } else if (/^http:\/\/download\.pchome\.net\//i.test(referrer) || /^http:\/\/dl\.pconline\.com\.cn\//i.test(referrer)) {
-            url = link.href;
-            if (-1 != url.indexOf('javascript:') || referrer + "#" == url) {
-                url = htmlDocument.defaultView.wrappedJSObject.fUrl;
-            }
-        } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
-            if (link.previousSibling && (url = link.previousSibling.value)) {
-                if (matches = url.match(/xzurl=(.*)&/)) {
-                    url = matches[1];
-                } else if (matches = url.match(/cid=(.*)&/)) {
-                    url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
-                }
-            }
-        } else if (/^http:\/\/www\.dygod\.org\/.*\/\d+\.html/i.test(referrer)) {
-            if ((matches = link.getAttribute('oncontextmenu')) && matches.indexOf("Flashget_SetHref") != -1) {
-                url = link.innerHTML;
+    var matches;
+    if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
+        if (matches = htmlDocument.getElementById('quickDown')) {
+            url = matches.href;
+        }
+    } else if (/^http:\/\/download\.pchome\.net\//i.test(referrer) || /^http:\/\/dl\.pconline\.com\.cn\//i.test(referrer)) {
+        url = link.href;
+        if (-1 != url.indexOf('javascript:') || referrer + "#" == url) {
+            url = htmlDocument.defaultView.wrappedJSObject.fUrl;
+        }
+    } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
+        if (link.previousSibling && (url = link.previousSibling.value)) {
+            if (matches = url.match(/xzurl=(.*)&/)) {
+                url = matches[1];
+            } else if (matches = url.match(/cid=(.*)&/)) {
+                url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
             }
         }
     }
 
     //In gernal
     if (!url) {
-        while (link && !link.href) {
+        while (link && !link.href && !xThunderDownReg.test(link.name)) {
             link = link.parentNode;
         }
         if (!link) {
             url = "";
         } else {
             url = link.getAttribute('thunderhref') || link.getAttribute('fg')
-                || link.getAttribute('qhref') || link.href;
+                || link.getAttribute('qhref') || link.href || link.name;
         }
     }
 
-    return getDecodedUrl(url);
+    url = getDecodedUrl(url);
+    if (referrer && url == referrer + "#" && xThunderDownReg.test(link.innerHTML)) {
+        url = link.innerHTML.replace(/&nbsp;/g, "");
+    }
+    return url;
 }
 
 function getDecodedUrl(url){
