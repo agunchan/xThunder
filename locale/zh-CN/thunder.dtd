@@ -4,7 +4,7 @@
 <!ENTITY	options         "xThunder 配置">
 <!ENTITY	lbl.supClick    "左键支持链接">
 <!ENTITY	pro.thunder     "迅雷 (thunder://)">
-<!ENTITY	pro.flashget    "快车 (flahget://)">
+<!ENTITY	pro.flashget    "快车 (flashget://)">
 <!ENTITY	pro.qqdl        "旋风 (qqdl://)">
 <!ENTITY	pro.fs2you      "RayFile (fs2you://)">
 <!ENTITY	pro.ed2k        "电驴 (ed2k://)">
@@ -17,4 +17,5 @@
 <!ENTITY	bak             "备份">
 <!ENTITY	remember        "关联传统文件类型">
 <!ENTITY	lbl.monitor     "监视链接">
-<!ENTITY	ctrlNoMonitor   "Ctrl+鼠标左键直接打开链接">
+<!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开链接">
+<!ENTITY	altNoMonitor    "Alt +左键 = 传统方式下载">

@@ -16,6 +16,7 @@
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
             <preference id="pref_supportExt" name="extensions.xthunder.supportExt" type="string"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
+            <preference id="pref_altNoMonitor" name="extensions.xthunder.altNoMonitor" type="bool"/>
         </preferences>
 
         <groupbox>
@@ -35,6 +36,7 @@
         <groupbox>
             <caption label="&lbl.monitor;"/>
             <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
+            <checkbox id="altNoMonitor" label="&altNoMonitor;" preference="pref_altNoMonitor"/>
         </groupbox>
 
         <groupbox>

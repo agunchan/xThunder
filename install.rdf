@@ -5,8 +5,8 @@
 	
         <em:id>xthunder@lshai.com</em:id>
         <em:name>xThunder</em:name>
-        <em:version>0.7</em:version>
-        <em:description>Thunder downloader extension for Firefox 4.</em:description>
+        <em:version>0.8</em:version>
+        <em:description>Thunder downloader extension for Firefox.</em:description>
         <em:creator>agunchan</em:creator>
         <em:homepageURL>http://blog.lshai.com</em:homepageURL>
         <em:iconURL>chrome://thunder/skin/icon.png</em:iconURL>
@@ -18,7 +18,7 @@
             <Description>
                 <em:locale>zh-CN</em:locale>
                 <em:name>xThunder</em:name>
-                <em:description>Firefox 4专用迅雷扩展.</em:description>
+                <em:description>火狐迅雷扩展.</em:description>
                 <em:creator>agunchan</em:creator>
                 <em:homepageURL>http://blog.lshai.com</em:homepageURL>
             </Description>
@@ -28,8 +28,8 @@
         <em:targetApplication>
             <Description>
                 <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-                <em:minVersion>4.0b1</em:minVersion>
-                <em:maxVersion>4.0.*</em:maxVersion>
+                <em:minVersion>3.5</em:minVersion>
+                <em:maxVersion>6.0a1</em:maxVersion>
             </Description>
         </em:targetApplication>
 

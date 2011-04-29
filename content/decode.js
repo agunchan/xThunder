@@ -11,11 +11,6 @@ function getDecodedNode(link){
         if (matches = htmlDocument.getElementById('quickDown')) {
             url = matches.href;
         }
-    } else if (/^http:\/\/download\.pchome\.net\//i.test(referrer) || /^http:\/\/dl\.pconline\.com\.cn\//i.test(referrer)) {
-        url = link.href;
-        if (-1 != url.indexOf('javascript:') || referrer + "#" == url) {
-            url = htmlDocument.defaultView.wrappedJSObject.fUrl;
-        }
     } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
         if (link.previousSibling && (url = link.previousSibling.value)) {
             if (matches = url.match(/xzurl=(.*)&/)) {
@@ -23,6 +18,10 @@ function getDecodedNode(link){
             } else if (matches = url.match(/cid=(.*)&/)) {
                 url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
             }
+        }
+    } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
+        if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
+            url = matches;
         }
     }
 
@@ -164,10 +163,7 @@ function uDown(url){
             xmlhttp.onreadystatechange = function(){
                 if (xmlhttp.readyState == 4) {
                     --uDown.prototype.ayncReq;
-                    var json = JSON.parse(xmlhttp.responseText);
-                    if (json.DownloadUrl) {
-                        downUrl = json.DownloadUrl[xThunderPref.getValue('udown')].Url; //tel,cnc,bak
-                    }
+                    downUrl = getDownUrl(xmlhttp.responseText, url) || downUrl;
                     xThunder.addTask(downUrl);
                     xThunder.callAgent();
                 }
@@ -185,12 +181,23 @@ function uDown(url){
         if (asyn) {
             return null;
         } else {
-            var json = JSON.parse(xmlhttp.responseText);
-            if (json.DownloadUrl) {
-                downUrl = json.DownloadUrl[xThunderPref.getValue('udown')].Url; //tel,cnc,bak
-            }
+            downUrl = getDownUrl(xmlhttp.responseText) || downUrl;
         }
     }
 
 	return downUrl;
+}
+
+function getDownUrl(responseTxt) {
+    var uDownUrl = JSON.parse(responseTxt).uDownUrl;
+
+    if (uDownUrl && uDownUrl.length > 0) {
+        var index = xThunderPref.getValue('udown');  //tel,cnc,bak
+        if (index >= uDownUrl.length) {
+            index = 0;
+        }
+        return uDownUrl[index].Url;
+    } else {
+        return null;
+    }
 }

@@ -9,7 +9,11 @@ function addClickSupport(ev) {
 
         var win = window.gBrowser || window;
         win.addEventListener("click", function(ev) {
-            if (ev.button != 0) {
+            if (ev.button != 0 || ev.shiftKey) {
+                return true;
+            }
+
+            if (ev.altKey && xThunderPref.getValue("altNoMonitor")) {
                 return true;
             }
 
