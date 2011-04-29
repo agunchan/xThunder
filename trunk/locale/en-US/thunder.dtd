@@ -2,9 +2,9 @@
 <!ENTITY	download_all	"Download All By Thunder">
 <!ENTITY	tddownload		"xThunder">
 <!ENTITY	options         "xThunder Options">
-<!ENTITY	lbl.supClick    "Click Link">
+<!ENTITY	lbl.supClick    "Left Click">
 <!ENTITY	pro.thunder     "thunder (thunder://)">
-<!ENTITY	pro.flashget    "flashget (flahget://)">
+<!ENTITY	pro.flashget    "flashget (flashget://)">
 <!ENTITY	pro.qqdl        "qqdownload (qqdl://)">
 <!ENTITY	pro.fs2you      "rayfile (fs2you://)">
 <!ENTITY	pro.ed2k        "emule (ed2k://)">
@@ -17,4 +17,5 @@
 <!ENTITY	bak             "BAK">
 <!ENTITY	remember        "Associated file type">
 <!ENTITY	lbl.monitor     "Monitor Link">
-<!ENTITY	ctrlNoMonitor   "Ctrl+Click to open link directly">
+<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open link in background">
+<!ENTITY	altNoMonitor    "Alt +Click = Download by Firefox">
