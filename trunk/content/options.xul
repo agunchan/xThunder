@@ -9,7 +9,7 @@
     ondialogaccept="savePrefs();">
 
     <script type="application/javascript" src="chrome://thunder/content/prefs.js"/>
-    <script type="application/javascript" src="chrome://thunder/content/supportClick.js"/>
+    <script type="application/javascript" src="chrome://thunder/content/options.js"/>
 
     <prefpane id="prepaneMain">
         <preferences>
@@ -17,26 +17,40 @@
             <preference id="pref_supportExt" name="extensions.xthunder.supportExt" type="string"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
             <preference id="pref_altNoMonitor" name="extensions.xthunder.altNoMonitor" type="bool"/>
+            <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
+            <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
+            <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
         </preferences>
 
         <groupbox>
             <caption label="&lbl.supClick;" />
-            <checkbox id="thunder" label="&pro.thunder;"/>
-            <checkbox id="flashget" label="&pro.flashget;"/>
-            <checkbox id="qqdl" label="&pro.qqdl;"/>
-            <checkbox id="ed2k" label="&pro.ed2k;"/>
-            <checkbox id="magnet" label="&pro.magnet;"/>
-            <checkbox id="fs2you" label="&pro.fs2you;"/>
-            <checkbox id="115" label="&pro.115;"/>
+            <grid>
+                <columns>
+                    <column/>
+                    <column flex="1"/>
+                </columns>
+                <rows>
+                    <row align="baseline">
+                        <checkbox id="thunder" label="&pro.thunder;"/>
+                        <checkbox id="flashget" label="&pro.flashget;"/>
+                    </row>
+                    <row align="baseline">
+                        <checkbox id="qqdl" label="&pro.qqdl;"/>
+                        <checkbox id="ed2k" label="&pro.ed2k;"/>
+                    </row>
+                    <row align="baseline">
+                        <checkbox id="magnet" label="&pro.magnet;"/>
+                        <checkbox id="fs2you" label="&pro.fs2you;"/>
+                    </row>
+                    <row align="baseline">
+                        <checkbox id="115" label="&pro.115;"/>
+                        <checkbox id="udown" label="&pro.udown;"/>
+                    </row>
+                </rows>
+            </grid>
             <checkbox id="remember" label="&remember;" oncommand="document.getElementById('supportExt').disabled = !this.checked;"/>
             <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="40"/>
             <label value="&restart;" style="color:red;"/>
-        </groupbox>
-
-        <groupbox>
-            <caption label="&lbl.monitor;"/>
-            <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
-            <checkbox id="altNoMonitor" label="&altNoMonitor;" preference="pref_altNoMonitor"/>
         </groupbox>
 
         <groupbox>
@@ -46,6 +60,19 @@
                 <radio id="cnc" label="&cnc;" value="1"/>
                 <radio id="bak" label="&bak;" value="2"/>
             </radiogroup>
+         </groupbox>
+         
+        <groupbox>
+            <caption label="&lbl.monitor;"/>
+            <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
+            <checkbox id="altNoMonitor" label="&altNoMonitor;" preference="pref_altNoMonitor"/>
+        </groupbox>
+
+         <groupbox>
+            <caption label="&interface;"/>
+            <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu"/>
+            <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
+            <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
          </groupbox>
     </prefpane>
 

@@ -4,3 +4,6 @@ pref("extensions.xthunder.supportClick", "");
 pref("extensions.xthunder.supportExt", ".asf;.avi;.exe;.iso;.mp3;.mpeg;.mpg;.mpga;.ra;.rar;.rm;.rmvb;.tar;.wma;.wmp;.wmv;.mov;.zip;.3gp;.chm;.mdf;.torrent;.jar;.msi;");
 pref("extensions.xthunder.ctrlNoMonitor", true);
 pref("extensions.xthunder.altNoMonitor", true);
+pref("extensions.xthunder.downInCxtMenu", true);
+pref("extensions.xthunder.downAllInCxtMenu", true);
+pref("extensions.xthunder.downInSaveFile", true);

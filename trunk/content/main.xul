@@ -7,12 +7,11 @@
     <script type="application/javascript" src="chrome://thunder/content/xThunder.js" />
     <script type="application/javascript" src="chrome://thunder/content/prefs.js" />
     <script type="application/javascript" src="chrome://thunder/content/decode.js"/>
-    <script type="application/javascript" src="chrome://thunder/content/supportClick.js"/>
     <script type="application/javascript" src="chrome://thunder/content/main.js"/>
     <popup id="contentAreaContextMenu" onpopupshowing="gContextMenu=new nsContextMenu(this, window.getBrowser()); OnThunderContextMenu(event); return gContextMenu.shouldDisplay;">
-        <menuseparator id="ThunderDownloadUp" insertbefore="context-sep-properties"/>
-        <menuitem id="ThunderDownload" label="&download;" insertbefore="context-sep-properties" oncommand="OnThunderDownload(event);" class="menuitem-iconic thunder_download"/>
-        <menuitem id="ThunderDownloadAll" label="&download_all;" insertbefore="context-sep-properties" oncommand="OnThunderDownloadAll(event);" class="menuitem-iconic thunder_download_all"/>
+        <menuseparator id="ThunderDownloadUp"/>
+        <menuitem id="ThunderDownload" label="&download;" oncommand="OnThunderDownload(event);" class="menuitem-iconic thunder_download"/>
+        <menuitem id="ThunderDownloadAll" label="&download_all;" oncommand="OnThunderDownloadAll(event);" class="menuitem-iconic thunder_download_all"/>
     </popup>
   
 </overlay>

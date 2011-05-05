@@ -9,13 +9,18 @@
 <!ENTITY	pro.fs2you      "rayfile (fs2you://)">
 <!ENTITY	pro.ed2k        "emule (ed2k://)">
 <!ENTITY	pro.magnet      "magnet (magnet:?)">
-<!ENTITY	pro.115         "115 (u.115.com)">
+<!ENTITY	pro.115         "115 (u.115.com/file)">
+<!ENTITY	pro.udown       "udown">
 <!ENTITY	restart         "Need to restart Firefox to take effect!">
 <!ENTITY	udown           "UDown Link">
 <!ENTITY	tel             "TEL">
 <!ENTITY	cnc             "CNC">
 <!ENTITY	bak             "BAK">
-<!ENTITY	remember        "Associated file type">
+<!ENTITY	remember        "Associated common file type">
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open link in background">
 <!ENTITY	altNoMonitor    "Alt +Click = Download by Firefox">
+<!ENTITY	interface       "User Interface">
+<!ENTITY	downInCxtMenu   "Download in context menu ">
+<!ENTITY	downAllInCxtMenu "Download All in context menu">
+<!ENTITY	downInSaveFile   "xThunder in save file dialog ">
