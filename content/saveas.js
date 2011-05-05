@@ -64,6 +64,14 @@ window.addEventListener('load', function() {
         de.cancelDialog();
     }
 
+    const tddownload = $('thunderdownload');
+    if (!xThunderPref.getValue("downInSaveFile")) {
+        tddownload.setAttribute("hidden", true);
+        return;
+    } else {
+        tddownload.setAttribute("hidden", false);
+    }
+
     var ext = dialog.mLauncher.suggestedFileName.split('.');
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
     var supportExt = xThunderPref.getValue('supportExt');
@@ -78,7 +86,6 @@ window.addEventListener('load', function() {
 
     const mode = $('mode');
     const remember = $('rememberChoice');
-    const tddownload = $('thunderdownload');
 
     if (extExists) {
         remember.checked = rememberExt;

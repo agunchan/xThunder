@@ -23,6 +23,8 @@ function getDecodedNode(link){
         if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
             url = matches;
         }
+    } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
+        url = referrer;
     }
 
     //In gernal
