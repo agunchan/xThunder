@@ -39,6 +39,7 @@ function addClickSupport(ev) {
             }
             
             var url = link.href || link.name;
+            var referrer = link.ownerDocument.URL;
             var download = false;
 
             //click support for associated file
@@ -81,10 +82,12 @@ function addClickSupport(ev) {
                      || protocals[i] == "qqdl" &&
                             (url.indexOf("qqdl:") == 0 ||
                             link.getAttribute("qhref"))
-                     || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
                      || protocals[i] == "ed2k" && url.indexOf("ed2k:") == 0
                      || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
-                     || protocals[i] == "115" && url.indexOf("http://u.115.com/file/") == 0
+                     || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
+                     || protocals[i] == "115" && 
+                            (url.indexOf("http://u.115.com/file/") == 0 ||
+                            referrer.indexOf("http://u.115.com/file/") == 0 && link.id == "udown" && (link.href=referrer))
                     ) {
                         url = getDecodedNode(link);
                         download = true;
@@ -95,7 +98,7 @@ function addClickSupport(ev) {
 
             //download url by thunder
             if (download) {
-                xThunder.callThunder(url, link.ownerDocument.URL);
+                xThunder.callThunder(url, referrer);
                 ev.preventDefault();
                 ev.stopPropagation();
                 return false;

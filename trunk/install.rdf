@@ -5,7 +5,7 @@
 	
         <em:id>xthunder@lshai.com</em:id>
         <em:name>xThunder</em:name>
-        <em:version>0.8</em:version>
+        <em:version>0.8.1</em:version>
         <em:description>Thunder downloader extension for Firefox.</em:description>
         <em:creator>agunchan</em:creator>
         <em:homepageURL>http://blog.lshai.com</em:homepageURL>

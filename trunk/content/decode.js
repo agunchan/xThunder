@@ -163,7 +163,7 @@ function uDown(url){
             xmlhttp.onreadystatechange = function(){
                 if (xmlhttp.readyState == 4) {
                     --uDown.prototype.ayncReq;
-                    downUrl = getDownUrl(xmlhttp.responseText, url) || downUrl;
+                    downUrl = getDownUrl(xmlhttp.responseText) || downUrl;
                     xThunder.addTask(downUrl);
                     xThunder.callAgent();
                 }
@@ -188,8 +188,8 @@ function uDown(url){
 	return downUrl;
 }
 
-function getDownUrl(responseTxt) {
-    var uDownUrl = JSON.parse(responseTxt).uDownUrl;
+function getDownUrl(responseText) {
+    var uDownUrl = JSON.parse(responseText).DownloadUrl;
 
     if (uDownUrl && uDownUrl.length > 0) {
         var index = xThunderPref.getValue('udown');  //tel,cnc,bak
