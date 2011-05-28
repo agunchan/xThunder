@@ -5,8 +5,8 @@
 <prefwindow id="xThunder-prefs"
     title="&options;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    onload="loadPrefs();"
-    ondialogaccept="savePrefs();">
+    onload="xThunderOption.loadPrefs();"
+    ondialogaccept="xThunderOption.savePrefs();">
 
     <script type="application/javascript" src="chrome://thunder/content/prefs.js"/>
     <script type="application/javascript" src="chrome://thunder/content/options.js"/>
@@ -15,65 +15,95 @@
         <preferences>
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
             <preference id="pref_supportExt" name="extensions.xthunder.supportExt" type="string"/>
+            <preference id="pref_includeImages" name="extensions.xthunder.includeImages" type="bool"/>
+            <preference id="pref_agentName" name="extensions.xthunder.agentName" type="string"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
             <preference id="pref_altNoMonitor" name="extensions.xthunder.altNoMonitor" type="bool"/>
             <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
+            <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
         </preferences>
 
-        <groupbox>
-            <caption label="&lbl.supClick;" />
-            <grid>
-                <columns>
-                    <column/>
-                    <column flex="1"/>
-                </columns>
-                <rows>
-                    <row align="baseline">
-                        <checkbox id="thunder" label="&pro.thunder;"/>
-                        <checkbox id="flashget" label="&pro.flashget;"/>
-                    </row>
-                    <row align="baseline">
-                        <checkbox id="qqdl" label="&pro.qqdl;"/>
-                        <checkbox id="ed2k" label="&pro.ed2k;"/>
-                    </row>
-                    <row align="baseline">
-                        <checkbox id="magnet" label="&pro.magnet;"/>
-                        <checkbox id="fs2you" label="&pro.fs2you;"/>
-                    </row>
-                    <row align="baseline">
-                        <checkbox id="115" label="&pro.115;"/>
-                        <checkbox id="udown" label="&pro.udown;"/>
-                    </row>
-                </rows>
-            </grid>
-            <checkbox id="remember" label="&remember;" oncommand="document.getElementById('supportExt').disabled = !this.checked;"/>
-            <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="40"/>
-            <label value="&restart;" style="color:red;"/>
-        </groupbox>
+        <tabbox class="text">
+            <tabs>
+                <tab label="&tab.general;"/>
+                <tab label="&tab.interface;"/>
+            </tabs>
+            <tabpanels flex="1">
+                <tabpanel orient="vertical" flex="1">
+                    <groupbox>
+                        <caption label="&lbl.supClick;" />
+                        <grid>
+                            <columns>
+                                <column/>
+                                <column flex="1"/>
+                            </columns>
+                            <rows>
+                                <row align="baseline">
+                                    <checkbox id="thunder" label="&pro.thunder;"/>
+                                    <checkbox id="flashget" label="&pro.flashget;"/>
+                                </row>
+                                <row align="baseline">
+                                    <checkbox id="qqdl" label="&pro.qqdl;"/>
+                                    <checkbox id="ed2k" label="&pro.ed2k;"/>
+                                </row>
+                                <row align="baseline">
+                                    <checkbox id="magnet" label="&pro.magnet;"/>
+                                    <checkbox id="fs2you" label="&pro.fs2you;"/>
+                                </row>
+                                <row align="baseline">
+                                    <checkbox id="115" label="&pro.115;"/>
+                                    <checkbox id="udown" label="&pro.udown;"/>
+                                </row>
+                            </rows>
+                        </grid>
+                        <checkbox id="remember" label="&remember;" oncommand="document.getElementById('supportExt').disabled = !this.checked;"/>
+                        <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="40"/>
+                        <label value="&restart;" style="color:red;"/>
+                    </groupbox>
 
-        <groupbox>
-            <caption label="&udown;"/>
-            <radiogroup id="udownradiogroup" preference="pref_udown" orient="horizontal">
-                <radio id="tel" label="&tel;" value="0"/>
-                <radio id="cnc" label="&cnc;" value="1"/>
-                <radio id="bak" label="&bak;" value="2"/>
-            </radiogroup>
-         </groupbox>
-         
-        <groupbox>
-            <caption label="&lbl.monitor;"/>
-            <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
-            <checkbox id="altNoMonitor" label="&altNoMonitor;" preference="pref_altNoMonitor"/>
-        </groupbox>
+                    <groupbox>
+                        <caption label="&udown;"/>
+                        <radiogroup id="udownradiogroup" preference="pref_udown" orient="horizontal">
+                            <radio id="tel" label="&tel;" value="0"/>
+                            <radio id="cnc" label="&cnc;" value="1"/>
+                            <radio id="bak" label="&bak;" value="2"/>
+                        </radiogroup>
+                     </groupbox>
 
-         <groupbox>
-            <caption label="&interface;"/>
-            <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu"/>
-            <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
-            <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
-         </groupbox>
+                     <groupbox>
+                        <caption label="&downloadAll;"/>
+                        <checkbox id="downincludeimages" label="&includeImages;" preference="pref_includeImages"/>
+                     </groupbox>
+                </tabpanel>
+
+                <tabpanel orient="vertical" flex="1">
+                    <groupbox>
+                        <caption label="&lbl.agent;"/>
+                        <radiogroup id="agentnamegroup" preference="pref_agentName" orient="horizontal">
+                            <radio id="agentThunder" label="&agent.Thunder;" value="Thunder"/>
+                            <radio id="agentToolbarThunder" label="&agent.ToolbarThunder;" value="ToolbarThunder"/>
+                            <radio id="agentQQDownload" label="&agent.QQDownload;" value="QQDownload"/>
+                        </radiogroup>
+                     </groupbox>
+
+                    <groupbox>
+                        <caption label="&lbl.monitor;"/>
+                        <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
+                        <checkbox id="altNoMonitor" label="&altNoMonitor;" preference="pref_altNoMonitor"/>
+                    </groupbox>
+
+                     <groupbox>
+                        <caption label="&showMenu;"/>
+                        <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
+                        <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu"/>
+                        <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
+                        <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
+                     </groupbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
     </prefpane>
 
 </prefwindow>
