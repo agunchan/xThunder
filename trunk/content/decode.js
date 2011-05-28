@@ -1,205 +1,148 @@
-var xThunderDownReg = /^\s*(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i;
+var xThunderDecode = {
+    downReg : /^\s*(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
+    asyncReq : 0,
 
-function getDecodedNode(link){
-    var url;
-    var htmlDocument = link.ownerDocument;
-    var referrer = htmlDocument.URL;
+    getDecodedNode : function(link) {
+        var url;
+        var htmlDocument = link.ownerDocument;
+        var referrer = htmlDocument.URL;
 
-    //In special
-    var matches;
-    if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
-        if (matches = htmlDocument.getElementById('quickDown')) {
-            url = matches.href;
+        //In special
+        var matches;
+        if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
+            if (matches = htmlDocument.getElementById('quickDown')) {
+                url = matches.href;
+            }
+        } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
+            if (link.previousSibling && (url = link.previousSibling.value)) {
+                if (matches = url.match(/xzurl=(.*)&/)) {
+                    url = matches[1];
+                } else if (matches = url.match(/cid=(.*)&/)) {
+                    url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
+                }
+            }
+        } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
+            if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
+                url = matches;
+            }
+        } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
+            url = referrer;
         }
-    } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
-        if (link.previousSibling && (url = link.previousSibling.value)) {
-            if (matches = url.match(/xzurl=(.*)&/)) {
-                url = matches[1];
-            } else if (matches = url.match(/cid=(.*)&/)) {
-                url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
+
+        //In gernal
+        if (!url) {
+            while (link && !link.href && !this.downReg.test(link.name)) {
+                link = link.parentNode;
+            }
+            if (!link) {
+                url = "";
+            } else {
+                url = link.getAttribute('thunderhref') || link.getAttribute('fg')
+                    || link.getAttribute('qhref') || link.href || link.name;
             }
         }
-    } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
-        if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
-            url = matches;
+
+        url = this.getDecodedUrl(url);
+        if (referrer && url == referrer + "#" && this.downReg.test(link.innerHTML)) {
+            url = link.innerHTML.replace(/&nbsp;/g, "");
         }
-    } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
-        url = referrer;
-    }
+        return url;
+    },
 
-    //In gernal
-    if (!url) {
-        while (link && !link.href && !xThunderDownReg.test(link.name)) {
-            link = link.parentNode;
-        }
-        if (!link) {
-            url = "";
-        } else {
-            url = link.getAttribute('thunderhref') || link.getAttribute('fg')
-                || link.getAttribute('qhref') || link.href || link.name;
-        }
-    }
+    getDecodedUrl : function(url) {
+        try {
+            url = url.replace(/ /g, '');
+            if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url))
+            {
+                url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
+                        .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
 
-    url = getDecodedUrl(url);
-    if (referrer && url == referrer + "#" && xThunderDownReg.test(link.innerHTML)) {
-        url = link.innerHTML.replace(/&nbsp;/g, "");
-    }
-    return url;
-}
-
-function getDecodedUrl(url){
-    url = url.replace(/ /g, '');
-	if (/^(?:flashget|qqdl|fs2you):\/\//i.test(url))
-	{
-		url = decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
-				.replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
-
-        if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1)
-        {
-            url = "http://" + url;
-        }
-	} else if (/^http:\/\/u\.115\.com\/file\/.+/i.test(url)) {
-		url = uDown(url);
-	}
-    return url;
-}
-
-//////////////////////////////////////////////////////////////////////
-//	Decode flashget,qqdownload and rayfile link -- Base64 Decode
-//////////////////////////////////////////////////////////////////////
-var base64keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-
-function decode64(input) {
-	var output = "";
-	var chr1, chr2, chr3 = "";
-	var enc1, enc2, enc3, enc4 = "";
-	var i = 0;
-
-	// remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-	var base64test = /[^A-Za-z0-9\+\/\=]/g;
-	if (base64test.exec(input)) {
-		alert("There were invalid base64 characters in the input text.\n"
-				+ "Valid base64 characters are A-Z, a-z, 0-9, '+', '/', and '='\n"
-				+ "Expect errors in decoding.");
-	}
-	input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-	do {
-		enc1 = base64keyStr.indexOf(input.charAt(i++));
-		enc2 = base64keyStr.indexOf(input.charAt(i++));
-		enc3 = base64keyStr.indexOf(input.charAt(i++));
-		enc4 = base64keyStr.indexOf(input.charAt(i++));
-
-		chr1 = (enc1 << 2) | (enc2 >> 4);
-		chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-		chr3 = ((enc3 & 3) << 6) | enc4;
-
-		output = output + String.fromCharCode(chr1);
-
-		if (enc3 != 64) {
-			output = output + String.fromCharCode(chr2);
-		}
-		if (enc4 != 64) {
-			output = output + String.fromCharCode(chr3);
-		}
-
-		chr1 = chr2 = chr3 = "";
-		enc1 = enc2 = enc3 = enc4 = "";
-
-	} while (i < input.length);
-
-	return _utf8_decode(output);
-}
-
-// private method for UTF-8 decoding
-function _utf8_decode(utftext) {
-    var string = "";
-    var i = 0;
-    var c = c1 = c2 = 0;
-
-    while ( i < utftext.length ) {
-
-        c = utftext.charCodeAt(i);
-
-        if (c < 128) {
-            string += String.fromCharCode(c);
-            i++;
-        }
-        else if((c > 191) && (c < 224)) {
-            c2 = utftext.charCodeAt(i+1);
-            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-            i += 2;
-        }
-        else {
-            c2 = utftext.charCodeAt(i+1);
-            c3 = utftext.charCodeAt(i+2);
-            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-            i += 3;
-        }
-
-    }
-
-    return string;
-}
-
-////////////////////////////////////////////////////////////
-//	Get download link of 115u file
-////////////////////////////////////////////////////////////
-function uDown(url){
-    var matches = url.match(/http:\/\/u\.115\.com\/file\/(.+)/i);
-    var downUrl = url;
-    
-	if(matches)
-	{
-		var tcode = matches[1];
-        url = 'http://u.115.com/?ct=upload_api&ac=get_pick_code_info&version=1169&pickcode='+tcode;
-		var xmlhttp = new XMLHttpRequest();
-        if (uDown.prototype.ayncReq == undefined) {
-            uDown.prototype.ayncReq = 0;
-        }
-        //max-persistent-connections-per-server is 6
-        var asyn = uDown.prototype.ayncReq < 2;
-        if (asyn) {
-            ++uDown.prototype.ayncReq;
-            xmlhttp.open('GET', url, asyn);
-            xmlhttp.onreadystatechange = function(){
-                if (xmlhttp.readyState == 4) {
-                    --uDown.prototype.ayncReq;
-                    downUrl = getDownUrl(xmlhttp.responseText) || downUrl;
-                    xThunder.addTask(downUrl);
-                    xThunder.callAgent();
+                if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1)
+                {
+                    url = "http://" + url;
                 }
-            };
-        } else {
-            xmlhttp.open('GET', url, asyn);
+            } else if (/^http:\/\/u\.115\.com\/file\/.+/i.test(url)) {
+                url = this.uDown(url);
+            }
+        } catch (ex) {
+            alert(ex);
+            //no operation
+        }
+        
+        return url;
+    },
+
+    //////////////////////////////////////////////////////////////////////
+    //	Decode flashget,qqdownload and rayfile link -- Base64 Decode
+    //////////////////////////////////////////////////////////////////////
+    decode64 : function(input) {
+        input = window.atob( input );                   //base64 decode
+        try {
+            input = decodeURIComponent(escape(input));  //utf8 decode
+        } catch (e) {
+            var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+            converter.charset = "GBK";                  //gbk decode
+            input = converter.ConvertToUnicode(input);
+        }
+        return input;
+    },
+
+    ////////////////////////////////////////////////////////////
+    //	Get download link of 115u file
+    ////////////////////////////////////////////////////////////
+    uDown : function (url) {
+        var matches = url.match(/http:\/\/u\.115\.com\/file\/(.+)/i);
+        var downUrl = url;
+
+        if(matches)
+        {
+            var tcode = matches[1];
+            url = 'http://uapi.115.com:80/?ct=upload_api&ac=get_pick_code_info&version=1172&pickcode='+tcode;
+            var xmlhttp = new XMLHttpRequest();
+            //max-persistent-connections-per-server is 6
+            var async = xThunderDecode.asyncReq < 2;
+            if (async) {
+                ++xThunderDecode.asyncReq;
+                xmlhttp.open('GET', url, true);
+                xmlhttp.onreadystatechange = function(){
+                    if (xmlhttp.readyState == 4) {
+                        --xThunderDecode.asyncReq;
+                        downUrl = xThunderDecode.getDownUrl(xmlhttp.responseText) || downUrl;
+                        xThunder.addTask(downUrl);
+                        xThunder.callAgent();
+                    }
+                };
+            } else {
+                xmlhttp.open('GET', url, async);
+            }
+
+            xmlhttp.setRequestHeader('User-Agent','115UDownClient 2.1.11.122');
+            xmlhttp.setRequestHeader('Host','uapi.115.com');
+            xmlhttp.setRequestHeader('Cache-Control','no-cache');
+            xmlhttp.send(null);
+
+            if (async) {
+                return null;
+            } else {
+                downUrl = xThunderDecode.getDownUrl(xmlhttp.responseText) || downUrl;
+            }
         }
 
-        xmlhttp.setRequestHeader('User-Agent','Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)');
-		xmlhttp.setRequestHeader('Accept-Charset','');
-		xmlhttp.setRequestHeader('Host','u.115.com');
-		xmlhttp.setRequestHeader('Cache-Control','no-cache');
-        xmlhttp.send(null);
+        return downUrl;
+    },
 
-        if (asyn) {
+    getDownUrl : function(responseText) {
+        var uDownUrl = JSON.parse(responseText).DownloadUrl;
+
+        if (uDownUrl && uDownUrl.length > 0) {
+            var index = xThunderPref.getValue('udown');  //tel,cnc,bak
+            if (index >= uDownUrl.length) {
+                index = 0;
+            }
+            return uDownUrl[index].Url;
+        } else {
             return null;
-        } else {
-            downUrl = getDownUrl(xmlhttp.responseText) || downUrl;
         }
-    }
-
-	return downUrl;
-}
-
-function getDownUrl(responseText) {
-    var uDownUrl = JSON.parse(responseText).DownloadUrl;
-
-    if (uDownUrl && uDownUrl.length > 0) {
-        var index = xThunderPref.getValue('udown');  //tel,cnc,bak
-        if (index >= uDownUrl.length) {
-            index = 0;
-        }
-        return uDownUrl[index].Url;
-    } else {
-        return null;
     }
 }

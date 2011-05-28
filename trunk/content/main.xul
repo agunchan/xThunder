@@ -8,10 +8,10 @@
     <script type="application/javascript" src="chrome://thunder/content/prefs.js" />
     <script type="application/javascript" src="chrome://thunder/content/decode.js"/>
     <script type="application/javascript" src="chrome://thunder/content/main.js"/>
-    <popup id="contentAreaContextMenu" onpopupshowing="gContextMenu=new nsContextMenu(this, window.getBrowser()); OnThunderContextMenu(event); return gContextMenu.shouldDisplay;">
+    <popup id="contentAreaContextMenu">
         <menuseparator id="ThunderDownloadUp"/>
-        <menuitem id="ThunderDownload" label="&download;" oncommand="OnThunderDownload(event);" class="menuitem-iconic thunder_download"/>
-        <menuitem id="ThunderDownloadAll" label="&download_all;" oncommand="OnThunderDownloadAll(event);" class="menuitem-iconic thunder_download_all"/>
+        <menuitem id="ThunderDownload" label="&download;" oncommand="xThunderMain.OnThunderDownload(event);"/>
+        <menuitem id="ThunderDownloadAll" label="&download_all;" oncommand="xThunderMain.OnThunderDownloadAll(event);"/>
     </popup>
   
 </overlay>

@@ -1,7 +1,9 @@
-<!ENTITY	download		"Download By Thunder">
-<!ENTITY	download_all	"Download All By Thunder">
-<!ENTITY	tddownload		"xThunder">
+<!ENTITY	download		"Download By xThunder">
+<!ENTITY	download_all	"Download All By xThunder">
+<!ENTITY	tddownload		"xThunder Download">
 <!ENTITY	options         "xThunder Options">
+<!ENTITY	tab.general		"General">
+<!ENTITY	tab.interface   "Interface">
 <!ENTITY	lbl.supClick    "Left Click">
 <!ENTITY	pro.thunder     "thunder (thunder://)">
 <!ENTITY	pro.flashget    "flashget (flashget://)">
@@ -11,16 +13,23 @@
 <!ENTITY	pro.magnet      "magnet (magnet:?)">
 <!ENTITY	pro.115         "115 (u.115.com/file)">
 <!ENTITY	pro.udown       "udown">
+<!ENTITY	remember        "Associated common file type">
 <!ENTITY	restart         "Need to restart Firefox to take effect!">
 <!ENTITY	udown           "UDown Link">
 <!ENTITY	tel             "TEL">
 <!ENTITY	cnc             "CNC">
 <!ENTITY	bak             "BAK">
-<!ENTITY	remember        "Associated common file type">
+<!ENTITY	downloadAll     "Download All">
+<!ENTITY	includeImages   "Include images found in current page">
+<!ENTITY	lbl.agent       "Use Downloader">
+<!ENTITY	agent.Thunder   "Thunder">
+<!ENTITY	agent.ToolbarThunder "MiniThunder">
+<!ENTITY	agent.QQDownload "QQDownload">
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open link in background">
 <!ENTITY	altNoMonitor    "Alt +Click = Download by Firefox">
-<!ENTITY	interface       "User Interface">
+<!ENTITY	showMenu        "Show Menu">
+<!ENTITY	showMenuIcons   "Show menu icons">
 <!ENTITY	downInCxtMenu   "Download in context menu ">
 <!ENTITY	downAllInCxtMenu "Download All in context menu">
 <!ENTITY	downInSaveFile   "xThunder in save file dialog ">

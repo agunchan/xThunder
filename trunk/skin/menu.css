@@ -1,7 +1,7 @@
-.thunder_download {
+#ThunderDownload {
   list-style-image: url("download.gif");
 }
-.thunder_download_all {
+#ThunderDownloadAll {
   list-style-image: url("downloadall.gif");
 }
 .caption-text{
