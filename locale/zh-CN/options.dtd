@@ -1,0 +1,32 @@
+<!ENTITY	options         "xThunder 配置">
+<!ENTITY	tab.general		"常规">
+<!ENTITY	tab.interface   "接口">
+<!ENTITY	lbl.supClick    "左键支持链接">
+<!ENTITY	pro.thunder     "迅雷 (thunder://)">
+<!ENTITY	pro.flashget    "快车 (flashget://)">
+<!ENTITY	pro.qqdl        "旋风 (qqdl://)">
+<!ENTITY	pro.fs2you      "飞速盘 (fs2you://)">
+<!ENTITY	pro.ed2k        "电驴 (ed2k://)">
+<!ENTITY	pro.magnet      "磁力 (magnet:?)">
+<!ENTITY	pro.115         "115 (u.115.com/file)">
+<!ENTITY	pro.udown       "优蛋">
+<!ENTITY	remember        "关联普通文件类型">
+<!ENTITY	restart         "需要重启Firefox才能保证生效!">
+<!ENTITY	lbl.udown       "115默认下载">
+<!ENTITY	udown.tel       "电信">
+<!ENTITY	udown.cnc       "联通">
+<!ENTITY	udown.bak       "备份">
+<!ENTITY	lbl.downloadAll "下载全部链接">
+<!ENTITY	includeImages   "包含当前页面中的图片">
+<!ENTITY	lbl.agent       "默认下载器">
+<!ENTITY	agent.Thunder   "迅雷">
+<!ENTITY	agent.ToolbarThunder "迷你迅雷">
+<!ENTITY	agent.QQDownload "QQ旋风">
+<!ENTITY	lbl.monitor     "监视链接">
+<!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开链接">
+<!ENTITY	altNoMonitor    "Alt +左键 = 传统方式下载">
+<!ENTITY	lbl.showMenu    "显示菜单">
+<!ENTITY	showMenuIcons   "显示图标在右键菜单">
+<!ENTITY	downInCxtMenu    "显示xThunder链接在右键菜单">
+<!ENTITY	downAllInCxtMenu "显示xThunder全部链接在右键菜单">
+<!ENTITY	downInSaveFile   "显示xThunder在保存方式对话框中">

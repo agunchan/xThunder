@@ -5,12 +5,12 @@
 	
         <em:id>xthunder@lshai.com</em:id>
         <em:name>xThunder</em:name>
-        <em:version>0.9</em:version>
+        <em:version>0.9.1</em:version>
         <em:description>Thunder downloader extension for Firefox.</em:description>
         <em:creator>agunchan</em:creator>
         <em:homepageURL>http://blog.lshai.com</em:homepageURL>
-        <em:iconURL>chrome://thunder/skin/icon.png</em:iconURL>
-        <em:optionsURL>chrome://thunder/content/options.xul</em:optionsURL>
+        <em:iconURL>chrome://xthunder/skin/icon.png</em:iconURL>
+        <em:optionsURL>chrome://xthunder/content/options.xul</em:optionsURL>
         <em:type>2</em:type>
         <em:unpack>true</em:unpack>
 

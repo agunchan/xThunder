@@ -57,18 +57,23 @@ window.addEventListener('load', function() {
             referrer = url;
         }
 
-        xThunder.callThunder(url, referrer);
+        xThunder.init(referrer, 1);
+        xThunder.addTask(url);
+        xThunder.callAgent(xThunderAgentsList.value);
         de.removeAttribute('ondialogaccept');
         de.removeAttribute('onblur');
         de.removeAttribute('onfocus');
         de.cancelDialog();
     }
 
-    const tddownload = $('thunderdownload');
+    var tddownload = $('xThunderDown');
+    var xThunderRadio = $('xThunderRadio');
+    var xThunderAgentsList = $('xThunderAgentsList');
     if (!xThunderPref.getValue("downInSaveFile")) {
         tddownload.setAttribute("hidden", true);
         return;
     } else {
+        xThunderAgentsList.value = xThunderPref.getValue('agentName');
         tddownload.setAttribute("hidden", false);
     }
 
@@ -84,22 +89,22 @@ window.addEventListener('load', function() {
 
     forceNormal();
 
-    const mode = $('mode');
-    const remember = $('rememberChoice');
+    var mode = $('mode');
+    var remember = $('rememberChoice');
 
     if (extExists) {
         remember.checked = rememberExt;
-        mode.selectedItem = tddownload;
+        mode.selectedItem = xThunderRadio;
     } 
 
     mode.addEventListener('select', function() {
-		if (mode.selectedItem == tddownload) {
+		if (mode.selectedItem == xThunderRadio) {
 			remember.disabled = false;
-		}
+		} 
 	}, false);
 
 	addEventListener('dialogaccept', function(evt) {
-		if (mode.selectedItem == tddownload) {
+		if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {
                 xThunderPref.setValue('supportExt', ext + supportExt);
             }

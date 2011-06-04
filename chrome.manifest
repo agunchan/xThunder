@@ -1,10 +1,11 @@
-content	thunder	content/
-skin	thunder	classic/1.0   skin/
-locale	thunder	en-US	locale/en-US/
-locale	thunder	zh-CN	locale/zh-CN/
+content	xthunder	content/
+skin	xthunder	classic/1.0   skin/
+locale	xthunder	en-US	locale/en-US/
+locale	xthunder	zh-CN	locale/zh-CN/
 interfaces components/IThunderComponent.xpt
 binary-component components/ThunderComponent.dll
 
 ## overlay ##
-overlay	chrome://browser/content/browser.xul	chrome://thunder/content/main.xul
-overlay	chrome://mozapps/content/downloads/unknownContentType.xul	chrome://thunder/content/saveas.xul
+overlay	chrome://browser/content/browser.xul	chrome://xthunder/content/main.xul
+overlay	chrome://mozapps/content/downloads/unknownContentType.xul	chrome://xthunder/content/saveas.xul
+style	chrome://global/content/customizeToolbar.xul	 chrome://xthunder/skin/menu.css

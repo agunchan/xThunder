@@ -22,7 +22,8 @@ var xThunderDecode = {
                 }
             }
         } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
-            if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
+            var JSObj = htmlDocument.defaultView.wrappedJSObject;
+            if ((matches = JSObj.fUrl) || (matches = JSObj.url)) {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {

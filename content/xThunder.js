@@ -16,7 +16,7 @@ var xThunder = {
         this.addTask(url);
         this.callAgent();
 	},
-    callAgent: function(){
+    callAgent: function(agentName){
         if (this.urls.length != this.totalTask) {
             return false;
         }
@@ -27,8 +27,9 @@ var xThunder = {
                                                     .QueryInterface(Components.interfaces.IThunderComponent);
             }
 
-            var agentName = xThunderPref.getValue("agentName", "Thunder");
-            var n = this.thunderComponent.CallAgent(agentName,this.totalTask, this.referrer, this.urls, this.cookies);
+            if (!agentName)
+                agentName = xThunderPref.getValue("agentName");
+            var n = this.thunderComponent.CallAgent(agentName, this.totalTask, this.referrer, this.urls, this.cookies);
             if (n >= 0) {
                 return true;
             } else {
