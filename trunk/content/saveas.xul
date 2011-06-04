@@ -1,12 +1,21 @@
 <?xml version="1.0"?>
- 
-<!DOCTYPE overlay SYSTEM "chrome://thunder/locale/thunder.dtd">
+
+<!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/thunder.dtd" >
 <overlay id="xThunder-saveas" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/javascript" src="chrome://thunder/content/xThunder.js" />
-    <script type="application/javascript" src="chrome://thunder/content/prefs.js" />
-    <script type="application/javascript" src="chrome://thunder/content/saveas.js"/>
+	<script type="application/javascript" src="chrome://xthunder/content/xThunder.js" />
+    <script type="application/javascript" src="chrome://xthunder/content/prefs.js" />
+    <script type="application/javascript" src="chrome://xthunder/content/saveas.js"/>
 
 	<radiogroup id="mode">
-		<radio insertbefore="save" id="thunderdownload" label="&tddownload;"/>
+        <hbox id="xThunderDown" insertbefore="save" >
+            <radio id="xThunderRadio" label="xThunder"/>
+            <menulist id="xThunderAgentsList" flex="1">
+                <menupopup id="xThunderAgentsMp">
+                    <menuitem id="xThunderAgentsThunder" label="&agent.Thunder;" value="Thunder" />
+                    <menuitem id="xThunderAgentsToolbarThunder" label="&agent.ToolbarThunder;" value="ToolbarThunder" />
+                    <menuitem id="xThunderAgentsQQDownload" label="&agent.QQDownload;" value="QQDownload" />
+                </menupopup>
+            </menulist>
+        </hbox>
 	</radiogroup>
 </overlay>

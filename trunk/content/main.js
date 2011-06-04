@@ -4,6 +4,12 @@
 window.addEventListener("load", function(){
     document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', xThunderMain.OnThunderContextMenu, false);
     xThunderMain.addClickSupport();
+
+    var toolbtn = document.getElementById('xThunderToolbarBtn');
+    if (toolbtn) {
+        toolbtn.addEventListener('click', xThunderMain.OnIconClick, false);
+    }
+
 }, false);
 
 var xThunderMain = {
@@ -45,7 +51,6 @@ var xThunderMain = {
 
                 var url = link.href || link.name;
                 var download = false;
-
 
                 //click support for associated file
                 var supExt = xThunderPref.getValue("supportExt");
@@ -115,9 +120,9 @@ var xThunderMain = {
     },
 
     OnThunderContextMenu : function(event) {
-        var downloadItem = document.getElementById("ThunderDownload");
-        var downloadAllItem = document.getElementById("ThunderDownloadAll");
-        var sepItem = document.getElementById("ThunderDownloadUp");
+        var downloadItem = document.getElementById("xThunderDownload");
+        var downloadAllItem = document.getElementById("xThunderDownloadAll");
+        var sepItem = document.getElementById("xThunderDownloadUp");
 
         if (!xThunderPref.getValue("downInCxtMenu")) {
             //Hide downlad in context menu
@@ -192,6 +197,11 @@ var xThunderMain = {
             imageCount = images.length;
         }
 
+        if (xThunderPref.getValue("agentName") == "ToolbarThunder" && linkCount+imageCount > 1) {
+            alert('MiniThunder does not support batch downloading!');
+            return false;
+        }
+
         xThunder.init(htmlDocument.URL, linkCount+imageCount);
 
         for (var i=0; i<linkCount; ++i)
@@ -207,5 +217,35 @@ var xThunderMain = {
         }
 
         xThunder.callAgent();
+    },
+
+    OnIconClick : function(event) {
+        if (event.button == 2) {
+            document.getElementById("xThunderOptsPopup").openPopupAtScreen(event.screenX, event.screenY, false);
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    },
+
+    OnThunderOptsPopup : function(event) {
+        document.getElementById("xThunderOptsAgent" + xThunderPref.getValue("agentName")).setAttribute("checked", true);
+        document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
+        document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));
+    },
+
+    OnChangeAgent : function(newAgentName) {
+        xThunderPref.setValue("agentName", newAgentName);
+    },
+
+    OnChangeUdown : function(udownIndex) {
+        xThunderPref.setValue("udown", udownIndex);
+    },
+
+    OnToogleIncludeImages : function() {
+        xThunderPref.setValue("includeImages", !xThunderPref.getValue("includeImages"));
+    },
+
+    OnOpenOptionsDlg : function() {
+        window.openDialog('chrome://xthunder/content/options.xul', 'xthunderOptions', 'chrome,modal=yes,resizable=no').focus();
     }
 };

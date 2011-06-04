@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://thunder/skin/menu.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://thunder/locale/thunder.dtd" >
+<?xml-stylesheet href="chrome://xthunder/skin/menu.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/options.dtd" >
 <prefwindow id="xThunder-prefs"
     title="&options;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     onload="xThunderOption.loadPrefs();"
     ondialogaccept="xThunderOption.savePrefs();">
 
-    <script type="application/javascript" src="chrome://thunder/content/prefs.js"/>
-    <script type="application/javascript" src="chrome://thunder/content/options.js"/>
+    <script type="application/javascript" src="chrome://xthunder/content/prefs.js"/>
+    <script type="application/javascript" src="chrome://xthunder/content/options.js"/>
 
     <prefpane id="prepaneMain">
         <preferences>
@@ -21,6 +21,7 @@
             <preference id="pref_altNoMonitor" name="extensions.xthunder.altNoMonitor" type="bool"/>
             <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
+            <preference id="pref_downOptsInCxtMenu" name="extensions.xthunder.downOptsInCxtMenu" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
             <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
         </preferences>
@@ -64,16 +65,16 @@
                     </groupbox>
 
                     <groupbox>
-                        <caption label="&udown;"/>
+                        <caption label="&lbl.udown;"/>
                         <radiogroup id="udownradiogroup" preference="pref_udown" orient="horizontal">
-                            <radio id="tel" label="&tel;" value="0"/>
-                            <radio id="cnc" label="&cnc;" value="1"/>
-                            <radio id="bak" label="&bak;" value="2"/>
+                            <radio id="tel" label="&udown.tel;" value="0"/>
+                            <radio id="cnc" label="&udown.cnc;" value="1"/>
+                            <radio id="bak" label="&udown.bak;" value="2"/>
                         </radiogroup>
                      </groupbox>
 
                      <groupbox>
-                        <caption label="&downloadAll;"/>
+                        <caption label="&lbl.downloadAll;"/>
                         <checkbox id="downincludeimages" label="&includeImages;" preference="pref_includeImages"/>
                      </groupbox>
                 </tabpanel>
@@ -95,7 +96,7 @@
                     </groupbox>
 
                      <groupbox>
-                        <caption label="&showMenu;"/>
+                        <caption label="&lbl.showMenu;"/>
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
