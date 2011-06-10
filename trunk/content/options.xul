@@ -8,7 +8,7 @@
     onload="xThunderOption.loadPrefs();"
     ondialogaccept="xThunderOption.savePrefs();">
 
-    <script type="application/javascript" src="chrome://xthunder/content/prefs.js"/>
+    <script type="application/javascript" src="chrome://xthunder/content/pref.js"/>
     <script type="application/javascript" src="chrome://xthunder/content/options.js"/>
 
     <prefpane id="prepaneMain">

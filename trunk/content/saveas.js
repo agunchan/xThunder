@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////
-//	Save as file dialog,require xThunder.js,prefs.js
+//	Save as file dialog,require xThunder.js,pref.js
 ////////////////////////////////////////////////////////////
 window.addEventListener('load', function() {
     function $() {

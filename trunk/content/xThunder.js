@@ -1,5 +1,5 @@
 var xThunder = {
-	thunderComponent: null,
+	xthunderComponent: null,
     referrer : "",
     urls : [],
     cookies : [],
@@ -22,14 +22,14 @@ var xThunder = {
         }
 
         try {
-            if (this.thunderComponent == null) {
-                this.thunderComponent = Components.classes["@thunder.com/thundercomponent;1"].createInstance()
-                                                    .QueryInterface(Components.interfaces.IThunderComponent);
+            if (this.xthunderComponent == null) {
+                this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].createInstance()
+                                                    .QueryInterface(Components.interfaces.IXThunderComponent);
             }
 
             if (!agentName)
                 agentName = xThunderPref.getValue("agentName");
-            var n = this.thunderComponent.CallAgent(agentName, this.totalTask, this.referrer, this.urls, this.cookies);
+            var n = this.xthunderComponent.CallAgent(agentName, this.totalTask, this.referrer, this.urls, this.cookies);
             if (n >= 0) {
                 return true;
             } else {

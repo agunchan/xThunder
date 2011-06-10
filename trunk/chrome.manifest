@@ -2,8 +2,8 @@ content	xthunder	content/
 skin	xthunder	classic/1.0   skin/
 locale	xthunder	en-US	locale/en-US/
 locale	xthunder	zh-CN	locale/zh-CN/
-interfaces components/IThunderComponent.xpt
-binary-component components/ThunderComponent.dll
+interfaces components/IXThunderComponent.xpt
+binary-component components/XThunderComponent.dll
 
 ## overlay ##
 overlay	chrome://browser/content/browser.xul	chrome://xthunder/content/main.xul
