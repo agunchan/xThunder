@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://xthunder/skin/menu.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/thunder.dtd" >
+<!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/xthunder.dtd" >
 <overlay id="xThunder-overlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
     <script type="application/javascript" src="chrome://xthunder/content/xThunder.js" />
-    <script type="application/javascript" src="chrome://xthunder/content/prefs.js" />
+    <script type="application/javascript" src="chrome://xthunder/content/pref.js" />
     <script type="application/javascript" src="chrome://xthunder/content/decode.js"/>
     <script type="application/javascript" src="chrome://xthunder/content/main.js"/>
 

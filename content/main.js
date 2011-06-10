@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-//	Event handler,require xThunder.js,prefs.js,decode.js
+//	Event handler,require xThunder.js,pref.js,decode.js
 ///////////////////////////////////////////////////////////////////
 window.addEventListener("load", function(){
     document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', xThunderMain.OnThunderContextMenu, false);
