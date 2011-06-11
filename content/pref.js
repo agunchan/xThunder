@@ -1,5 +1,43 @@
 var xThunderPref = {
     pref : null,
+    agentCount : 0,
+
+    appendAgentList : function(menupop, idpre, func, isradio){
+        var ownDoc = menupop.ownerDocument;
+        var stringBundle = ownDoc.getElementById("xThunderAgentStrings");
+        var agents = this.getValue("showAgents").split(",");
+        var defAgentName = this.getValue("agentName");
+        for (var i=0; i<agents.length-1; ++i) {
+            menuitem({
+                id : idpre + agents[i],
+                label : stringBundle.getString(agents[i]),
+                value : agents[i],
+                oncommand : func ? (func + "('" + agents[i] + "')") : ""
+            });
+        }
+        this.agentCount = agents.length-1;
+
+        //create menu item by attributes array
+        function menuitem(atrs){
+            var mi = ownDoc.createElement("menuitem");
+            for(var k in atrs)
+                mi.setAttribute(k, atrs[k]);
+            if(isradio) {
+                mi.setAttribute("name", "agent");
+                mi.setAttribute("type", "radio");
+                if (mi.getAttribute("value") == defAgentName)
+                    mi.setAttribute("checked", true);
+            }
+            return menupop.appendChild(mi);
+        }
+    },
+
+    deleteAgentList : function (menupop) {
+        while(menupop.hasChildNodes() && this.agentCount > 0) {
+            menupop.removeChild(menupop.lastChild);
+            --this.agentCount;
+        }
+    },
 
     getBranch : function()
     {

@@ -18,10 +18,8 @@
 <!ENTITY	udown.bak       "BAK">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
-<!ENTITY	lbl.agent       "Default Downloader">
-<!ENTITY	agent.Thunder   "Thunder">
-<!ENTITY	agent.ToolbarThunder "MiniThunder">
-<!ENTITY	agent.QQDownload "QQDownload">
+<!ENTITY	lbl.agent       "Downloader">
+<!ENTITY	lbl.defaultAgent "Default">
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open link in background">
 <!ENTITY	altNoMonitor    "Alt +Click = Download by Firefox">
@@ -30,3 +28,4 @@
 <!ENTITY	downInCxtMenu    "xThunder Link in context menu ">
 <!ENTITY	downAllInCxtMenu "xThunder All in context menu">
 <!ENTITY	downInSaveFile   "xThunder in save as dialog ">
+<!ENTITY	showStatusIcon   "Show icon in status bar">

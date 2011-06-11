@@ -3,9 +3,6 @@
 <!ENTITY	optionsPrompt   "Click to download all, Right-click to display menu">
 <!ENTITY	includeImages   "Include images in page">
 <!ENTITY	moreOptions     "More Options...">
-<!ENTITY	agent.Thunder   "Thunder">
-<!ENTITY	agent.ToolbarThunder "MiniThunder">
-<!ENTITY	agent.QQDownload "QQDownload">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
 <!ENTITY	udown.bak       "BAK">

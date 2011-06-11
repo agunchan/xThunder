@@ -3,17 +3,15 @@
 ///////////////////////////////////////////////////////////////////
 window.addEventListener("load", function(){
     document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', xThunderMain.OnThunderContextMenu, false);
+    xThunderMain.setIconVisible(xThunderPref.getValue("showStatusIcon"));
     xThunderMain.addClickSupport();
-
-    var toolbtn = document.getElementById('xThunderToolbarBtn');
-    if (toolbtn) {
-        toolbtn.addEventListener('click', xThunderMain.OnIconClick, false);
-    }
-
 }, false);
 
 var xThunderMain = {
-    
+    setIconVisible : function(visible) {
+        document.getElementById('xThunderStatusBtn').setAttribute('hidden', !visible);
+    },
+
     addClickSupport : function() {
         if (xThunderPref.getValue("supportClick") != "" ||
             xThunderPref.getValue("supportExt") != "" && xThunderPref.getValue("remember")) {
@@ -146,14 +144,16 @@ var xThunderMain = {
             }
         }
 
-        downloadItem.className = downloadAllItem.className = (xThunderPref.getValue("showMenuIcons") ? "menuitem-iconic" : "");
+        downloadItem.className = (xThunderPref.getValue("showMenuIcons") ? "menu-iconic" : "");
+        downloadAllItem.className = (xThunderPref.getValue("showMenuIcons") ? "menuitem-iconic" : "");
         downloadAllItem.setAttribute("hidden", !xThunderPref.getValue("downAllInCxtMenu") || xThunderPref.getValue("agentName") == "ToolbarThunder");
         sepItem.setAttribute("hidden", downloadItem.getAttribute("hidden") == "true" && downloadAllItem.getAttribute("hidden") == "true");
     },
 
-    OnThunderDownload : function(event) {
+    OnThunderDownload : function(agentName) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
+        xThunder.init(htmlDocument.URL, 1);
 
         if (gContextMenu.onLink)
         {
@@ -179,7 +179,8 @@ var xThunderMain = {
             }
         }
 
-        xThunder.callThunder(url, htmlDocument.URL);
+        xThunder.addTask(url);
+        xThunder.callAgent(agentName);
     },
 
     OnThunderDownloadAll : function(event) {
@@ -219,16 +220,7 @@ var xThunderMain = {
         xThunder.callAgent();
     },
 
-    OnIconClick : function(event) {
-        if (event.button == 2) {
-            document.getElementById("xThunderOptsPopup").openPopupAtScreen(event.screenX, event.screenY, false);
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    },
-
-    OnThunderOptsPopup : function(event) {
-        document.getElementById("xThunderOptsAgent" + xThunderPref.getValue("agentName")).setAttribute("checked", true);
+    OnThunderOptsPopup : function() {
         document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
         document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));
     },

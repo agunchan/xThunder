@@ -8,7 +8,8 @@
     list-style-image: url("icon24.png");
     -moz-box-orient: vertical;
 }
-toolbar[iconsize="small"] #xThunderToolbarBtn {
+toolbar[iconsize="small"] #xThunderToolbarBtn,
+#xThunderStatusBtn {
     list-style-image: url("icon16.png");
 }
 .caption-text{
