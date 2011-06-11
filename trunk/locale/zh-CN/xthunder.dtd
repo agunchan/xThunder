@@ -3,9 +3,6 @@
 <!ENTITY	optionsPrompt   "左键下载全部链接，右键显示菜单">
 <!ENTITY	includeImages   "包含页面中图片">
 <!ENTITY	moreOptions     "更多选项...">
-<!ENTITY	agent.Thunder   "迅雷">
-<!ENTITY	agent.ToolbarThunder "迷你迅雷">
-<!ENTITY	agent.QQDownload "QQ旋风">
 <!ENTITY	udown.tel       "电信">
 <!ENTITY	udown.cnc       "联通">
 <!ENTITY	udown.bak       "备份">

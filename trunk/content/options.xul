@@ -11,6 +11,10 @@
     <script type="application/javascript" src="chrome://xthunder/content/pref.js"/>
     <script type="application/javascript" src="chrome://xthunder/content/options.js"/>
 
+    <stringbundleset id="stringbundleset">
+        <stringbundle id="xThunderAgentStrings" src="chrome://xthunder/locale/agent.properties"/>
+    </stringbundleset>
+
     <prefpane id="prepaneMain">
         <preferences>
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
@@ -24,6 +28,7 @@
             <preference id="pref_downOptsInCxtMenu" name="extensions.xthunder.downOptsInCxtMenu" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
             <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
+            <preference id="pref_showStatusIcon" name="extensions.xthunder.showStatusIcon" type="bool"/>
         </preferences>
 
         <tabbox class="text">
@@ -82,12 +87,18 @@
                 <tabpanel orient="vertical" flex="1">
                     <groupbox>
                         <caption label="&lbl.agent;"/>
-                        <radiogroup id="agentnamegroup" preference="pref_agentName" orient="horizontal">
-                            <radio id="agentThunder" label="&agent.Thunder;" value="Thunder"/>
-                            <radio id="agentToolbarThunder" label="&agent.ToolbarThunder;" value="ToolbarThunder"/>
-                            <radio id="agentQQDownload" label="&agent.QQDownload;" value="QQDownload"/>
-                        </radiogroup>
-                     </groupbox>
+                        <grid>
+                            <columns>
+                                <column/>
+                                <column flex="1"/>
+                            </columns>
+                            <rows id="agentRows" />
+                        </grid>
+                        <label value="&lbl.defaultAgent;" style="font-weight:bold;"/>
+                        <menulist id="defagentList">
+                            <menupopup id="defagentPopup" />
+                        </menulist>
+                    </groupbox>
 
                     <groupbox>
                         <caption label="&lbl.monitor;"/>
@@ -101,6 +112,7 @@
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
                         <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
+                        <checkbox id="showStatusIcon" label="&showStatusIcon;" preference="pref_showStatusIcon"/>
                      </groupbox>
                 </tabpanel>
             </tabpanels>

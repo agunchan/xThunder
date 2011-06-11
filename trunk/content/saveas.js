@@ -66,16 +66,14 @@ window.addEventListener('load', function() {
         de.cancelDialog();
     }
 
-    var tddownload = $('xThunderDown');
-    var xThunderRadio = $('xThunderRadio');
-    var xThunderAgentsList = $('xThunderAgentsList');
     if (!xThunderPref.getValue("downInSaveFile")) {
-        tddownload.setAttribute("hidden", true);
+        $('xThunderDown').setAttribute("hidden", true);
         return;
-    } else {
-        xThunderAgentsList.value = xThunderPref.getValue('agentName');
-        tddownload.setAttribute("hidden", false);
-    }
+    } 
+
+    var xThunderRadio = $('xThunderRadio');
+    xThunderPref.appendAgentList($('xThunderAgentPopup'), 'xThunderAgent');
+    $('xThunderAgentList').value = xThunderPref.getValue('agentName');
 
     var ext = dialog.mLauncher.suggestedFileName.split('.');
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";

@@ -66,7 +66,6 @@ var xThunderDecode = {
                 url = this.uDown(url);
             }
         } catch (ex) {
-            alert(ex);
             //no operation
         }
         

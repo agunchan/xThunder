@@ -9,4 +9,6 @@ pref("extensions.xthunder.downInCxtMenu", true);
 pref("extensions.xthunder.downAllInCxtMenu", true);
 pref("extensions.xthunder.downInSaveFile", true);
 pref("extensions.xthunder.showMenuIcons", true);
+pref("extensions.xthunder.showStatusIcon", true);
 pref("extensions.xthunder.agentName", "Thunder");
+pref("extensions.xthunder.showAgents", "Thunder,QQDownload,BuiltIn,");

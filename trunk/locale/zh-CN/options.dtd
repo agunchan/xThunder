@@ -18,10 +18,8 @@
 <!ENTITY	udown.bak       "备份">
 <!ENTITY	lbl.downloadAll "下载全部链接">
 <!ENTITY	includeImages   "包含当前页面中的图片">
-<!ENTITY	lbl.agent       "默认下载器">
-<!ENTITY	agent.Thunder   "迅雷">
-<!ENTITY	agent.ToolbarThunder "迷你迅雷">
-<!ENTITY	agent.QQDownload "QQ旋风">
+<!ENTITY	lbl.agent       "下载工具">
+<!ENTITY	lbl.defaultAgent "默认">
 <!ENTITY	lbl.monitor     "监视链接">
 <!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开链接">
 <!ENTITY	altNoMonitor    "Alt +左键 = 传统方式下载">
@@ -30,3 +28,4 @@
 <!ENTITY	downInCxtMenu    "显示xThunder链接在右键菜单">
 <!ENTITY	downAllInCxtMenu "显示xThunder全部链接在右键菜单">
 <!ENTITY	downInSaveFile   "显示xThunder在保存方式对话框中">
+<!ENTITY	showStatusIcon   "显示状态栏图标">
