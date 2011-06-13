@@ -29,9 +29,9 @@ var xThunder = {
         try {
             var result;
             if (this.agentName == "DTA") {
-                result = this.dtaDownload();
+                result = this.dtaDownload(this.totalTask, this.referrer, this.urls, this.descs);
             } else if (this.agentName == "BuiltIn") {
-                result = 0;
+                result = this.buitInDownload();
             } else {
                 if (this.xthunderComponent == null) {
                     this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].createInstance()
@@ -71,31 +71,35 @@ var xThunder = {
             else
                 href = decodeURIComponent(href);
         }
-        catch(e) {
-            //no op
-        }
+        catch(e) {}
 
         return href;
     },
-    canDownload : function(agentName, url) {
-        return agentName == "Thunder" || agentName == "ToolbarThunder" || agentName == "QQDownload"
-                || /^(ftp|https?):\/\//i.test(url);
+    notSupportPro : function(agentName, url) {
+        var pro = url.match(/^(ed2k|magnet):/i);
+        if (pro && !(agentName == "Thunder" || agentName == "QQDownload"
+                    || agentName == "ToolbarThunder" && pro[1] == "ed2k"
+                    || agentName == "BitComet" && pro[1] == "magnet")) {
+            return pro[1];
+        } else {
+            return false;
+        }
     },
 	addTask : function(url, des){
         if (url == null) {
             return; //for async method
         } else if (url == "" || url.indexOf("javascript:") != -1
-            || !this.canDownload(this.agentName, url)){
+            || xThunderPref.isAgentNonsupURL(this.agentName, url)) {
             --this.totalTask;
             return;
-        }
+        } 
 
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));
-        this.descs.push(des ? des : this.getFileName(url));
+        this.descs.push(this.getFileName(url));     //use file name for description now
 	},
 
-    dtaDownload : function() {
+    dtaDownload : function(totalTask, refer, urls, descs) {
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                             .getService(Components.interfaces.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");
@@ -108,23 +112,27 @@ var xThunder = {
             }
         }
 
-        if (this.totalTask == 1 && this.DTA.saveSingleLink) {
-            this.DTA.saveSingleLink(mainWindow, false, this.urls[0], this.referrer, this.descs[0]);
-        } else if(this.totalTask > 1 && this.DTA.saveLinkArray) {
+        if (totalTask == 1 && this.DTA.saveSingleLink) {
+            this.DTA.saveSingleLink(mainWindow, false, urls[0], refer, descs[0]);
+        } else if(totalTask > 1 && this.DTA.saveLinkArray) {
             var anchors = [], images = [];
             var wrapURL = function(url, cs) { return new this.DTA.URL(this.DTA.IOService.newURI(url, cs, null)); }
-            for (var j=0; j<this.totalTask; ++j) {
-                anchors.push( {
-                    url: wrapURL(this.urls[j], "UTF-8"),
-                    description: this.descs[j],
+            for (var j=0; j<totalTask; ++j) {
+                anchors.push({
+                    url: wrapURL(urls[j], "UTF-8"),
+                    description: descs[j],
                     ultDescription: "",
-                    referrer: this.referrer,
+                    referrer: refer,
                     fileName: ""
                 })
             }
             this.DTA.saveLinkArray(mainWindow, anchors, images);
         }
 
+        return 0;
+    },
+
+    buitInDownload : function() {
         return 0;
     }
 };
