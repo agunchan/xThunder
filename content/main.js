@@ -54,7 +54,7 @@ var xThunderMain = {
                 var supExt = xThunderPref.getValue("supportExt");
                 if (remExt && supExt != "") {
                     var subUrls = url.split("?");
-                    var matches = subUrls[0].match(/(?:ftp|https?):\/\/.*(\.\w+)/i);
+                    var matches = subUrls[0].match(/^(?:ftp|https?):\/\/.*(\.\w+)/i);
                     if (matches) {
                         if (supExt.indexOf(matches[1] + ";") != -1) {
                             url = xThunderDecode.getDecodedUrl(url);
@@ -146,14 +146,14 @@ var xThunderMain = {
 
         downloadItem.className = (xThunderPref.getValue("showMenuIcons") ? "menu-iconic" : "");
         downloadAllItem.className = (xThunderPref.getValue("showMenuIcons") ? "menuitem-iconic" : "");
-        downloadAllItem.setAttribute("hidden", !xThunderPref.getValue("downAllInCxtMenu") || xThunderPref.getValue("agentName") == "ToolbarThunder");
+        downloadAllItem.setAttribute("hidden", !xThunderPref.getValue("downAllInCxtMenu"));
         sepItem.setAttribute("hidden", downloadItem.getAttribute("hidden") == "true" && downloadAllItem.getAttribute("hidden") == "true");
     },
 
     OnThunderDownload : function(agentName) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
-        xThunder.init(htmlDocument.URL, 1);
+        xThunder.init(htmlDocument.URL, 1, agentName);
 
         if (gContextMenu.onLink)
         {
@@ -180,7 +180,7 @@ var xThunderMain = {
         }
 
         xThunder.addTask(url);
-        xThunder.callAgent(agentName);
+        xThunder.callAgent();
     },
 
     OnThunderDownloadAll : function(event) {
@@ -208,7 +208,7 @@ var xThunderMain = {
         for (var i=0; i<linkCount; ++i)
         {
             url = xThunderDecode.getDecodedNode(links[i]);
-            xThunder.addTask(url);
+            xThunder.addTask(url, links[i].textContent);
         }
 
         for (var j=0; j<imageCount; ++j)

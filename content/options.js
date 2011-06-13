@@ -1,6 +1,6 @@
 var xThunderOption = {
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BuiltIn"],
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "DTA", "BuiltIn"],
     oriStatusIcon : false,
 
     loadPrefs : function() {
