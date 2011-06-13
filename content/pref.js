@@ -1,21 +1,37 @@
 var xThunderPref = {
     pref : null,
-    agentCount : 0,
+    pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "DTA", "BuiltIn"],
+    agentsNonsup : { "ed2k"   : ["BitComet", "DTA", "BuiltIn"],
+                     "magnet" : ["ToolbarThunder", "DTA", "BuiltIn"] },
 
+    //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio){
         var ownDoc = menupop.ownerDocument;
-        var stringBundle = ownDoc.getElementById("xThunderAgentStrings");
-        var agents = this.getValue("showAgents").split(",");
         var defAgentName = this.getValue("agentName");
-        for (var i=0; i<agents.length-1; ++i) {
-            menuitem({
-                id : idpre + agents[i],
-                label : stringBundle.getString(agents[i]),
-                value : agents[i],
-                oncommand : func ? (func + "('" + agents[i] + "')") : ""
-            });
+        if (!ownDoc.getElementById(idpre + defAgentName)) {
+            //create menu item
+            var stringBundle = ownDoc.getElementById("xThunderAgentStrings");
+            for (var i=0; i<this.agents.length; ++i) {
+                menuitem({
+                    id : idpre + this.agents[i],
+                    label : stringBundle.getString(this.agents[i]),
+                    value : this.agents[i],
+                    oncommand : func ? (func + "('" + this.agents[i] + "')") : ""
+                });
+            }
         }
-        this.agentCount = agents.length-1;
+
+        //show available agents
+        var showAgents = this.getValue("showAgents").split(",");
+        for (var j=0; j<this.agents.length; ++j) {
+            ownDoc.getElementById(idpre + this.agents[j]).setAttribute('hidden', !this.isAgentInArray(this.agents[j], showAgents));
+        }
+
+        //check default agent
+        if (isradio) {
+            ownDoc.getElementById(idpre + defAgentName).setAttribute("checked", true);
+        }
 
         //create menu item by attributes array
         function menuitem(atrs){
@@ -25,17 +41,28 @@ var xThunderPref = {
             if(isradio) {
                 mi.setAttribute("name", "agent");
                 mi.setAttribute("type", "radio");
-                if (mi.getAttribute("value") == defAgentName)
-                    mi.setAttribute("checked", true);
             }
             return menupop.appendChild(mi);
         }
     },
 
-    deleteAgentList : function (menupop) {
-        while(menupop.hasChildNodes() && this.agentCount > 0) {
-            menupop.removeChild(menupop.lastChild);
-            --this.agentCount;
+    isAgentInArray : function(agentName, agentsArray) {
+        for (var i = 0; i < agentsArray.length; ++i)
+            if (agentName == agentsArray[i])
+                return true;
+        return false;
+    },
+
+    isAgentNonsupURL : function(agentName, url) {
+        return this.isAgentInArray(agentName, this.getAgentsNonsupURL(url));
+    },
+
+    getAgentsNonsupURL : function(url) {
+        var pro = url.match(/^(ed2k|magnet):/i);
+        if (pro) {
+            return this.agentsNonsup[pro[1]];
+        } else {
+            return [];
         }
     },
 

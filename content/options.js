@@ -1,7 +1,6 @@
-var xThunderOption = {
-    pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "DTA", "BuiltIn"],
+var xThunderOptions = {
     oriStatusIcon : false,
+    agentIdPre : "agent",
 
     loadPrefs : function() {
         //Get supported protocals and file extensions
@@ -18,75 +17,12 @@ var xThunderOption = {
         this.oriStatusIcon = xThunderPref.getValue("showStatusIcon");
     },
 
-    getAgents : function() {
-        var stringBundle = document.getElementById("xThunderAgentStrings");
-        var nodeAgentRows = document.getElementById("agentRows");
-        var nodeRow;
-        var nodeDefagentPopup = document.getElementById("defagentPopup");
-        
-        for (var i=0; i<this.agents.length; ++i) {
-            createAgentCB({
-                id : "agent" + this.agents[i],
-                label : stringBundle.getString(this.agents[i]),
-                oncommand : "xThunderOption.toolgeAgent(this);"
-            }, i);
-            createDefagentMI({
-                id : "defagent" + this.agents[i],
-                label : stringBundle.getString(this.agents[i]),
-                value : this.agents[i],
-                hidden : "true"
-            });
-        }
-
-        var showAgents = xThunderPref.getValue("showAgents").split(",");
-        for (var j=0; j<showAgents.length-1; ++j) {
-            document.getElementById("agent" + showAgents[j]).checked = true;
-            document.getElementById("defagent" + showAgents[j]).setAttribute('hidden',false);
-        }
-        document.getElementById("defagentList").value = xThunderPref.getValue("agentName");
-        
-
-        function createAgentCB(atrs, index){
-            var cb = document.createElement("checkbox");
-            for(var k in atrs)
-                cb.setAttribute(k, atrs[k]);
-
-            //two agent in one row
-            if((index & 1) == 0) {
-                nodeRow = document.createElement("row");
-                nodeAgentRows.appendChild(nodeRow);
-            }
-            nodeRow.appendChild(cb);
-        }
-
-        function createDefagentMI(atrs){
-            var mi = document.createElement("menuitem");
-            for(var k in atrs)
-                mi.setAttribute(k, atrs[k]);
-            return nodeDefagentPopup.appendChild(mi);
-        }
-    },
-
-    toolgeAgent : function(target) {
-        document.getElementById('def'+target.id).setAttribute('hidden', !target.checked);
-        var defAgentList = document.getElementById('defagentList');
-        if (!document.getElementById("agent" + defAgentList.value).checked) {
-            for (var j=0; j<this.agents.length; ++j) {
-                if (document.getElementById("agent" + this.agents[j]).checked) {
-                    defAgentList.value = this.agents[j];
-                    return;
-                }
-            }
-            document.getElementById('defagentList').value = this.agents[0];
-        }
-    },
-
     savePrefs : function() {
         //Set supported protocals and file extensions
         var supstr = "";
-        for (var i=0; i<this.pros.length; ++i) {
-            if (document.getElementById(this.pros[i]).checked) {
-                supstr += (this.pros[i] + ",");
+        for (var i=0; i<xThunderPref.pros.length; ++i) {
+            if (document.getElementById(xThunderPref.pros[i]).checked) {
+                supstr += (xThunderPref.pros[i] + ",");
             }
         }
         xThunderPref.setValue("supportClick", supstr);
@@ -108,19 +44,70 @@ var xThunderOption = {
         }
     },
 
+    getAgents : function() {
+        //create default agent list
+        xThunderPref.appendAgentList(document.getElementById("defagentPopup"), "defagent");
+        document.getElementById("defagentList").value = xThunderPref.getValue("agentName");
+
+        //create all agents checkbox
+        var showAgents = xThunderPref.getValue("showAgents").split(",");
+        var stringBundle = document.getElementById("xThunderAgentStrings");
+        var nodeAgentRows = document.getElementById("agentRows");
+        var nodeRow;
+
+        for (var i=0; i<xThunderPref.agents.length; ++i) {
+            var agentName = xThunderPref.agents[i];
+            createAgentCB({
+                id : this.agentIdPre + agentName,
+                label : stringBundle.getString(agentName),
+                oncommand : "xThunderOptions.toolgeAgent(this);"
+            }, i, agentName);
+        }
+
+        function createAgentCB(atrs, index, agentName){
+            var cb = document.createElement("checkbox");    
+            cb.setAttribute("checked", xThunderPref.isAgentInArray(agentName, showAgents));
+            for(var k in atrs)
+                cb.setAttribute(k, atrs[k]);
+
+            //two agent in one row
+            if((index & 1) == 0) {
+                nodeRow = document.createElement("row");
+                nodeAgentRows.appendChild(nodeRow);
+            }
+            nodeRow.appendChild(cb);
+        }
+    },
+
+    toolgeAgent : function(target) {
+        document.getElementById('def'+target.id).setAttribute('hidden', !target.checked);
+        var defAgentList = document.getElementById('defagentList');
+        //default agent be uncheck, choose first available agent
+        if (!document.getElementById(this.agentIdPre + defAgentList.value).checked) {
+            for (var j=0; j<xThunderPref.agents.length; ++j) {
+                if (document.getElementById(this.agentIdPre + xThunderPref.agents[j]).checked) {
+                    defAgentList.value = xThunderPref.agents[j];
+                    return;
+                }
+            }
+            //all agent be uncheck, choose first agent
+            document.getElementById('defagentList').value = xThunderPref.agents[0];
+        }
+    },
+
     setAgents : function() {
         var defAgent = document.getElementById("defagentList").value;
-        var agentstr = "";
-        for (var j=0; j<this.agents.length; ++j) {
-            if (document.getElementById("agent" + this.agents[j]).checked) {
-                agentstr += (this.agents[j] + ",");
+        var showAgentStr = "";
+        for (var j=0; j<xThunderPref.agents.length; ++j) {
+            if (document.getElementById(this.agentIdPre + xThunderPref.agents[j]).checked) {
+                showAgentStr += (xThunderPref.agents[j] + ",");
             }
         }
-        if (agentstr == "") {
-            agentstr = defAgent + ",";
+        if (showAgentStr == "") {
+            showAgentStr = defAgent + ",";
         }
         
-        xThunderPref.setValue("showAgents", agentstr);
+        xThunderPref.setValue("showAgents", showAgentStr);
         xThunderPref.setValue("agentName", defAgent);
     }
 }

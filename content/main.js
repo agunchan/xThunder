@@ -2,7 +2,7 @@
 //	Event handler,require xThunder.js,pref.js,decode.js
 ///////////////////////////////////////////////////////////////////
 window.addEventListener("load", function(){
-    document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', xThunderMain.OnThunderContextMenu, false);
+    document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', xThunderMain.OnContextMenu, false);
     xThunderMain.setIconVisible(xThunderPref.getValue("showStatusIcon"));
     xThunderMain.addClickSupport();
 }, false);
@@ -117,7 +117,10 @@ var xThunderMain = {
         }
     },
 
-    OnThunderContextMenu : function(event) {
+    OnContextMenu : function(event) {
+        if (event.target != document.getElementById('contentAreaContextMenu')) 
+            return;
+        
         var downloadItem = document.getElementById("xThunderDownload");
         var downloadAllItem = document.getElementById("xThunderDownloadAll");
         var sepItem = document.getElementById("xThunderDownloadUp");
@@ -169,14 +172,7 @@ var xThunderMain = {
         {
             // Get selected url
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
-            if (xThunderDecode.downReg.test(url))
-            {
-                url = xThunderDecode.getDecodedUrl(url);
-            }
-            else
-            {
-                return;
-            }
+            url = xThunderDecode.getDecodedUrl(url);
         }
 
         xThunder.addTask(url);
@@ -220,7 +216,25 @@ var xThunderMain = {
         xThunder.callAgent();
     },
 
-    OnThunderOptsPopup : function() {
+    OnThunderDownloadPopup : function(target) {
+        xThunderPref.appendAgentList(target, 'xThunderBy', 'xThunderMain.OnThunderDownload', true);
+//        //hide nonsupport agents
+//        var url;
+//        if (gContextMenu.onLink)
+//            url = gContextMenu.linkURL;
+//        else if (gContextMenu.onImage)
+//            url = gContextMenu.target.src;
+//        else
+//            url = document.commandDispatcher.focusedWindow.getSelection().toString();
+//
+//        var nonAgents = xThunderPref.getAgentsNonsupURL(url);
+//        for (var i=0; i<nonAgents.length; ++i) {
+//            document.getElementById("xThunderBy" + nonAgents[i]).setAttribute('hidden', true);
+//        }
+    },
+
+    OnThunderOptsPopup : function(target) {
+        xThunderPref.appendAgentList(target, 'xThunderOptsAgent', 'xThunderMain.OnChangeAgent', true);
         document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
         document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));
     },

@@ -73,7 +73,7 @@ var xThunderDecode = {
     },
 
     //////////////////////////////////////////////////////////////////////
-    //	Decode flashget,qqdownload and rayfile link -- Base64 Decode
+    //	Decode thunder,flashget,qqdownload and rayfile link -- Base64 Decode
     //////////////////////////////////////////////////////////////////////
     decode64 : function(input) {
         input = window.atob( input );                   //base64 decode

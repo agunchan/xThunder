@@ -5,8 +5,8 @@
 <prefwindow id="xThunder-prefs"
     title="&options;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    onload="xThunderOption.loadPrefs();"
-    ondialogaccept="xThunderOption.savePrefs();">
+    onload="xThunderOptions.loadPrefs();"
+    ondialogaccept="xThunderOptions.savePrefs();">
 
     <script type="application/javascript" src="chrome://xthunder/content/pref.js"/>
     <script type="application/javascript" src="chrome://xthunder/content/options.js"/>
