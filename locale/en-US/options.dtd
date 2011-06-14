@@ -1,6 +1,7 @@
 <!ENTITY	options         "xThunder Options">
 <!ENTITY	tab.general		"General">
 <!ENTITY	tab.interface   "Interface">
+<!ENTITY	tab.downloader  "Downloader">
 <!ENTITY	lbl.supClick    "Left Click">
 <!ENTITY	pro.thunder     "thunder (thunder://)">
 <!ENTITY	pro.flashget    "flashget (flashget://)">
@@ -18,7 +19,7 @@
 <!ENTITY	udown.bak       "BAK">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
-<!ENTITY	lbl.agent       "Downloader">
+<!ENTITY	lbl.showAgent   "Show">
 <!ENTITY	lbl.defaultAgent "Default">
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open link in background">
