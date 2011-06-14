@@ -75,16 +75,6 @@ var xThunder = {
 
         return href;
     },
-    notSupportPro : function(agentName, url) {
-        var pro = url.match(/^(ed2k|magnet):/i);
-        if (pro && !(agentName == "Thunder" || agentName == "QQDownload"
-                    || agentName == "ToolbarThunder" && pro[1] == "ed2k"
-                    || agentName == "BitComet" && pro[1] == "magnet")) {
-            return pro[1];
-        } else {
-            return false;
-        }
-    },
 	addTask : function(url, des){
         if (url == null) {
             return; //for async method
@@ -96,7 +86,7 @@ var xThunder = {
 
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));
-        this.descs.push(this.getFileName(url));     //use file name for description now
+        this.descs.push(des ? des : this.getFileName(url));
 	},
 
     dtaDownload : function(totalTask, refer, urls, descs) {
@@ -104,12 +94,16 @@ var xThunder = {
                             .getService(Components.interfaces.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");
         if (!this.DTA) {
-            if (mainWindow.DTA) {
+            if (typeof DTA != "undefined") {
+                this.DTA = DTA;
+            } else if (mainWindow.DTA) {
                 this.DTA = mainWindow.DTA;
-            } else {
-                this.DTA = {};
-                Components.utils.import("resource://dta/api.jsm", this.DTA);
-            }
+            } 
+        }
+
+        if (!this.DTA) {
+            alert('Please install DownThemAll! extension and enable it');
+            return 0;
         }
 
         if (totalTask == 1 && this.DTA.saveSingleLink) {

@@ -8,6 +8,8 @@ window.addEventListener("load", function(){
 }, false);
 
 var xThunderMain = {
+    clickVntAdded : false,
+
     setIconVisible : function(visible) {
         document.getElementById('xThunderStatusBtn').setAttribute('hidden', !visible);
     },
@@ -17,6 +19,8 @@ var xThunderMain = {
             xThunderPref.getValue("supportExt") != "" && xThunderPref.getValue("remember")) {
 
             var win = window.gBrowser || window;
+            if (xThunderMain.clickVntAdded)
+                return;
             win.addEventListener("click", function(ev) {
                 if (ev.button != 0 || ev.shiftKey) {
                     return true;
@@ -114,6 +118,8 @@ var xThunderMain = {
                     return true;
                 }
             }, true);   // end gBrowser click event
+
+            xThunderMain.clickVntAdded = true;
         }
     },
 
@@ -130,18 +136,13 @@ var xThunderMain = {
             downloadItem.setAttribute("hidden", true);
         } else {
             //Show download in context menu
-            if (gContextMenu.onLink)
-            {
+            if (gContextMenu.onLink) {
                 var link = gContextMenu.target;
                 downloadItem.setAttribute("hidden", -1 != gContextMenu.linkURL.indexOf("javascript:")
                     && !(link.id == "udown" && (link = link.getAttribute("onclick")) && link.indexOf("AddDownTask") != -1));
-            }
-            else if (gContextMenu.onImage)
-            {
+            } else if (gContextMenu.onImage) {
                 downloadItem.setAttribute("hidden", false);
-            }
-            else
-            {
+            } else {
                 var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
                 downloadItem.setAttribute("hidden", !xThunderDecode.downReg.test(selText));
             }
@@ -158,18 +159,14 @@ var xThunderMain = {
         var url;
         xThunder.init(htmlDocument.URL, 1, agentName);
 
-        if (gContextMenu.onLink)
-        {
+        if (gContextMenu.onLink) {
             // Get current link URL
             url = xThunderDecode.getDecodedNode(gContextMenu.target);
         }
-        else if (gContextMenu.onImage)
-        {
+        else if (gContextMenu.onImage) {
             // Get current image url
             url = gContextMenu.target.src;
-        }
-        else
-        {
+        } else {
             // Get selected url
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
             url = xThunderDecode.getDecodedUrl(url);
@@ -201,14 +198,12 @@ var xThunderMain = {
 
         xThunder.init(htmlDocument.URL, linkCount+imageCount);
 
-        for (var i=0; i<linkCount; ++i)
-        {
+        for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
             xThunder.addTask(url, links[i].textContent);
         }
 
-        for (var j=0; j<imageCount; ++j)
-        {
+        for (var j=0; j<imageCount; ++j) {
             url = images[j].src;
             xThunder.addTask(url);
         }

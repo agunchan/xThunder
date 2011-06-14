@@ -1,5 +1,6 @@
 var xThunderOptions = {
     oriStatusIcon : false,
+    oriClickAdded : false,
     agentIdPre : "agent",
 
     loadPrefs : function() {
@@ -7,14 +8,16 @@ var xThunderOptions = {
         var rem = xThunderPref.getValue("remember");
         document.getElementById("remember").checked = rem;
         document.getElementById("supportExt").disabled = !rem;
-        var supPros = xThunderPref.getValue("supportClick").split(",");
+        var supstr = xThunderPref.getValue("supportClick");
+        var supPros = supstr.split(",");
         for (var i=0; i<supPros.length-1; ++i) {
             document.getElementById(supPros[i]).checked = true;
         }
 
-        //Get agents and status icon
+        //Get agents, click added and status icon
         this.getAgents();
         this.oriStatusIcon = xThunderPref.getValue("showStatusIcon");
+        this.oriClickAdded = (supstr != "" || rem && xThunderPref.getValue("supportExt") != "");
     },
 
     savePrefs : function() {
@@ -26,19 +29,26 @@ var xThunderOptions = {
             }
         }
         xThunderPref.setValue("supportClick", supstr);
-        xThunderPref.setValue("remember", document.getElementById("remember").checked ? 1 : 0);
+        var rem = document.getElementById("remember").checked ? 1 : 0;
+        xThunderPref.setValue("remember", rem);
 
-        //Set agents and status icon
+        //Set agents, click added and status icon
         this.setAgents();
+        var clickAdd = (supstr != "" || rem && xThunderPref.getValue("supportExt") != "");
         var statusIcon = xThunderPref.getValue("showStatusIcon");
-        if (statusIcon != this.oriStatusIcon) {
+        var isToAddClick = (!this.oriClickAdded && clickAdd);
+        var isToSetIcon = (statusIcon != this.oriStatusIcon);
+        if (isToAddClick || isToSetIcon) {
             var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                             .getService(Components.interfaces.nsIWindowMediator);
             var e = wm.getEnumerator("navigator:browser");
             while(e.hasMoreElements()) {
                 var mainWindow = e.getNext();
                 if (mainWindow.xThunderMain) {
-                    mainWindow.xThunderMain.setIconVisible(statusIcon);
+                    if (isToAddClick)
+                        mainWindow.xThunderMain.addClickSupport();
+                    if (isToSetIcon)
+                        mainWindow.xThunderMain.setIconVisible(statusIcon);
                 }
             }
         }

@@ -1,6 +1,7 @@
 <!ENTITY	options         "xThunder 配置">
 <!ENTITY	tab.general		"常规">
 <!ENTITY	tab.interface   "接口">
+<!ENTITY	tab.downloader  "下载器">
 <!ENTITY	lbl.supClick    "左键支持链接">
 <!ENTITY	pro.thunder     "迅雷 (thunder://)">
 <!ENTITY	pro.flashget    "快车 (flashget://)">
@@ -18,7 +19,7 @@
 <!ENTITY	udown.bak       "备份">
 <!ENTITY	lbl.downloadAll "下载全部链接">
 <!ENTITY	includeImages   "包含当前页面中的图片">
-<!ENTITY	lbl.agent       "下载工具">
+<!ENTITY	lbl.showAgent   "显示">
 <!ENTITY	lbl.defaultAgent "默认">
 <!ENTITY	lbl.monitor     "监视链接">
 <!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开链接">
