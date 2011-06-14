@@ -1,5 +1,6 @@
 var xThunderDecode = {
     downReg : /^\s*(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
+    udownReg : /^http:\/\/u\.115\.com\/file\/(.+)/i,
     asyncReq : 0,
 
     getDecodedNode : function(link) {
@@ -62,7 +63,7 @@ var xThunderDecode = {
                 {
                     url = "http://" + url;
                 }
-            } else if (/^http:\/\/u\.115\.com\/file\/.+/i.test(url)) {
+            } else if (this.udownReg.test(url)) {
                 url = this.uDown(url);
             }
         } catch (ex) {
@@ -92,7 +93,7 @@ var xThunderDecode = {
     //	Get download link of 115u file
     ////////////////////////////////////////////////////////////
     uDown : function (url) {
-        var matches = url.match(/http:\/\/u\.115\.com\/file\/(.+)/i);
+        var matches = url.match(this.udownReg);
         var downUrl = url;
 
         if(matches)

@@ -200,7 +200,12 @@ var xThunderMain = {
 
         for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
-            xThunder.addTask(url, links[i].textContent);
+            if (xThunderDecode.udownReg.test(links[i].href.replace(/ /g, ''))) {
+                //udown link is got asynchronously, so do not use wrong textContent
+                xThunder.addTask(url);
+            } else {
+                xThunder.addTask(url, links[i].textContent);
+            }
         }
 
         for (var j=0; j<imageCount; ++j) {

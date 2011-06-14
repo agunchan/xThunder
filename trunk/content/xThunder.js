@@ -43,7 +43,7 @@ var xThunder = {
             if (result >= 0) {
                 return true;
             } else {
-                alert('Call ' + this.agentName + ' COM error, please check the registry or run as administrator!');
+                alert('Call ' + this.agentName + ' error, please check if it was installed correctly!');
             }
         } catch(ex) {
             alert(ex);
@@ -86,7 +86,12 @@ var xThunder = {
 
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));
-        this.descs.push(des ? des : this.getFileName(url));
+        if (this.totalTask == 1) {
+            des = "";
+        } else if (!des) {
+            des = this.getFileName(url);
+        }
+        this.descs.push(des);
 	},
 
     dtaDownload : function(totalTask, refer, urls, descs) {
@@ -102,8 +107,7 @@ var xThunder = {
         }
 
         if (!this.DTA) {
-            alert('Please install DownThemAll! extension and enable it');
-            return 0;
+            return -1;
         }
 
         if (totalTask == 1 && this.DTA.saveSingleLink) {
