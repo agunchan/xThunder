@@ -1,9 +1,9 @@
 var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "DTA", "BuiltIn"],
-    agentsNonsup : { "ed2k"   : ["BitComet", "DTA", "BuiltIn"],
-                     "magnet" : ["ToolbarThunder", "DTA", "BuiltIn"] },
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"],
+    agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA", "BuiltIn"],
+                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "BuiltIn"] },
 
     //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio){
