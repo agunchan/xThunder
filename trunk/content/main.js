@@ -218,19 +218,19 @@ var xThunderMain = {
 
     OnThunderDownloadPopup : function(target) {
         xThunderPref.appendAgentList(target, 'xThunderBy', 'xThunderMain.OnThunderDownload', true);
-//        //hide nonsupport agents
-//        var url;
-//        if (gContextMenu.onLink)
-//            url = gContextMenu.linkURL;
-//        else if (gContextMenu.onImage)
-//            url = gContextMenu.target.src;
-//        else
-//            url = document.commandDispatcher.focusedWindow.getSelection().toString();
-//
-//        var nonAgents = xThunderPref.getAgentsNonsupURL(url);
-//        for (var i=0; i<nonAgents.length; ++i) {
-//            document.getElementById("xThunderBy" + nonAgents[i]).setAttribute('hidden', true);
-//        }
+        //hide nonsupport agents
+        var url;
+        if (gContextMenu.onLink)
+            url = gContextMenu.linkURL;
+        else if (gContextMenu.onImage)
+            url = gContextMenu.target.src;
+        else
+            url = document.commandDispatcher.focusedWindow.getSelection().toString();
+
+        var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
+        for (var i=0; i<agentsNonsup.length; ++i) {
+            document.getElementById("xThunderBy" + agentsNonsup[i]).className = "agentNonsup";
+        }
     },
 
     OnThunderOptsPopup : function(target) {

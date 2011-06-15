@@ -15,3 +15,6 @@ toolbar[iconsize="small"] #xThunderToolbarBtn,
 .caption-text{
 	font-weight:bold !important;
 }
+.agentNonsup {
+    color: red;
+}

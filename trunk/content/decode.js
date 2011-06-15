@@ -54,6 +54,7 @@ var xThunderDecode = {
     getDecodedUrl : function(url) {
         try {
             url = url.replace(/ /g, '');
+            var oriUrl = url;
             if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url))
             {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
@@ -61,7 +62,11 @@ var xThunderDecode = {
 
                 if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1)
                 {
+                    //rayfile
                     url = "http://" + url;
+                } else if (/^flashget:/i.test(oriUrl) && (url = url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))) {
+                    //flashgetx://|mhts|
+                    url = window.atob((url[1]));
                 }
             } else if (this.udownReg.test(url)) {
                 url = this.uDown(url);
