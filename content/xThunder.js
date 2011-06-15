@@ -22,7 +22,7 @@ var xThunder = {
         this.callAgent();
 	},
     callAgent : function(){
-        if (this.urls.length != this.totalTask) {
+        if (this.urls.length != this.totalTask || this.totalTask <= 0) {
             return false;
         }
 
@@ -78,7 +78,9 @@ var xThunder = {
 	addTask : function(url, des){
         if (url == null) {
             return; //for async method
-        } else if (url == "" || url.indexOf("javascript:") != -1
+        } else if (url == "" 
+            || url.indexOf("javascript:") == 0
+            || url.indexOf("data:image") == 0
             || xThunderPref.isAgentNonsupURL(this.agentName, url)) {
             --this.totalTask;
             return;

@@ -76,7 +76,7 @@ var xThunderOptions = {
 
         function createAgentCB(atrs, index, agentName){
             var cb = document.createElement("checkbox");    
-            cb.setAttribute("checked", xThunderPref.isAgentInArray(agentName, showAgents));
+            cb.setAttribute("checked", xThunderPref.inArray(agentName, showAgents));
             for(var k in atrs)
                 cb.setAttribute(k, atrs[k]);
 

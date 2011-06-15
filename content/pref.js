@@ -3,7 +3,8 @@ var xThunderPref = {
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
     agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"],
     agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA", "BuiltIn"],
-                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "BuiltIn"] },
+                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "BuiltIn"],
+                     "flashgetx" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"] },
 
     //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio){
@@ -22,10 +23,12 @@ var xThunderPref = {
             }
         }
 
-        //show available agents
+        //show customized agents
         var showAgents = this.getValue("showAgents").split(",");
         for (var j=0; j<this.agents.length; ++j) {
-            ownDoc.getElementById(idpre + this.agents[j]).setAttribute('hidden', !this.isAgentInArray(this.agents[j], showAgents));
+            var mi = ownDoc.getElementById(idpre + this.agents[j]);
+            mi.setAttribute('hidden', !this.inArray(this.agents[j], showAgents));
+            mi.className = "";
         }
 
         //check default agent
@@ -33,7 +36,6 @@ var xThunderPref = {
             ownDoc.getElementById(idpre + defAgentName).setAttribute("checked", true);
         }
 
-        //create menu item by attributes array
         function menuitem(atrs){
             var mi = ownDoc.createElement("menuitem");
             for(var k in atrs)
@@ -46,7 +48,7 @@ var xThunderPref = {
         }
     },
 
-    isAgentInArray : function(agentName, agentsArray) {
+    inArray : function(agentName, agentsArray) {
         for (var i = 0; i < agentsArray.length; ++i)
             if (agentName == agentsArray[i])
                 return true;
@@ -54,16 +56,16 @@ var xThunderPref = {
     },
 
     isAgentNonsupURL : function(agentName, url) {
-        return this.isAgentInArray(agentName, this.getAgentsNonsupURL(url));
+        return this.inArray(agentName, this.getAgentsNonsupURL(url));
     },
 
     getAgentsNonsupURL : function(url) {
-        var pro = url.match(/^(ed2k|magnet):/i);
-        if (pro) {
-            return this.agentsNonsup[pro[1]];
-        } else {
-            return [];
+        for (var pro in this.agentsNonsup) {
+            if (url.indexOf(pro + ":") == 0) {
+                return this.agentsNonsup[pro];
+            }
         }
+        return [];
     },
 
     getBranch : function()
