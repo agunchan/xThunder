@@ -210,7 +210,7 @@ var xThunderMain = {
 
         for (var j=0; j<imageCount; ++j) {
             url = images[j].src;
-            xThunder.addTask(url);
+            xThunder.addTask(url, images[j].getAttribute("alt") || images[j].title);
         }
 
         xThunder.callAgent();
@@ -218,15 +218,16 @@ var xThunderMain = {
 
     OnThunderDownloadPopup : function(target) {
         xThunderPref.appendAgentList(target, 'xThunderBy', 'xThunderMain.OnThunderDownload', true);
-        //hide nonsupport agents
+        //set nonsupport agents item's className to agentNonsup
         var url;
         if (gContextMenu.onLink)
-            url = gContextMenu.linkURL;
+            url = gContextMenu.target.getAttribute('fg') || gContextMenu.linkURL;
         else if (gContextMenu.onImage)
             url = gContextMenu.target.src;
         else
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
 
+        url = xThunderDecode.getPreDecodedUrl(url);
         var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
         for (var i=0; i<agentsNonsup.length; ++i) {
             document.getElementById("xThunderBy" + agentsNonsup[i]).className = "agentNonsup";
