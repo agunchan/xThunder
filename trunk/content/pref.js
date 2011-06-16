@@ -1,7 +1,7 @@
 var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"],
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet", "BitComet", "IDM", "DTA", "BuiltIn"],
     agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA", "BuiltIn"],
                      "magnet" : ["ToolbarThunder", "IDM", "DTA", "BuiltIn"],
                      "flashgetx" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"] },
@@ -59,9 +59,9 @@ var xThunderPref = {
         return this.inArray(agentName, this.getAgentsNonsupURL(url));
     },
 
-    getAgentsNonsupURL : function(url) {
+    getAgentsNonsupURL : function(trimmedUrl) {
         for (var pro in this.agentsNonsup) {
-            if (url.indexOf(pro + ":") == 0) {
+            if (trimmedUrl.indexOf(pro + ":") == 0) {
                 return this.agentsNonsup[pro];
             }
         }

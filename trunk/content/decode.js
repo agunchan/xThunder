@@ -3,6 +3,16 @@ var xThunderDecode = {
     udownReg : /^http:\/\/u\.115\.com\/file\/(.+)/i,
     asyncReq : 0,
 
+    // Flashgetx is encoded at least twice, so pre decode it.
+    getPreDecodedUrl : function(url) {
+        url = url.replace(/ /g, '');
+        var isFlashGet = /^flashget:\/\//i.test(url);
+        if (isFlashGet) {
+            url = this.getDecodedUrl(url);
+        }
+        return url;
+    },
+
     getDecodedNode : function(link) {
         var url;
         var htmlDocument = link.ownerDocument;
@@ -54,19 +64,18 @@ var xThunderDecode = {
     getDecodedUrl : function(url) {
         try {
             url = url.replace(/ /g, '');
-            var oriUrl = url;
-            if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url))
+            var isFlashGet = /^flashget:\/\//i.test(url);
+            if (isFlashGet || /^(?:thunder|qqdl|fs2you):\/\//i.test(url))
             {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
-
-                if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1)
-                {
-                    //rayfile
-                    url = "http://" + url;
-                } else if (/^flashget:/i.test(oriUrl) && (url = url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))) {
+                        
+                if (isFlashGet && (url = url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))) {
                     //flashgetx://|mhts|
                     url = window.atob((url[1]));
+                } else if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1) {
+                    //rayfile
+                    url = "http://" + url;
                 }
             } else if (this.udownReg.test(url)) {
                 url = this.uDown(url);
@@ -82,7 +91,7 @@ var xThunderDecode = {
     //	Decode thunder,flashget,qqdownload and rayfile link -- Base64 Decode
     //////////////////////////////////////////////////////////////////////
     decode64 : function(input) {
-        input = window.atob( input );                   //base64 decode
+        input = window.atob(input);                     //base64 decode
         try {
             input = decodeURIComponent(escape(input));  //utf8 decode
         } catch (e) {
