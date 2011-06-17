@@ -1,7 +1,7 @@
 var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet", "BitComet", "IDM", "DTA", "BuiltIn"],
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "BuiltIn"],
     agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA", "BuiltIn"],
                      "magnet" : ["ToolbarThunder", "IDM", "DTA", "BuiltIn"],
                      "flashgetx" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"] },
