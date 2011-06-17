@@ -22,7 +22,7 @@
 <!ENTITY	lbl.showAgent   "Show">
 <!ENTITY	lbl.defaultAgent "Default">
 <!ENTITY	lbl.monitor     "Monitor Link">
-<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open link in background">
+<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background">
 <!ENTITY	altNoMonitor    "Alt +Click = Download by Firefox">
 <!ENTITY	lbl.showMenu    "Show Menu">
 <!ENTITY	showMenuIcons   "Show menu icons">

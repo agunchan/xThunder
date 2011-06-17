@@ -22,8 +22,8 @@
 <!ENTITY	lbl.showAgent   "显示">
 <!ENTITY	lbl.defaultAgent "默认">
 <!ENTITY	lbl.monitor     "监视链接">
-<!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开链接">
-<!ENTITY	altNoMonitor    "Alt +左键 = 传统方式下载">
+<!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开解码后的链接">
+<!ENTITY	altNoMonitor    "Alt +左键 = 传统方式下载链接">
 <!ENTITY	lbl.showMenu    "显示菜单">
 <!ENTITY	showMenuIcons   "显示图标在右键菜单">
 <!ENTITY	downInCxtMenu    "显示xThunder链接在右键菜单">

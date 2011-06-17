@@ -22,27 +22,11 @@ var xThunderMain = {
             if (xThunderMain.clickVntAdded)
                 return;
             win.addEventListener("click", function(ev) {
-                if (ev.button != 0 || ev.shiftKey) {
-                    return true;
-                }
-
-                if (ev.altKey && xThunderPref.getValue("altNoMonitor")) {
+                if (ev.button != 0 || ev.shiftKey || ev.altKey) {
                     return true;
                 }
 
                 var remExt = xThunderPref.getValue("remember");
-                if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor"))
-                {
-                    //remember value is 0:never down, 1: auto down, -1: no down this time
-                    if (remExt == 1) {
-                        xThunderPref.setValue('remember', -1);
-                    }
-                    return true;
-                } else {
-                    if (remExt == -1) {
-                        xThunderPref.setValue('remember', 1);
-                    }
-                }
 
                 var link = ev.target;
                 if (!link.href && !xThunderDecode.downReg.test(link.name)) {
@@ -53,6 +37,34 @@ var xThunderMain = {
 
                 var url = link.href || link.name;
                 var download = false;
+
+                //Ctrl + Click
+                if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor"))
+                {
+                    //remember value is 0:never down, 1: auto down, -1: no down this time
+                    if (remExt == 1) {
+                        xThunderPref.setValue('remember', -1);
+                    }
+
+                    //udown link is got asynchronously, so decodedUrl may be null
+                    if(!xThunderDecode.udownReg.test(url.replace(/ /g, ''))) {
+                        var decodedUrl = xThunderDecode.getDecodedNode(link);
+                        if (decodedUrl && decodedUrl != url) {
+                            //Open decoded link by Firefox
+                            document.commandDispatcher.focusedWindow.location.href = decodedUrl;
+                            ev.preventDefault();
+                            ev.stopPropagation();
+                            return false;
+                        }
+                    }
+
+                    //Open in backgrond tab - Firefox default way
+                    return true;
+                } else {
+                    if (remExt == -1) {
+                        xThunderPref.setValue('remember', 1);
+                    }
+                }
 
                 //click support for associated file
                 var supExt = xThunderPref.getValue("supportExt");

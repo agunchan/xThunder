@@ -30,9 +30,6 @@ var xThunder = {
             var result;
             if (this.agentName == "DTA") {
                 result = this.dtaDownload(this.totalTask, this.referrer, this.urls, this.descs);
-            } else if (this.agentName == "BuiltIn") {
-                window.setTimeout(this.buitInDownload, 100, this.totalTask, this.referrer, this.urls, this.descs);
-                result = 0;
             } else {
                 if (this.xthunderComponent == null) {
                     this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].createInstance()
@@ -135,47 +132,6 @@ var xThunder = {
             this.DTA.saveLinkArray(mainWindow, anchors, images);
         }
 
-        return 0;
-    },
-
-    buitInDownload : function(totalTask, refer, urls, descs) {
-        var CC = Components.classes;
-        var CI = Components.interfaces;
-
-        var IOService = CC["@mozilla.org/network/io-service;1"].getService(CI.nsIIOService);
-
-        var dType = CI.nsIDownloadManager.DOWNLOAD_TYPE_DOWNLOAD;
-        var persistFlags = CI.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION |
-            CI.nsIWebBrowserPersist.PERSIST_FLAGS_FROM_CACHE;
-        var now = Date.now() * 1000;
-        var dm = CC["@mozilla.org/download-manager;1"].getService(CI.nsIDownloadManager);
-
-        var referrerURI = IOService.newURI(refer, "UTF-8", null);
-        for(var j=0; j<totalTask; ++j) {
-            var persist = CC["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(CI.nsIWebBrowserPersist);
-            var sourceURI = IOService.newURI(urls[j], "UTF-8", null);
-            var file = CC["@mozilla.org/file/local;1"].createInstance(CI.nsILocalFile);
-            file.initWithPath("E:\\download\\" + xThunder.getFileName(urls[j]));
-            if (file.exists()) {
-                //rename file
-                while (true) {
-                    if(!file.exists()) {
-                        file.create(0, 0644);
-                        break;
-                    } else { // rename
-                        var m = file.leafName.match(/(.*?)(?:\((\d+)\))?(\.[^\.]+$|$)/);
-                        file.leafName = m[1] + "(" + ((m[2] && parseInt(m[2]) || 0) + 1) + ")" + m[3];
-                    }
-                }
-            }
-            var targetURI = IOService.newFileURI(file);
-            persist.persistFlags = persistFlags;
-            persist.progressListener = dm.addDownload(dType, sourceURI, targetURI, descs[j], null, now, null, persist);
-            persist.saveURI(sourceURI, null, referrerURI, null, null, targetURI);
-        }
-
-        var dmui = CC["@mozilla.org/download-manager-ui;1"].getService(CI.nsIDownloadManagerUI);
-        dmui.show();
         return 0;
     }
 };

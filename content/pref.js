@@ -1,10 +1,10 @@
 var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "BuiltIn"],
-    agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA", "BuiltIn"],
-                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "BuiltIn"],
-                     "flashgetx" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "BuiltIn"] },
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA"],
+    agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA"],
+                     "magnet" : ["ToolbarThunder", "IDM", "DTA"],
+                     "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA"] },
 
     //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio){
@@ -60,8 +60,12 @@ var xThunderPref = {
     },
 
     getAgentsNonsupURL : function(trimmedUrl) {
+        if(!trimmedUrl) {
+            return this.agents;
+        } 
+        var urlPro = trimmedUrl.split(":")[0].toLowerCase();
         for (var pro in this.agentsNonsup) {
-            if (trimmedUrl.indexOf(pro + ":") == 0) {
+            if (urlPro == pro) {
                 return this.agentsNonsup[pro];
             }
         }
