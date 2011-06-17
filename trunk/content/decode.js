@@ -33,8 +33,9 @@ var xThunderDecode = {
                 }
             }
         } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
-            var JSObj = htmlDocument.defaultView.wrappedJSObject;
-            if ((matches = JSObj.fUrl) || (matches = JSObj.url)) {
+            if (matches = matches.match(/Flashget_SetHref_js\(this,'(.+)','.*'\)/)) {
+                url = matches[1];
+            } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
@@ -64,16 +65,15 @@ var xThunderDecode = {
     getDecodedUrl : function(url) {
         try {
             url = url.replace(/ /g, '');
-            var isFlashGet = /^flashget:\/\//i.test(url);
-            if (isFlashGet || /^(?:thunder|qqdl|fs2you):\/\//i.test(url))
+            var oriUrl = url;
+            if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url))
             {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
 
-                var matches;
-                if (isFlashGet && (matches = url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))) {
-                    //flashgetx://|mhts|
-                    url = window.atob((matches[1]));
+                if (/^flashget:\/\//i.test(oriUrl) && url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/)) {
+                    // use oriUrl when it is actually flashgetx://|mhts|
+                    url = oriUrl;
                 } else if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1) {
                     //rayfile
                     url = "http://" + url;

@@ -93,6 +93,7 @@ window.addEventListener('load', function() {
     if (extExists) {
         remember.checked = rememberExt;
         mode.selectedItem = xThunderRadio;
+        remember.disabled = false;
     } 
 
     mode.addEventListener('select', function() {

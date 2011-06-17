@@ -88,7 +88,6 @@
                     <groupbox>
                         <caption label="&lbl.monitor;"/>
                         <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
-                        <checkbox id="altNoMonitor" label="&altNoMonitor;" preference="pref_altNoMonitor"/>
                     </groupbox>
 
                      <groupbox>
