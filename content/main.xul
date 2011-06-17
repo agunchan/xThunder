@@ -19,13 +19,13 @@
 
     <popup id="contentAreaContextMenu">
         <menuseparator id="xThunderDownloadUp"/>
-        <menu id="xThunderDownload" label="&download;" accesskey="x" onclick="if(event.target == this){xThunderMain.OnThunderDownload();this.parentNode.hidePopup();}">
+        <menu id="xThunderDownload" label="&download;" accesskey="x" onclick="if(event.target == this) xThunderMain.OnThunderDownload(null, this.parentNode);">
             <menupopup id="xThunderDownloadPopup" onpopupshowing="xThunderMain.OnThunderDownloadPopup(this);"/>
         </menu>
         <menuitem id="xThunderDownloadAll" label="&downloadAll;" key="xThunderAllKey" oncommand="xThunderMain.OnThunderDownloadAll(event);"/>
     </popup>
 
-    <window id="main-window">
+    <popupset id="mainPopupSet">
         <!-- Icon's context menu -->
         <menupopup id="xThunderOptsPopup" onpopupshowing="xThunderMain.OnThunderOptsPopup(this);">
             <menuitem id="xThunderOptsMore" label="&moreOptions;" accesskey="O" oncommand="xThunderMain.OnOpenOptionsDlg();" />
@@ -36,7 +36,7 @@
             <menuitem id="xThunderOptsUdown2" label="&udown.bak;" name="udown" type="radio" oncommand="xThunderMain.OnChangeUdown(2);"/>
             <menuseparator id="xThunderOptsSep2" />
         </menupopup>
-    </window>
+    </popupset>
 
     <toolbarpalette id="BrowserToolbarPalette">
         <toolbarbutton id="xThunderToolbarBtn" label="xThunder" class="toolbarbutton-1" context="xThunderOptsPopup"

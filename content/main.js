@@ -154,7 +154,7 @@ var xThunderMain = {
         sepItem.setAttribute("hidden", downloadItem.getAttribute("hidden") == "true" && downloadAllItem.getAttribute("hidden") == "true");
     },
 
-    OnThunderDownload : function(agentName) {
+    OnThunderDownload : function(agentName, ctxMenu) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
         xThunder.init(htmlDocument.URL, 1, agentName);
@@ -173,6 +173,8 @@ var xThunderMain = {
         }
 
         xThunder.addTask(url);
+        if (ctxMenu)
+            ctxMenu.hidePopup();
         xThunder.callAgent();
     },
 

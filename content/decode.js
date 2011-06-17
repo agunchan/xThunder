@@ -69,10 +69,11 @@ var xThunderDecode = {
             {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
-                        
-                if (isFlashGet && (url = url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))) {
+
+                var matches;
+                if (isFlashGet && (matches = url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))) {
                     //flashgetx://|mhts|
-                    url = window.atob((url[1]));
+                    url = window.atob((matches[1]));
                 } else if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1) {
                     //rayfile
                     url = "http://" + url;
