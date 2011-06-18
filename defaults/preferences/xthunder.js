@@ -11,4 +11,4 @@ pref("extensions.xthunder.downInSaveFile", true);
 pref("extensions.xthunder.showMenuIcons", true);
 pref("extensions.xthunder.showStatusIcon", true);
 pref("extensions.xthunder.agentName", "Thunder");
-pref("extensions.xthunder.showAgents", "Thunder,QQDownload,");
+pref("extensions.xthunder.showAgents", "Thunder,ToolbarThunder,QQDownload,DTA,");
