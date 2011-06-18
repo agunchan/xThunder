@@ -90,6 +90,13 @@ window.addEventListener('load', function() {
     var mode = $('mode');
     var remember = $('rememberChoice');
 
+    //same width as open radio
+    var openRadio = $("open");
+    if(openRadio) {
+        var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
+        if(maxWidth > 0) openRadio.width = xThunderRadio.width = maxWidth;
+    }
+
     if (extExists) {
         remember.checked = rememberExt;
         mode.selectedItem = xThunderRadio;
