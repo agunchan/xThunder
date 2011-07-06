@@ -23,6 +23,7 @@
             <preference id="pref_agentName" name="extensions.xthunder.agentName" type="string"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
             <preference id="pref_altNoMonitor" name="extensions.xthunder.altNoMonitor" type="bool"/>
+            <preference id="pref_downSubMenu" name="extensions.xthunder.downSubMenu" type="bool"/>
             <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
             <preference id="pref_downOptsInCxtMenu" name="extensions.xthunder.downOptsInCxtMenu" type="bool"/>
@@ -93,7 +94,8 @@
                      <groupbox>
                         <caption label="&lbl.showMenu;"/>
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
-                        <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu"/>
+                        <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu" oncommand="document.getElementById('downSubMenu').disabled = !this.checked;"/>
+                        <checkbox id="downSubMenu" style="margin-left:22px;" label="&downSubMenu;" preference="pref_downSubMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
                         <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
                         <checkbox id="showStatusIcon" label="&showStatusIcon;" preference="pref_showStatusIcon"/>
