@@ -8,6 +8,7 @@ var xThunderOptions = {
         var rem = xThunderPref.getValue("remember");
         document.getElementById("remember").checked = rem;
         document.getElementById("supportExt").disabled = !rem;
+        document.getElementById('downSubMenu').disabled = !xThunderPref.getValue("downInCxtMenu");
         var supstr = xThunderPref.getValue("supportClick");
         var supPros = supstr.split(",");
         for (var i=0; i<supPros.length-1; ++i) {

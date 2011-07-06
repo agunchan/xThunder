@@ -12,7 +12,6 @@
 <!ENTITY	pro.115         "115 (u.115.com/file)">
 <!ENTITY	pro.udown       "udown">
 <!ENTITY	remember        "Associated common file type">
-<!ENTITY	restart         "Need to restart Firefox to take effect!">
 <!ENTITY	lbl.udown       "UDown Link">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
@@ -23,10 +22,10 @@
 <!ENTITY	lbl.defaultAgent "Default">
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background">
-<!ENTITY	altNoMonitor    "Alt +Click = Download by Firefox">
 <!ENTITY	lbl.showMenu    "Show Menu">
 <!ENTITY	showMenuIcons   "Show menu icons">
-<!ENTITY	downInCxtMenu    "xThunder Link in context menu ">
+<!ENTITY	downInCxtMenu    "xThunder Link in context menu">
+<!ENTITY	downSubMenu      "xThunder Link submenu">
 <!ENTITY	downAllInCxtMenu "xThunder All in context menu">
-<!ENTITY	downInSaveFile   "xThunder in save as dialog ">
+<!ENTITY	downInSaveFile   "xThunder in save as dialog">
 <!ENTITY	showStatusIcon   "Show icon in status bar">

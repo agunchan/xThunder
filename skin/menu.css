@@ -1,4 +1,4 @@
-#xThunderDownload {
+#xThunderDownload, #xThunderDownloadLink {
     list-style-image: url("download.gif");
 }
 #xThunderDownloadAll {
@@ -13,7 +13,7 @@ toolbar[iconsize="small"] #xThunderToolbarBtn,
     list-style-image: url("icon16.png");
 }
 .caption-text{
-	font-weight:bold !important;
+    font-weight:bold !important;
 }
 .agentNonsup {
     color: red;

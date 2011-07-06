@@ -29,10 +29,11 @@ var xThunderMain = {
                 var remExt = xThunderPref.getValue("remember");
 
                 var link = ev.target;
-                if (!link.href && !xThunderDecode.downReg.test(link.name)) {
+                if (typeof link.href == "undefined" && !xThunderDecode.downReg.test(link.name)) {
                     link = link.parentNode;
-                    if (!link || !link.href)
+                    if (!link || typeof link.href == "undefined") {
                         return true;
+                    }
                 }
 
                 var url = link.href || link.name;
@@ -106,7 +107,9 @@ var xThunderMain = {
                          || protocals[i] == "qqdl" &&
                                 (url.indexOf("qqdl:") == 0 ||
                                 link.getAttribute("qhref"))
-                         || protocals[i] == "ed2k" && url.indexOf("ed2k:") == 0
+                         || protocals[i] == "ed2k" && 
+                                (url.indexOf("ed2k:") == 0 ||
+                                link.getAttribute("ed2k"))
                          || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
                          || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
                          || protocals[i] == "115" && url.indexOf("http://u.115.com/file/") == 0
@@ -139,31 +142,35 @@ var xThunderMain = {
         if (event.target != document.getElementById('contentAreaContextMenu')) 
             return;
         
-        var downloadItem = document.getElementById("xThunderDownload");
+        var downloadMenu = document.getElementById("xThunderDownload");
+        var downloadLinkItem = document.getElementById("xThunderDownloadLink");
         var downloadAllItem = document.getElementById("xThunderDownloadAll");
         var sepItem = document.getElementById("xThunderDownloadUp");
+        var downHidden = !xThunderPref.getValue("downInCxtMenu");
+        var downAllHidden = !xThunderPref.getValue("downAllInCxtMenu");
+        var downSubMenuShown = xThunderPref.getValue("downSubMenu");
 
-        if (!xThunderPref.getValue("downInCxtMenu")) {
-            //Hide downlad in context menu
-            downloadItem.setAttribute("hidden", true);
-        } else {
-            //Show download in context menu
+        if (!downHidden) {
+            //Show download link in context menu if needed
             if (gContextMenu.onLink) {
                 var link = gContextMenu.target;
-                downloadItem.setAttribute("hidden", -1 != gContextMenu.linkURL.indexOf("javascript:")
+                downHidden = (-1 != gContextMenu.linkURL.indexOf("javascript:")
                     && !(link.id == "udown" && (link = link.getAttribute("onclick")) && link.indexOf("AddDownTask") != -1));
             } else if (gContextMenu.onImage) {
-                downloadItem.setAttribute("hidden", false);
+                downHidden = false;
             } else {
                 var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
-                downloadItem.setAttribute("hidden", !xThunderDecode.downReg.test(selText));
+                downHidden = !xThunderDecode.downReg.test(selText);
             }
         }
 
-        downloadItem.className = (xThunderPref.getValue("showMenuIcons") ? "menu-iconic" : "");
-        downloadAllItem.className = (xThunderPref.getValue("showMenuIcons") ? "menuitem-iconic" : "");
-        downloadAllItem.setAttribute("hidden", !xThunderPref.getValue("downAllInCxtMenu"));
-        sepItem.setAttribute("hidden", downloadItem.getAttribute("hidden") == "true" && downloadAllItem.getAttribute("hidden") == "true");
+        var showMenuIcons = xThunderPref.getValue("showMenuIcons");
+        downloadMenu.className = showMenuIcons ? "menu-iconic" : "";
+        downloadLinkItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
+        downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
+        downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
+        downloadAllItem.setAttribute("hidden", downAllHidden);
+        sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
 
     OnThunderDownload : function(agentName, ctxMenu) {

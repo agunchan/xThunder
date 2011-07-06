@@ -8,6 +8,7 @@ pref("extensions.xthunder.altNoMonitor", true);
 pref("extensions.xthunder.downInCxtMenu", true);
 pref("extensions.xthunder.downAllInCxtMenu", true);
 pref("extensions.xthunder.downInSaveFile", true);
+pref("extensions.xthunder.downSubMenu", true);
 pref("extensions.xthunder.showMenuIcons", true);
 pref("extensions.xthunder.showStatusIcon", true);
 pref("extensions.xthunder.agentName", "Thunder");
