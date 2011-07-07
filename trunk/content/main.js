@@ -154,8 +154,8 @@ var xThunderMain = {
             //Show download link in context menu if needed
             if (gContextMenu.onLink) {
                 var link = gContextMenu.target;
-                downHidden = (-1 != gContextMenu.linkURL.indexOf("javascript:")
-                    && !(link.id == "udown" && (link = link.getAttribute("onclick")) && link.indexOf("AddDownTask") != -1));
+                downHidden = (/^(javascript|data):/i.test(gContextMenu.linkURL))
+                    && !(link.id == "udown" && (link = link.getAttribute("onclick")) && link.indexOf("AddDownTask") != -1);
             } else if (gContextMenu.onImage) {
                 downHidden = false;
             } else {
@@ -167,8 +167,9 @@ var xThunderMain = {
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
         downloadMenu.className = showMenuIcons ? "menu-iconic" : "";
         downloadLinkItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
-        downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
         downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
+        downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
+        downloadAllItem.setAttribute("key", xThunderPref.getValue("downAllHotKey") ? "xThunderAllKey" : "");
         downloadAllItem.setAttribute("hidden", downAllHidden);
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
