@@ -9,6 +9,7 @@ var xThunderOptions = {
         document.getElementById("remember").checked = rem;
         document.getElementById("supportExt").disabled = !rem;
         document.getElementById('downSubMenu').disabled = !xThunderPref.getValue("downInCxtMenu");
+        document.getElementById('downAllHotKey').disabled = !xThunderPref.getValue("downAllInCxtMenu");
         var supstr = xThunderPref.getValue("supportClick");
         var supPros = supstr.split(",");
         for (var i=0; i<supPros.length-1; ++i) {

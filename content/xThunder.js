@@ -1,6 +1,6 @@
 var xThunder = {
 	xthunderComponent: null,
-    DTA : null,
+    xthunerExePath : "chrome://xthunder/content/xThunder.exe",
     agentName : null,
     referrer : "",
     urls : [],
@@ -27,26 +27,26 @@ var xThunder = {
         }
 
         try {
-            var result;
-            if (this.agentName == "DTA") {
-                result = this.dtaDownload(this.totalTask, this.referrer, this.urls, this.descs);
-            } else {
-                if (this.xthunderComponent == null) {
-                    this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].createInstance()
-                                                    .QueryInterface(Components.interfaces.IXThunderComponent);
-                } 
-                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
-            }
-
-            //BUG: it causes failure when calling FlashGet3 addAll first time, so try it again
-            if (result < 0 && this.agentName == "FlashGet3") {
-                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
+            if (this.xthunderComponent == null) {
+                this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].getService().wrappedJSObject;
             }
             
-            if (result >= 0) {
-                return true;
+            var result;
+            if (this.agentName == "DTA") {
+                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
             } else {
-                alert('Call ' + this.agentName + ' error, please check if it was installed correctly!');
+                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.xthunerExePath, this.createJobFile());
+            }
+
+            switch(result) {
+                case this.xthunderComponent.EXE_NOT_FOUND:
+                    alert('xThunder.exe missing, please check if xThunder was properly installed!');
+                    break;
+                case this.xthunderComponent.DTA_NOT_FOUND:
+                    alert('DTA called error, please check if it was properly installed!');
+                    break;
+                default:
+                    return true;
             }
         } catch(ex) {
             alert(ex);
@@ -54,6 +54,40 @@ var xThunder = {
         
         return false;
 	},
+    createJobFile : function() {
+        var file = Components.classes["@mozilla.org/file/directory_service;1"]
+                .getService(Components.interfaces.nsIProperties)
+                .get("TmpD", Components.interfaces.nsIFile);
+        file.append("xThunder");
+        if (!file.exists()) {
+            file.create(1, 0700);
+        }
+        file.append("xThunder" + Date.now() + ".xtd");
+        file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0700);
+        
+        var jobLines = [];
+        for (var j = 0; j < this.totalTask; ++j) {
+            jobLines.push(this.urls[j], this.cookies[j], this.descs[j])
+        }
+        var job = jobLines.join("\n");
+
+        var data = xThunderPref.getValue("downDir") + "\n"
+                + this.referrer + "\n" + job;
+        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
+                       createInstance(Components.interfaces.nsIFileOutputStream);
+        foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
+        var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].
+                        createInstance(Components.interfaces.nsIConverterOutputStream);
+        converter.init(foStream, "UTF-8", 0, 0);
+        converter.writeString(data);
+        converter.close(); // this closes foStream
+
+        var args = [];
+        args.push("-a", this.agentName);
+        args.push("-n", this.totalTask);
+        args.push("-p", file.path);
+        return args;
+    },
 	getCookie : function(href){
 		var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
 		uri.spec = href;
@@ -74,7 +108,7 @@ var xThunder = {
             else
                 href = decodeURIComponent(href);
         }
-        catch(e) {}
+        catch(ex) {}
 
         return href;
     },
@@ -82,8 +116,7 @@ var xThunder = {
         if (url == null) {
             return; //for async method
         } else if (url == "" 
-            || url.indexOf("javascript:") == 0
-            || url.indexOf("data:image") == 0
+            || (/^(javascript|data):/i.test(url))
             || xThunderPref.isAgentNonsupURL(this.agentName, url)) {
             --this.totalTask;
             return;
@@ -97,41 +130,5 @@ var xThunder = {
             des = this.getFileName(url);
         }
         this.descs.push(des);
-	},
-
-    dtaDownload : function(totalTask, refer, urls, descs) {
-        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                            .getService(Components.interfaces.nsIWindowMediator);
-        var mainWindow = wm.getMostRecentWindow("navigator:browser");
-        if (!this.DTA) {
-            if (typeof DTA != "undefined") {
-                this.DTA = DTA;
-            } else if (mainWindow.DTA) {
-                this.DTA = mainWindow.DTA;
-            } 
-        }
-
-        if (!this.DTA) {
-            return -1;
-        }
-
-        if (totalTask == 1 && this.DTA.saveSingleLink) {
-            this.DTA.saveSingleLink(mainWindow, false, urls[0], refer, descs[0]);
-        } else if(totalTask > 1 && this.DTA.saveLinkArray) {
-            var anchors = [], images = [];
-            var wrapURL = function(url, cs) {return new this.DTA.URL(this.DTA.IOService.newURI(url, cs, null));}
-            for (var j=0; j<totalTask; ++j) {
-                anchors.push({
-                    url: wrapURL(urls[j], "UTF-8"),
-                    description: descs[j],
-                    ultDescription: "",
-                    referrer: refer,
-                    fileName: ""
-                })
-            }
-            this.DTA.saveLinkArray(mainWindow, anchors, images);
-        }
-
-        return 0;
-    }
+	}
 };
