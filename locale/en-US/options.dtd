@@ -23,10 +23,11 @@
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background">
 <!ENTITY	lbl.showMenu    "Show Menu">
+<!ENTITY	showStatusIcon   "Show icon in status bar">
 <!ENTITY	showMenuIcons   "Show context menu icons">
 <!ENTITY	downInCxtMenu    "xThunder Link in context menu">
-<!ENTITY	downSubMenu      "Show xThunder Link submenu">
+<!ENTITY	downSubMenu      "Show sub menu of xThunder Link">
 <!ENTITY	downAllInCxtMenu "xThunder All in context menu">
-<!ENTITY	downAllHotKey    "Show xThunder All hotkey">
-<!ENTITY	downInSaveFile   "xThunder in save as dialog">
-<!ENTITY	showStatusIcon   "Show icon in status bar">
+<!ENTITY	downAllHotKey    "Show hot key of xThunder All ">
+<!ENTITY	downInSaveFile   "xThunder radio in save as dialog">
+<!ENTITY	downListInSaveFile "Show drop down aside xThunder radio">

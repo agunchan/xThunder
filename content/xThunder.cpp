@@ -527,30 +527,35 @@ int parseJob(DownloadInfo & downInfo, char * jobFilePath) {
 
 int main(int argc, char* argv[])
 {
-	//-a agentName -n totalTask -p jobFilePath
-	if(argc < 7)
+	//-a agentName -p jobFilePath -n taskCount -s sleepSecond
+	if(argc < 5)
 	{
 		MessageBox(NULL, L"The arguments of are wrong.", MB_TITLE, MB_OK);
 		return ARG_ERROR;
 	}
 
 	char * agentName;
-	int count;
 	char * jobFilePath;
+	int count = 1;
+	int sleepSec = 10;
 
 	int i = 1;
 	while(i<argc) {
 		if (!strcmp("-a", argv[i]))
 		{
 			agentName = argv[++i];
-		} 
-		else if (!strcmp("-n", argv[i]))
-		{
-			count = atoi(argv[++i]);
 		}
 		else if (!strcmp("-p", argv[i]))
 		{
 			jobFilePath = argv[++i];
+		}
+		else if (!strcmp("-n", argv[i]))
+		{
+			count = atoi(argv[++i]);
+		}
+		else if (!strcmp("-s", argv[i]))
+		{
+			sleepSec = atoi(argv[++i]);
 		}
 
 		++i;
@@ -571,8 +576,9 @@ int main(int argc, char* argv[])
 	}
 	catch (_com_error& e)
 	{
-		strcat(agentName, " called error, please check if it was properly installed!");
-		MessageBox(NULL, bstr_t(agentName), MB_TITLE, MB_OK);
+		sprintf_s(g_buf, BUF_SIZE, "Call %s error, please check if it was properly installed!", agentName);
+		MultiByteToWideChar(CP_ACP,0,g_buf,-1,g_wbuf,BUF_SIZE);
+		MessageBox(NULL, g_wbuf, MB_TITLE, MB_OK);
 		retVal = COM_ERROR;
 	}
 	catch (...)
@@ -586,8 +592,8 @@ int main(int argc, char* argv[])
 		delete dmAgent;
 	}
 
-	//10s delay in case of downloader's first start
-	//This process should not be blocked
-	Sleep(10000);	
+	//Sleep for a while in case of downloader's first start
+	//This process should not be blocked by external call
+	Sleep(1000 * sleepSec);	
 	return retVal;
 }

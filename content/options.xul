@@ -27,8 +27,8 @@
             <preference id="pref_downSubMenu" name="extensions.xthunder.downSubMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
             <preference id="pref_downAllHotKey" name="extensions.xthunder.downAllHotKey" type="bool"/>
-            <preference id="pref_downOptsInCxtMenu" name="extensions.xthunder.downOptsInCxtMenu" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
+            <preference id="pref_downListInSaveFile" name="extensions.xthunder.downListInSaveFile" type="bool"/>
             <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
             <preference id="pref_showStatusIcon" name="extensions.xthunder.showStatusIcon" type="bool"/>
         </preferences>
@@ -96,11 +96,12 @@
                         <caption label="&lbl.showMenu;"/>
                         <checkbox id="showStatusIcon" label="&showStatusIcon;" preference="pref_showStatusIcon"/>
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
-                        <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu" oncommand="document.getElementById('downSubMenu').disabled = !this.checked;"/>
                         <checkbox id="downSubMenu" label="&downSubMenu;" style="margin-left:22px;"  preference="pref_downSubMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu" oncommand="document.getElementById('downAllHotKey').disabled = !this.checked;"/>
                         <checkbox id="downAllHotKey" label="&downAllHotKey;" style="margin-left:22px;" preference="pref_downAllHotKey"/>
+                        <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile" oncommand="document.getElementById('downListInSaveFile').disabled = !this.checked;"/>
+                        <checkbox id="downListInSaveFile" label="&downListInSaveFile;" style="margin-left:22px;" preference="pref_downListInSaveFile"/>
                      </groupbox>
                 </tabpanel>
 
