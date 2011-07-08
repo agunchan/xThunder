@@ -165,11 +165,14 @@ var xThunderMain = {
         }
 
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
+        var showAllHotKey = xThunderPref.getValue("downAllHotKey");
         downloadMenu.className = showMenuIcons ? "menu-iconic" : "";
         downloadLinkItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
         downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
         downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
-        downloadAllItem.setAttribute("key", xThunderPref.getValue("downAllHotKey") ? "xThunderAllKey" : "");
+        //Fix Bug 630830 before Firefox5 - "key" attribute changes to menuitems are not handled
+        downloadAllItem.setAttribute("acceltext", showAllHotKey ? "Alt+F1" : "");
+        downloadAllItem.setAttribute("key", showAllHotKey ? "xThunderAllKey" : "");
         downloadAllItem.setAttribute("hidden", downAllHidden);
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },

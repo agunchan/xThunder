@@ -23,7 +23,7 @@
             <menupopup id="xThunderDownloadPopup" onpopupshowing="xThunderMain.OnThunderDownloadPopup(this);"/>
         </menu>
         <menuitem id="xThunderDownloadLink" label="&download;" accesskey="x" oncommand="xThunderMain.OnThunderDownload();"/>
-        <menuitem id="xThunderDownloadAll" label="&downloadAll;" key="xThunderAllKey" oncommand="xThunderMain.OnThunderDownloadAll(event);"/>
+        <menuitem id="xThunderDownloadAll" label="&downloadAll;" oncommand="xThunderMain.OnThunderDownloadAll(event);"/>
     </popup>
 
     <popupset id="mainPopupSet">

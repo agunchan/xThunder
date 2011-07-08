@@ -10,6 +10,7 @@ var xThunderOptions = {
         document.getElementById("supportExt").disabled = !rem;
         document.getElementById('downSubMenu').disabled = !xThunderPref.getValue("downInCxtMenu");
         document.getElementById('downAllHotKey').disabled = !xThunderPref.getValue("downAllInCxtMenu");
+        document.getElementById('downListInSaveFile').disabled = !xThunderPref.getValue("downInSaveFile");
         var supstr = xThunderPref.getValue("supportClick");
         var supPros = supstr.split(",");
         for (var i=0; i<supPros.length-1; ++i) {

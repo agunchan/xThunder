@@ -84,8 +84,9 @@ var xThunder = {
 
         var args = [];
         args.push("-a", this.agentName);
-        args.push("-n", this.totalTask);
         args.push("-p", file.path);
+        args.push("-n", this.totalTask);
+        args.push("-s", xThunderPref.getValue("sleepSecond"));
         return args;
     },
 	getCookie : function(href){
