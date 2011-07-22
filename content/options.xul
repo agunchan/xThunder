@@ -19,6 +19,7 @@
         <preferences>
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
             <preference id="pref_supportExt" name="extensions.xthunder.supportExt" type="string"/>
+            <preference id="pref_filterExt" name="extensions.xthunder.filterExt" type="bool"/>
             <preference id="pref_includeImages" name="extensions.xthunder.includeImages" type="bool"/>
             <preference id="pref_agentName" name="extensions.xthunder.agentName" type="string"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
@@ -67,8 +68,14 @@
                                 </row>
                             </rows>
                         </grid>
-                        <checkbox id="remember" label="&remember;" oncommand="document.getElementById('supportExt').disabled = !this.checked;"/>
+                        <checkbox id="remember" label="&remember;"/>
                         <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="40"/>
+                    </groupbox>
+
+                    <groupbox>
+                        <caption label="&lbl.downloadAll;"/>
+                        <checkbox id="filterext" label="&filterext;" preference="pref_filterExt"/>
+                        <checkbox id="downincludeimages" label="&includeImages;" preference="pref_includeImages"/>
                     </groupbox>
 
                     <groupbox>
@@ -78,11 +85,6 @@
                             <radio id="cnc" label="&udown.cnc;" value="1"/>
                             <radio id="bak" label="&udown.bak;" value="2"/>
                         </radiogroup>
-                     </groupbox>
-
-                     <groupbox>
-                        <caption label="&lbl.downloadAll;"/>
-                        <checkbox id="downincludeimages" label="&includeImages;" preference="pref_includeImages"/>
                      </groupbox>
                 </tabpanel>
 

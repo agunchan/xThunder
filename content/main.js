@@ -40,15 +40,14 @@ var xThunderMain = {
                 var download = false;
 
                 //Ctrl + Click
-                if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor"))
-                {
+                if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor")) {
                     //remember value is 0:never down, 1: auto down, -1: no down this time
                     if (remExt == 1) {
                         xThunderPref.setValue('remember', -1);
                     }
 
                     //udown link is got asynchronously, so decodedUrl may be null
-                    if(!xThunderDecode.udownReg.test(url.replace(/ /g, ''))) {
+                    if(!xThunderDecode.udownReg.test(url)) {
                         var decodedUrl = xThunderDecode.getDecodedNode(link);
                         if (decodedUrl && decodedUrl != url) {
                             //Open decoded link by Firefox
@@ -68,58 +67,16 @@ var xThunderMain = {
                 }
 
                 //click support for associated file
-                var supExt = xThunderPref.getValue("supportExt");
-                if (remExt && supExt != "") {
-                    var subUrls = url.split("?");
-                    var matches = subUrls[0].match(/^(?:ftp|https?):\/\/.*(\.\w+)/i);
-                    if (matches) {
-                        if (supExt.indexOf(matches[1] + ";") != -1) {
-                            url = xThunderDecode.getDecodedUrl(url);
-                            download = true;
-                        } else if (matches[1].indexOf("htm") == -1 && subUrls.length > 1){
-                            var subParams = subUrls[1].split("&");
-                            for (var j=0; j<subParams.length; ++j) {
-                                matches = subParams[j].match(/.*(\.\w+)/i);
-                                if (matches && supExt.indexOf(matches[1] + ";") != -1) {
-                                    url = xThunderDecode.getDecodedUrl(url);
-                                    download = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                if (remExt) {
+                    download = xThunderPref.isExtSupURL(url);
                 }
 
                 //click support for protocals
                 var supstr = xThunderPref.getValue("supportClick");
                 if (!download && supstr != "") {
-                    var protocals = supstr.split(",");
-                    var contextmenu;
-                    for (var i=0; i<protocals.length-1; ++i) {
-                        if (protocals[i] == "thunder" &&
-                                (url.indexOf("thunder:") == 0 ||
-                                link.getAttribute("thunderhref") ||
-                                (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("ThunderNetwork_SetHref") != -1)
-                         || protocals[i] == "flashget" &&
-                                (url.indexOf("flashget:") == 0 ||
-                                link.getAttribute("fg") ||
-                                (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("Flashget_SetHref") != -1)
-                         || protocals[i] == "qqdl" &&
-                                (url.indexOf("qqdl:") == 0 ||
-                                link.getAttribute("qhref"))
-                         || protocals[i] == "ed2k" && 
-                                (url.indexOf("ed2k:") == 0 ||
-                                link.getAttribute("ed2k"))
-                         || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
-                         || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
-                         || protocals[i] == "115" && url.indexOf("http://u.115.com/file/") == 0
-                         || protocals[i] == "udown" &&
-                                link.id == "udown" && (contextmenu = link.getAttribute("onclick")) && contextmenu.indexOf("AddDownTask") != -1
-                        ) {
-                            url = xThunderDecode.getDecodedNode(link);
-                            download = true;
-                            break;
-                        }
+                    download = xThunderDecode.isProSupNode(link, url, supstr.split(","));
+                    if(download) {
+                        url = xThunderDecode.getDecodedNode(link);
                     }
                 }
 
@@ -221,15 +178,18 @@ var xThunderMain = {
             return false;
         }
 
-        xThunder.init(htmlDocument.URL, linkCount+imageCount);
+        var totalTask = linkCount+imageCount;
+        var filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
+                            ? xThunderPref.getValue("supportExt") : "";
+        xThunder.init(htmlDocument.URL, totalTask);
 
         for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
-            if (xThunderDecode.udownReg.test(links[i].href.replace(/ /g, ''))) {
-                //udown link is got asynchronously, so do not use wrong textContent
-                xThunder.addTask(url);
+            if (!xThunderDecode.udownReg.test(links[i].href)) {
+                xThunder.addTask(url, links[i].textContent, filerExtStr);
             } else {
-                xThunder.addTask(url, links[i].textContent);
+                //udown link is got asynchronously, so do not use wrong textContent
+                xThunder.addTask(url, "", filerExtStr);
             }
         }
 
@@ -239,6 +199,7 @@ var xThunderMain = {
         }
 
         xThunder.callAgent();
+        return true;
     },
 
     OnThunderDownloadPopup : function(target) {
@@ -262,6 +223,7 @@ var xThunderMain = {
     OnThunderOptsPopup : function(target) {
         xThunderPref.appendAgentList(target, 'xThunderOptsAgent', 'xThunderMain.OnChangeAgent', true);
         document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
+        document.getElementById("xThunderOptsFilterExt").setAttribute("checked", xThunderPref.getValue("filterExt"));
         document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));
     },
 
@@ -271,6 +233,10 @@ var xThunderMain = {
 
     OnChangeUdown : function(udownIndex) {
         xThunderPref.setValue("udown", udownIndex);
+    },
+
+    OnToogleFilterExt : function() {
+        xThunderPref.setValue("filterExt", !xThunderPref.getValue("filterExt"));
     },
 
     OnToogleIncludeImages : function() {

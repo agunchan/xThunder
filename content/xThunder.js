@@ -43,7 +43,7 @@ var xThunder = {
                     alert('xThunder.exe missing, please check if xThunder was properly installed!');
                     break;
                 case this.xthunderComponent.DTA_NOT_FOUND:
-                    alert('DTA called error, please check if it was properly installed!');
+                    alert('DTA called error, please check if DTA was properly installed!');
                     break;
                 default:
                     return true;
@@ -73,11 +73,11 @@ var xThunder = {
 
         var data = xThunderPref.getValue("downDir") + "\n"
                 + this.referrer + "\n" + job;
-        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].
-                       createInstance(Components.interfaces.nsIFileOutputStream);
+        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                       .createInstance(Components.interfaces.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
-        var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].
-                        createInstance(Components.interfaces.nsIConverterOutputStream);
+        var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+                        .createInstance(Components.interfaces.nsIConverterOutputStream);
         converter.init(foStream, "UTF-8", 0, 0);
         converter.writeString(data);
         converter.close(); // this closes foStream
@@ -90,12 +90,19 @@ var xThunder = {
         return args;
     },
 	getCookie : function(href){
-		var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
-		uri.spec = href;
-		var strCookie = Components.classes["@mozilla.org/cookieService;1"]
-				.getService(Components.interfaces.nsICookieService)
-				.getCookieString(uri, null);
-		if (strCookie == null) {
+        var strCookie;
+
+        try {
+            if (/^https?:\/\//i.test(href)) {
+                var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
+                uri.spec = href;
+                strCookie = Components.classes["@mozilla.org/cookieService;1"]
+                        .getService(Components.interfaces.nsICookieService)
+                        .getCookieString(uri, null);
+            }
+        } catch(ex) {}
+		
+		if (!strCookie) {
 			strCookie = "null";
 		}
 		return strCookie;
@@ -113,15 +120,23 @@ var xThunder = {
 
         return href;
     },
-	addTask : function(url, des){
+	addTask : function(url, des, filerExtStr){
         if (url == null) {
-            return; //for async method
-        } else if (url == "" 
-            || (/^(javascript|data):/i.test(url))
-            || xThunderPref.isAgentNonsupURL(this.agentName, url)) {
+            //115u async method
+            return; 
+        } else if (url == "" || (/^(javascript|data):/i.test(url))) {
+            //invalid url
             --this.totalTask;
             return;
-        } 
+        } else {
+            //nonsupport or filtered url
+            var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
+            if (xThunderPref.inArray(this.agentName, agentsNonsup)
+                || filerExtStr && agentsNonsup.length==0 && !xThunderPref.isExtSupURL(url, filerExtStr)) {
+                --this.totalTask;
+                return;
+            }
+        }
 
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));

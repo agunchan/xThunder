@@ -1,7 +1,8 @@
-<!ENTITY	download		"xThunder链接">
+<!ENTITY	download		"xThunder下载">
 <!ENTITY	downloadAll     "xThunder全部链接">
 <!ENTITY	optionsPrompt   "左键下载全部链接，右键显示菜单">
-<!ENTITY	includeImages   "包含页面中图片">
+<!ENTITY	includeImages   "包含当前页面中图片">
+<!ENTITY	filterExt   	"预先过滤文件扩展名">
 <!ENTITY	moreOptions     "更多选项...">
 <!ENTITY	udown.tel       "电信">
 <!ENTITY	udown.cnc       "联通">

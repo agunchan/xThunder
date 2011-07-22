@@ -12,6 +12,7 @@
 <!ENTITY	pro.115         "115 (u.115.com/file)">
 <!ENTITY	pro.udown       "优蛋">
 <!ENTITY	remember        "关联普通文件类型">
+<!ENTITY	filterext       "预先以上述扩展名过滤文件">
 <!ENTITY	lbl.udown       "115默认下载">
 <!ENTITY	udown.tel       "电信">
 <!ENTITY	udown.cnc       "联通">
@@ -25,8 +26,8 @@
 <!ENTITY	lbl.showMenu    "显示菜单">
 <!ENTITY	showStatusIcon   "显示状态栏图标">
 <!ENTITY	showMenuIcons   "显示右键菜单图标">
-<!ENTITY	downInCxtMenu    "xThunder链接在右键菜单">
-<!ENTITY	downSubMenu 	 "显示xThunder链接的二级菜单">
+<!ENTITY	downInCxtMenu    "xThunder下载在右键菜单">
+<!ENTITY	downSubMenu 	 "显示xThunder下载的二级菜单">
 <!ENTITY	downAllInCxtMenu "xThunder全部链接在右键菜单">
 <!ENTITY	downAllHotKey 	 "显示xThunder全部链接的热键">
 <!ENTITY	downInSaveFile   "xThunder项在保存方式对话框中">

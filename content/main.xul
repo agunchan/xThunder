@@ -30,6 +30,7 @@
         <!-- Icon's context menu -->
         <menupopup id="xThunderOptsPopup" onpopupshowing="xThunderMain.OnThunderOptsPopup(this);">
             <menuitem id="xThunderOptsMore" label="&moreOptions;" accesskey="O" oncommand="xThunderMain.OnOpenOptionsDlg();" />
+            <menuitem id="xThunderOptsFilterExt" label="&filterExt;" type="checkbox" oncommand="xThunderMain.OnToogleFilterExt();" />
             <menuitem id="xThunderOptsIncludeImages" label="&includeImages;" type="checkbox" oncommand="xThunderMain.OnToogleIncludeImages();" />
             <menuseparator id="xThunderOptsSep" />
             <menuitem id="xThunderOptsUdown0" label="&udown.tel;" name="udown" type="radio" oncommand="xThunderMain.OnChangeUdown(0);"/>
