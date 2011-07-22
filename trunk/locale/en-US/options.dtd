@@ -12,6 +12,7 @@
 <!ENTITY	pro.115         "115 (u.115.com/file)">
 <!ENTITY	pro.udown       "udown">
 <!ENTITY	remember        "Associated common file type">
+<!ENTITY	filterext       "Filter files by above extension first">
 <!ENTITY	lbl.udown       "UDown Link">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">

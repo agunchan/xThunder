@@ -7,7 +7,6 @@ var xThunderOptions = {
         //Get supported protocals and file extensions
         var rem = xThunderPref.getValue("remember");
         document.getElementById("remember").checked = rem;
-        document.getElementById("supportExt").disabled = !rem;
         document.getElementById('downSubMenu').disabled = !xThunderPref.getValue("downInCxtMenu");
         document.getElementById('downAllHotKey').disabled = !xThunderPref.getValue("downAllInCxtMenu");
         document.getElementById('downListInSaveFile').disabled = !xThunderPref.getValue("downInSaveFile");

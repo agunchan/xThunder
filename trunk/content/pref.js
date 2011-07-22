@@ -55,10 +55,6 @@ var xThunderPref = {
         return false;
     },
 
-    isAgentNonsupURL : function(agentName, url) {
-        return this.inArray(agentName, this.getAgentsNonsupURL(url));
-    },
-
     getAgentsNonsupURL : function(trimmedUrl) {
         if(!trimmedUrl) {
             return this.agents;
@@ -70,6 +66,34 @@ var xThunderPref = {
             }
         }
         return [];
+    },
+
+    isExtSupURL : function(trimmedUrl, supExt) {
+        if (supExt == "") {
+            return false;
+        } else if(!supExt) {
+            supExt = this.getValue("supportExt");
+        }
+        var download = false;
+        var subUrls = trimmedUrl.split("?");
+        var matches = (subUrls[0].split("#"))[0].match(/^(?:ftp|https?):\/\/.*(\.\w+)/i);
+        if (matches) {
+            if (supExt.indexOf(matches[1] + ";") != -1) {
+                download = true;
+            } else if (subUrls.length > 1 && /\.(jsp|php)/i.test(matches[1])){
+                //the parameter of jsp|php url may contain supporting ext
+                var subParams = subUrls[1].split("&");
+                for (var j=0; j<subParams.length; ++j) {
+                    matches = subParams[j].match(/(\.\w+)/i);
+                    if (matches && supExt.indexOf(matches[1] + ";") != -1) {
+                        download = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return download;
     },
 
     getBranch : function()

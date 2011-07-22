@@ -13,6 +13,36 @@ var xThunderDecode = {
         return url;
     },
 
+    // Whether the link with special protocal can be decoded
+    isProSupNode : function(link, url, protocals) {
+        var contextmenu;
+        for (var i=0; i<protocals.length; ++i) {
+            if (protocals[i] == "thunder" &&
+                    (url.indexOf("thunder:") == 0 ||
+                    link.getAttribute("thunderhref") ||
+                    (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("ThunderNetwork_SetHref") != -1)
+                || protocals[i] == "flashget" &&
+                    (url.indexOf("flashget:") == 0 ||
+                    link.getAttribute("fg") ||
+                    (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("Flashget_SetHref") != -1)
+                || protocals[i] == "qqdl" &&
+                    (url.indexOf("qqdl:") == 0 ||
+                    link.getAttribute("qhref"))
+                || protocals[i] == "ed2k" &&
+                    (url.indexOf("ed2k:") == 0 ||
+                    link.getAttribute("ed2k"))
+                || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
+                || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
+                || protocals[i] == "115" && this.udownReg.test(url)
+                || protocals[i] == "udown" &&
+                    link.id == "udown" && (contextmenu = link.getAttribute("onclick")) && contextmenu.indexOf("AddDownTask") != -1
+                )
+                return true;
+        }
+
+        return false;
+    },
+
     getDecodedNode : function(link) {
         var url;
         var htmlDocument = link.ownerDocument;
@@ -25,11 +55,16 @@ var xThunderDecode = {
                 url = matches.href;
             }
         } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
-            if (link.previousSibling && (url = link.previousSibling.value)) {
-                if (matches = url.match(/xzurl=(.*)&/)) {
-                    url = matches[1];
-                } else if (matches = url.match(/cid=(.*)&/)) {
-                    url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
+            var params;
+            if (link.previousSibling && (params = link.previousSibling.value)) {
+                params = params.split("&");
+                for (var i=0; i<params.length; ++i) {
+                    if (matches = params[i].match(/xzurl=(.*)/)) {
+                        url = matches[1];
+                        break;
+                    } else if (matches = params[i].match(/cid=(.*)/)) {
+                        url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
+                    }
                 }
             }
         } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
@@ -88,7 +123,7 @@ var xThunderDecode = {
         } catch (ex) {
             //no operation
         }
-        
+
         return url;
     },
 

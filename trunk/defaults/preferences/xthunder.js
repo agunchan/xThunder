@@ -1,7 +1,8 @@
 pref("extensions.xthunder.remember", 0);
 pref("extensions.xthunder.udown", 2);
 pref("extensions.xthunder.supportClick", "");
-pref("extensions.xthunder.supportExt", ".asf;.avi;.exe;.iso;.mp3;.mpeg;.mpg;.mpga;.ra;.rar;.rm;.rmvb;.tar;.wma;.wmp;.wmv;.mov;.zip;.3gp;.chm;.mdf;.torrent;.jar;.msi;");
+pref("extensions.xthunder.supportExt", ".exe;.msi;.torrent;.rar;.tar;.zip;.iso;.jar;.mdf;.mp3;.asf;.avi;.mpeg;.mpg;.mpga;.ra;.rm;.rmvb;.mp4;.mkv;.3gp;.wma;.wmp;.wmv;.mov;.chm;");
+pref("extensions.xthunder.filterExt", false);
 pref("extensions.xthunder.includeImages", true);
 pref("extensions.xthunder.ctrlNoMonitor", true);
 pref("extensions.xthunder.altNoMonitor", true);

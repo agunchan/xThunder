@@ -2,6 +2,7 @@
 <!ENTITY	downloadAll     "xThunder All">
 <!ENTITY	optionsPrompt   "Click to download all, Right-click to display menu">
 <!ENTITY	includeImages   "Include images in page">
+<!ENTITY	filterExt   	"Filter files by extension">
 <!ENTITY	moreOptions     "More Options...">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
