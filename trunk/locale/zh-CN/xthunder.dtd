@@ -1,4 +1,5 @@
 <!ENTITY	download		"xThunder下载">
+<!ENTITY	downloadOffLine "xThunder离线下载">
 <!ENTITY	downloadAll     "xThunder全部链接">
 <!ENTITY	optionsPrompt   "左键下载全部链接，右键显示菜单">
 <!ENTITY	includeImages   "包含当前页面中图片">

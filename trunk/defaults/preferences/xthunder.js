@@ -6,6 +6,7 @@ pref("extensions.xthunder.filterExt", false);
 pref("extensions.xthunder.includeImages", true);
 pref("extensions.xthunder.ctrlNoMonitor", true);
 pref("extensions.xthunder.altNoMonitor", true);
+pref("extensions.xthunder.downOffLineInCxtMenu", true);
 pref("extensions.xthunder.downInCxtMenu", true);
 pref("extensions.xthunder.downSubMenu", true);
 pref("extensions.xthunder.downAllInCxtMenu", true);

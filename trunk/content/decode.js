@@ -27,7 +27,7 @@ var xThunderDecode = {
                     (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("Flashget_SetHref") != -1)
                 || protocals[i] == "qqdl" &&
                     (url.indexOf("qqdl:") == 0 ||
-                    link.getAttribute("qhref"))
+                    link.getAttribute("qhref") != null)
                 || protocals[i] == "ed2k" &&
                     (url.indexOf("ed2k:") == 0 ||
                     link.getAttribute("ed2k"))
@@ -55,8 +55,9 @@ var xThunderDecode = {
                 url = matches.href;
             }
         } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
+            var sibling = link.previousSibling;
             var params;
-            if (link.previousSibling && (params = link.previousSibling.value)) {
+            if (sibling && sibling.name == "checkbox" && (params = sibling.value)) {
                 params = params.split("&");
                 for (var i=0; i<params.length; ++i) {
                     if (matches = params[i].match(/xzurl=(.*)/)) {
@@ -65,6 +66,21 @@ var xThunderDecode = {
                     } else if (matches = params[i].match(/cid=(.*)/)) {
                         url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
                     }
+                }
+            }
+        } else if (/^http:\/\/xunbo\.cc\/Html\/GP\d+\.html/i.test(referrer)) {
+            var sib = link.previousSibling;
+            var param;
+            if (sib && sib.name == "xcheckbox" && (param = sib.value)) {
+                if (matches = param.match(/cid=(.*)&mc=(.*)/)) {
+                    url = "http://bt.xunbo.cc/" + matches[1] + "/" + matches[2];
+                }
+            }
+        } else if (/^http:\/\/lixian\.qq\.com\/main\.html/i.test(referrer)){
+            if (matches = link.id.match(/task_dk_lc_(\d+)/)) {
+                var taskId = matches[1];
+                if (matches = htmlDocument.defaultView.wrappedJSObject.g_task_op) {
+                    url = matches.last_task_info[taskId].file_url;
                 }
             }
         } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {

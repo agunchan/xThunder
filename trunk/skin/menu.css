@@ -1,6 +1,9 @@
 #xThunderDownload, #xThunderDownloadLink {
     list-style-image: url("download.gif");
 }
+#xThunderDownloadOffLine {
+    list-style-image: url("downloadoffline.gif");
+}
 #xThunderDownloadAll {
     list-style-image: url("downloadall.gif");
 }

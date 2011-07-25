@@ -49,13 +49,16 @@ window.addEventListener('load', function() {
     function download() {
         var de = document.documentElement;
         var url = dialog.mLauncher.source.spec;
+        var openerDocument;
         var referrer;
         try {
-            referrer = dialog.mContext.QueryInterface(Components.interfaces.nsIWebNavigation).currentURI.spec;
+            openerDocument = dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                                            .getInterface(Components.interfaces.nsIDOMWindow).document;
+        } catch(ex) {
+            openerDocument = top.opener && top.opener.content && top.opener.content.document || null;
         }
-        catch(ex) {
-            referrer = url;
-        }
+
+        referrer = openerDocument && openerDocument.URL || url;
 
         xThunder.init(referrer, 1, $('xThunderAgentList').value);
         xThunder.addTask(url);

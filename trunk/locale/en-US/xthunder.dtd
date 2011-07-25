@@ -1,4 +1,5 @@
 <!ENTITY	download		"xThunder Link">
+<!ENTITY	downloadOffLine "xThunder OffLine">
 <!ENTITY	downloadAll     "xThunder All">
 <!ENTITY	optionsPrompt   "Click to download all, Right-click to display menu">
 <!ENTITY	includeImages   "Include images in page">

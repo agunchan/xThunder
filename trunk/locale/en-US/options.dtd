@@ -26,6 +26,7 @@
 <!ENTITY	lbl.showMenu    "Show Menu">
 <!ENTITY	showStatusIcon   "Show icon in status bar">
 <!ENTITY	showMenuIcons   "Show context menu icons">
+<!ENTITY	downOffLineInCxtMenu "xThunder OffLine in context menu">
 <!ENTITY	downInCxtMenu    "xThunder Link in context menu">
 <!ENTITY	downSubMenu      "Show sub menu of xThunder Link">
 <!ENTITY	downAllInCxtMenu "xThunder All in context menu">
