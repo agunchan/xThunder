@@ -1,20 +1,22 @@
 var xThunder = {
 	xthunderComponent: null,
-    xthunerExePath : "chrome://xthunder/content/xThunder.exe",
+    xthunderExePath : "chrome://xthunder/content/xThunder.exe",
     agentName : null,
     referrer : "",
     urls : [],
     cookies : [],
     descs : [],
     totalTask : 0,
+    offLine : false,
 
-    init : function(referrer, totalTask, agent){
+    init : function(referrer, totalTask, agentName, offLine){
         this.referrer = referrer;
         this.urls = [];
         this.cookies = [];
         this.descs = [];
         this.totalTask = totalTask;
-        this.agentName = agent || xThunderPref.getValue("agentName");
+        this.agentName = agentName || xThunderPref.getValue("agentName");
+        this.offLine = offLine || false;
     },
 	callThunder : function(url, referrer){
         this.init(referrer, 1);
@@ -33,9 +35,25 @@ var xThunder = {
             
             var result;
             if (this.agentName == "DTA") {
-                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
+                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
+            } else if (this.offLine && this.agentName == "Thunder" && this.totalTask == 1 && gBrowser) {
+                //Thunder offline
+                var thunderOffUrl = "http://lixian.vip.xunlei.com/";
+                gBrowser.selectedTab = gBrowser.addTab(this.urls[0].indexOf(thunderOffUrl) != -1 
+                                                        ? this.urls[0]
+                                                        : thunderOffUrl + "lixian_login.html?furl=" + this.urls[0]);
+                return true;
             } else {
-                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.xthunerExePath, this.createJobFile());
+                var args = this.createJobFile();
+
+                var isOffUrl = this.referrer.indexOf("http://lixian.qq.com/main.html") != -1 && this.urls[0].indexOf("http://xfwb.store.qq.com") == -1;
+                if ((this.offLine || isOffUrl) && this.agentName == "QQDownload" && this.totalTask == 1) {
+                    //QQ offline
+                    var cid = isOffUrl ? 10300 : 10600;
+                    args.push("-e", cid);
+                }
+
+                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.xthunderExePath, args);
             }
 
             switch(result) {
@@ -103,7 +121,7 @@ var xThunder = {
         } catch(ex) {}
 		
 		if (!strCookie) {
-			strCookie = "null";
+			strCookie = "";
 		}
 		return strCookie;
 	},

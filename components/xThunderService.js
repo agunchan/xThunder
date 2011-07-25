@@ -13,7 +13,7 @@ xThunderComponent.prototype = {
     EXE_NOT_FOUND:      -3,
 
     //exeFile : string or nsILocalFile
-    CallAgent: function(agentName, totalTask, referrer, urls, cookies, descs, exePath, cmdArgs) {
+    callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, exePath, cmdArgs) {
         var result;
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs);
@@ -60,8 +60,19 @@ xThunderComponent.prototype = {
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                             .getService(Components.interfaces.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");
-        if (!this.DTA && mainWindow.DTA) {
-            this.DTA = mainWindow.DTA;
+        if (!this.DTA) {
+            if (mainWindow.DTA) {
+                //dta 2.0.x
+                this.DTA = mainWindow.DTA;
+            } else {
+                //dta 3.0+
+                try {
+                    this.DTA = {};
+                    Components.utils.import("resource://dta/api.jsm", this.DTA);
+                } catch (ex) {
+                    this.DTA = null;
+                }
+            }
         }
 
         if (!this.DTA) {

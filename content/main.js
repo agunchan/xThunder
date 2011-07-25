@@ -101,32 +101,34 @@ var xThunderMain = {
         
         var downloadMenu = document.getElementById("xThunderDownload");
         var downloadLinkItem = document.getElementById("xThunderDownloadLink");
+        var downloadOffLineItem = document.getElementById("xThunderDownloadOffLine");
         var downloadAllItem = document.getElementById("xThunderDownloadAll");
         var sepItem = document.getElementById("xThunderDownloadUp");
         var downHidden = !xThunderPref.getValue("downInCxtMenu");
+        var downOffLineHidden = !xThunderPref.getValue("downOffLineInCxtMenu");
         var downAllHidden = !xThunderPref.getValue("downAllInCxtMenu");
         var downSubMenuShown = xThunderPref.getValue("downSubMenu");
+        var defAgentName = xThunderPref.getValue("agentName");
 
         if (!downHidden) {
             //Show download link in context menu if needed
-            if (gContextMenu.onLink) {
-                var link = gContextMenu.target;
-                downHidden = (/^(javascript|data):/i.test(gContextMenu.linkURL))
-                    && !(link.id == "udown" && (link = link.getAttribute("onclick")) && link.indexOf("AddDownTask") != -1);
-            } else if (gContextMenu.onImage) {
+            if (gContextMenu.onLink || gContextMenu.onImage) {
                 downHidden = false;
             } else {
                 var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
                 downHidden = !xThunderDecode.downReg.test(selText);
             }
         }
+        downOffLineHidden = downHidden || downOffLineHidden || (defAgentName != "Thunder" && defAgentName != "QQDownload");
+        downAllHidden = downAllHidden || defAgentName == "ToolbarThunder";
 
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
         var showAllHotKey = xThunderPref.getValue("downAllHotKey");
         downloadMenu.className = showMenuIcons ? "menu-iconic" : "";
-        downloadLinkItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
+        downloadLinkItem.className = downloadOffLineItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
         downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
         downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
+        downloadOffLineItem.setAttribute("hidden", downHidden || downOffLineHidden);
         //Fix Bug 630830 before Firefox5 - "key" attribute changes to menuitems are not handled
         downloadAllItem.setAttribute("acceltext", showAllHotKey ? "Alt+F1" : "");
         downloadAllItem.setAttribute("key", showAllHotKey ? "xThunderAllKey" : "");
@@ -134,10 +136,10 @@ var xThunderMain = {
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
 
-    OnThunderDownload : function(agentName, ctxMenu) {
+    OnThunderDownload : function(agentName, ctxMenu, offLine) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
-        xThunder.init(htmlDocument.URL, 1, agentName);
+        xThunder.init(htmlDocument.URL, 1, agentName, offLine);
 
         if (gContextMenu.onLink) {
             // Get current link URL
@@ -156,6 +158,10 @@ var xThunderMain = {
         if (ctxMenu)
             ctxMenu.hidePopup();
         xThunder.callAgent();
+    },
+
+    OnThunderDownloadOffLine : function() {
+        this.OnThunderDownload(null, null, true);
     },
 
     OnThunderDownloadAll : function(event) {
