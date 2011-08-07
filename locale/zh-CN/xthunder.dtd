@@ -8,3 +8,4 @@
 <!ENTITY	udown.tel       "电信">
 <!ENTITY	udown.cnc       "联通">
 <!ENTITY	udown.bak       "备份">
+<!ENTITY	defaultAgent    "默认下载器">

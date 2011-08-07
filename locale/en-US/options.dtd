@@ -1,4 +1,5 @@
 <!ENTITY	options         "xThunder Options">
+<!ENTITY	restoreDefault	"Restore Default">
 <!ENTITY	tab.general		"General">
 <!ENTITY	tab.interface   "Interface">
 <!ENTITY	tab.downloader  "Downloader">
@@ -19,8 +20,6 @@
 <!ENTITY	udown.bak       "BAK">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
-<!ENTITY	lbl.showAgent   "Show">
-<!ENTITY	lbl.defaultAgent "Default">
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background">
 <!ENTITY	lbl.showMenu    "Show Menu">
@@ -33,3 +32,10 @@
 <!ENTITY	downAllHotKey    "Show hot key of xThunder All ">
 <!ENTITY	downInSaveFile   "xThunder radio in save as dialog">
 <!ENTITY	downListInSaveFile "Show drop down aside xThunder radio">
+<!ENTITY	moveUpButton    "Move Up">
+<!ENTITY	moveDownButton  "Move Down">
+<!ENTITY	lbl.agentTip    "Tips: ">
+<!ENTITY	tip.lClickList  "1. Left click above list to select and toggle item,">
+<!ENTITY	tip.rClickList  "    right click to select item only">
+<!ENTITY	tip.lClickMenu  "2. Left click xThunder menuitem to use FIRST,">
+<!ENTITY	tip.rClickMenu  "    right click - SECOND, middle click - THIRD">

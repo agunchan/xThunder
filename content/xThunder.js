@@ -46,11 +46,9 @@ var xThunder = {
             } else {
                 var args = this.createJobFile();
 
-                var isOffUrl = this.referrer.indexOf("http://lixian.qq.com/main.html") != -1 && this.urls[0].indexOf("http://xfwb.store.qq.com") == -1;
-                if ((this.offLine || isOffUrl) && this.agentName == "QQDownload" && this.totalTask == 1) {
+                if (this.offLine && this.agentName == "QQDownload" && this.totalTask == 1) {
                     //QQ offline
-                    var cid = isOffUrl ? 10300 : 10600;
-                    args.push("-e", cid);
+                    args.push("-e", 10600);
                 }
 
                 result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.xthunderExePath, args);
@@ -88,9 +86,9 @@ var xThunder = {
             jobLines.push(this.urls[j], this.cookies[j], this.descs[j])
         }
         var job = jobLines.join("\n");
-
+        
         var data = xThunderPref.getValue("downDir") + "\n"
-                + this.referrer + "\n" + job;
+                + this.referrer + "\n" + job; 
         var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
                        .createInstance(Components.interfaces.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
@@ -121,7 +119,7 @@ var xThunder = {
         } catch(ex) {}
 		
 		if (!strCookie) {
-			strCookie = "";
+			strCookie = " ";
 		}
 		return strCookie;
 	},
@@ -159,7 +157,7 @@ var xThunder = {
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));
         if (this.totalTask == 1) {
-            des = "";
+            des = " ";
         } else if (!des) {
             des = this.getFileName(url);
         }

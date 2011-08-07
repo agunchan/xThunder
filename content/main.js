@@ -2,12 +2,13 @@
 //	Event handler,require xThunder.js,pref.js,decode.js
 ///////////////////////////////////////////////////////////////////
 window.addEventListener("load", function(){
-    document.getElementById('contentAreaContextMenu').addEventListener('popupshowing', xThunderMain.OnContextMenu, false);
+    xThunderMain.addContextMenuListener();
     xThunderMain.setIconVisible(xThunderPref.getValue("showStatusIcon"));
     xThunderMain.addClickSupport();
 }, false);
 
 var xThunderMain = {
+    ctxMenu : null,
     clickVntAdded : false,
 
     setIconVisible : function(visible) {
@@ -95,10 +96,15 @@ var xThunderMain = {
         }
     },
 
-    OnContextMenu : function(event) {
-        if (event.target != document.getElementById('contentAreaContextMenu')) 
-            return;
-        
+    addContextMenuListener : function() {
+        this.ctxMenu = document.getElementById('contentAreaContextMenu');
+        this.ctxMenu.addEventListener('popupshowing', function(event){
+            if (event.target == this)
+                xThunderMain.OnContextMenu();
+        }, false);
+    },
+
+    OnContextMenu : function() {
         var downloadMenu = document.getElementById("xThunderDownload");
         var downloadLinkItem = document.getElementById("xThunderDownloadLink");
         var downloadOffLineItem = document.getElementById("xThunderDownloadOffLine");
@@ -136,11 +142,40 @@ var xThunderMain = {
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
 
-    OnThunderDownload : function(agentName, ctxMenu, offLine) {
+    getDownloadAgent : function(event) {
+        if(event && event.button != 0) {
+            var agentList = xThunderPref.getFixedAgentList();
+            for (var i=0; i<agentList.length-1; ++i) {
+                var agentItem = agentList[i].split("|");
+                var agent = agentItem[0];
+                if (agentItem.length == 1) {
+                    if (event.button == 2 && i==1
+                        || event.button == 1 && i==2)
+                        //right click using second agent, middle click using third agent
+                        return agent;
+                }
+            }
+        }
+
+        //use default agent
+        return xThunderPref.getValue("agentName");
+    },
+
+    endMenuClick : function(event) {
+        // Firefox may not close context menu
+        // and trigger wrong item,eg. Inspect element of Firebug
+        this.ctxMenu.hidePopup();
+        if (event && event.button == 2) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    },
+
+    OnThunderDownload : function(event, agentName, offLine) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
-        xThunder.init(htmlDocument.URL, 1, agentName, offLine);
-
+        xThunder.init(htmlDocument.URL, 1, agentName || this.getDownloadAgent(event), offLine);
+        
         if (gContextMenu.onLink) {
             // Get current link URL
             url = xThunderDecode.getDecodedNode(gContextMenu.target);
@@ -155,13 +190,20 @@ var xThunderMain = {
         }
 
         xThunder.addTask(url);
-        if (ctxMenu)
-            ctxMenu.hidePopup();
+        this.endMenuClick(event);
         xThunder.callAgent();
     },
 
-    OnThunderDownloadOffLine : function() {
-        this.OnThunderDownload(null, null, true);
+    OnThunderDownloadBy : function(agentName) {
+        this.OnThunderDownload(null, agentName);
+    },
+
+    OnThunderDownloadOffLine : function(event) {
+        var agent = this.getDownloadAgent(event);
+        if (agent != "Thunder" && agent != "QQDownload") {
+            agent = xThunderPref.getValue("agentName");
+        }
+        this.OnThunderDownload(null, agent, true);
     },
 
     OnThunderDownloadAll : function(event) {
@@ -187,7 +229,7 @@ var xThunderMain = {
         var totalTask = linkCount+imageCount;
         var filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
                             ? xThunderPref.getValue("supportExt") : "";
-        xThunder.init(htmlDocument.URL, totalTask);
+        xThunder.init(htmlDocument.URL, totalTask, this.getDownloadAgent(event));
 
         for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
@@ -204,12 +246,13 @@ var xThunderMain = {
             xThunder.addTask(url, images[j].getAttribute("alt") || images[j].title);
         }
 
+        this.endMenuClick(event);
         xThunder.callAgent();
         return true;
     },
 
     OnThunderDownloadPopup : function(target) {
-        xThunderPref.appendAgentList(target, 'xThunderBy', 'xThunderMain.OnThunderDownload', true);
+        xThunderPref.appendAgentList(target, 'xThunderBy', 'xThunderMain.OnThunderDownloadBy', true);
         //set nonsupport agents item's className to agentNonsup
         var url;
         if (gContextMenu.onLink)
@@ -222,12 +265,14 @@ var xThunderMain = {
         url = xThunderDecode.getPreDecodedUrl(url);
         var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
         for (var i=0; i<agentsNonsup.length; ++i) {
-            document.getElementById("xThunderBy" + agentsNonsup[i]).className = "agentNonsup";
+            var subItem = document.getElementById("xThunderBy" + agentsNonsup[i]);
+            if (subItem)
+                subItem.className = "agentNonsup";
         }
     },
 
-    OnThunderOptsPopup : function(target) {
-        xThunderPref.appendAgentList(target, 'xThunderOptsAgent', 'xThunderMain.OnChangeAgent', true);
+    OnThunderOptsPopup : function() {
+        xThunderPref.appendAgentList(document.getElementById("xThunderOptsDefAgentPopup"), 'xThunderOptsAgent', 'xThunderMain.OnChangeAgent', true);
         document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
         document.getElementById("xThunderOptsFilterExt").setAttribute("checked", xThunderPref.getValue("filterExt"));
         document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));

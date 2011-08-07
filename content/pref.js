@@ -2,50 +2,68 @@ var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
     agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA"],
-    agentsNonsup : { "ed2k"   : ["BitComet", "IDM", "DTA"],
+    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA"],
                      "magnet" : ["ToolbarThunder", "IDM", "DTA"],
-                     "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA"] },
+                     "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA"]},
 
     //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio){
         var ownDoc = menupop.ownerDocument;
-        var defAgentName = this.getValue("agentName");
-        if (!ownDoc.getElementById(idpre + defAgentName)) {
-            //create menu item
-            var stringBundle = ownDoc.getElementById("xThunderAgentStrings");
-            for (var i=0; i<this.agents.length; ++i) {
-                menuitem({
-                    id : idpre + this.agents[i],
-                    label : stringBundle.getString(this.agents[i]),
-                    value : this.agents[i],
-                    oncommand : func ? (func + "('" + this.agents[i] + "')") : ""
+        while(menupop.firstChild) {
+            menupop.removeChild(menupop.firstChild);
+        }
+        var stringBundle = document.getElementById("xThunderAgentStrings");
+        var agentList = this.getFixedAgentList();
+        for (var i=0; i<agentList.length-1; ++i) {
+            var agentItem = agentList[i].split("|");
+            var agent = agentItem[0];
+            if (agentItem.length == 1) {
+                var mi = createMenuitem({
+                    id : idpre + agent,
+                    label : stringBundle.getString(agent),
+                    value : agent,
+                    oncommand : func ? (func + "('" + agent + "')") : ""
                 });
+                if(isradio) {
+                    mi.setAttribute("name", "agent");
+                    mi.setAttribute("type", "radio");
+                    if (i==0)
+                        mi.setAttribute("checked", true);
+                }
             }
         }
 
-        //show customized agents
-        var showAgents = this.getValue("showAgents").split(",");
-        for (var j=0; j<this.agents.length; ++j) {
-            var mi = ownDoc.getElementById(idpre + this.agents[j]);
-            mi.setAttribute('hidden', !this.inArray(this.agents[j], showAgents));
-            mi.className = "";
-        }
-
-        //check default agent
-        if (isradio) {
-            ownDoc.getElementById(idpre + defAgentName).setAttribute("checked", true);
-        }
-
-        function menuitem(atrs){
+        function createMenuitem(atrs){
             var mi = ownDoc.createElement("menuitem");
             for(var k in atrs)
                 mi.setAttribute(k, atrs[k]);
-            if(isradio) {
-                mi.setAttribute("name", "agent");
-                mi.setAttribute("type", "radio");
-            }
             return menupop.appendChild(mi);
         }
+    },
+
+    
+    getFixedAgentList : function() {
+        var showAgents = this.getValue("showAgents");
+        var agentList = showAgents.split(",");  //last element is an empty string
+        if (agentList.length-1 < this.agents.length) {
+            // for v1.0.2 before user config
+            for (var i=0; i<this.agents.length; ++i) {
+                if (!this.inArray(this.agents[i], agentList)) {
+                    showAgents = showAgents + this.agents[i] + "|0,";
+                }
+            }
+            this.setValue("showAgents", showAgents);
+            agentList = showAgents.split(",");
+        }
+        var defAgent = this.getValue("agentName");
+        if (defAgent != agentList[0]) {
+            // default agent must be first
+            showAgents = defAgent + "," + 
+                showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
+            this.setValue("showAgents", showAgents);
+            agentList = showAgents.split(",");
+        }
+        return agentList;
     },
 
     inArray : function(agentName, agentsArray) {
@@ -96,10 +114,8 @@ var xThunderPref = {
         return download;
     },
 
-    getBranch : function()
-    {
-        if (this.pref == null)
-        {
+    getBranch : function() {
+        if (this.pref == null) {
             this.pref = Components.classes["@mozilla.org/preferences-service;1"].
                             getService(Components.interfaces.nsIPrefService).
                             getBranch('extensions.xthunder.');
@@ -107,29 +123,24 @@ var xThunderPref = {
         return this.pref;
     },
 
-    getValue: function(prefName, defaultValue)
-    {
+    getValue: function(prefName, defaultValue) {
         var prefType=this.getBranch().getPrefType(prefName);
 
-        switch (prefType)
-        {
-            case this.pref.PREF_STRING: return this.pref.getCharPref(prefName);
-            case this.pref.PREF_BOOL: return this.pref.getBoolPref(prefName);
-            case this.pref.PREF_INT: return this.pref.getIntPref(prefName);
-            default: return defaultValue || 0;
+        switch (prefType) {
+            case this.pref.PREF_STRING:return this.pref.getCharPref(prefName);
+            case this.pref.PREF_BOOL:return this.pref.getBoolPref(prefName);
+            case this.pref.PREF_INT:return this.pref.getIntPref(prefName);
+            default:return defaultValue || 0;
         }
     },
 
-    setValue: function(prefName, value)
-    {
+    setValue: function(prefName, value) {
         var prefType=typeof(value);
-        if (prefType != typeof(this.getValue(prefName)))
-        {
+        if (prefType != typeof(this.getValue(prefName))) {
             this.pref.deleteBranch(prefName);
         }
 
-        switch (prefType)
-        {
+        switch (prefType) {
         case "string":
             this.pref.setCharPref(prefName, value);
             break;
@@ -137,12 +148,10 @@ var xThunderPref = {
             this.pref.setBoolPref(prefName, value);
             break;
         case "number":
-            if (value % 1 != 0)
-            {
-                throw new Error("Cannot set preference to non integral number");
+            if (value % 1 != 0) {
+                throw new Error("Cannot set preference to non integer");
             }
-            else
-            {
+            else {
                 this.pref.setIntPref(prefName, Math.floor(value));
             }
             break;

@@ -1,6 +1,7 @@
 <!ENTITY	options         "xThunder 配置">
+<!ENTITY	restoreDefault	"恢复默认配置">
 <!ENTITY	tab.general		"常规">
-<!ENTITY	tab.interface   "接口">
+<!ENTITY	tab.interface   "界面">
 <!ENTITY	tab.downloader  "下载器">
 <!ENTITY	lbl.supClick    "左键支持链接">
 <!ENTITY	pro.thunder     "迅雷 (thunder://)">
@@ -19,8 +20,6 @@
 <!ENTITY	udown.bak       "备份">
 <!ENTITY	lbl.downloadAll "下载全部链接">
 <!ENTITY	includeImages   "包含当前页面中的图片">
-<!ENTITY	lbl.showAgent   "显示">
-<!ENTITY	lbl.defaultAgent "默认">
 <!ENTITY	lbl.monitor     "监视链接">
 <!ENTITY	ctrlNoMonitor   "Ctrl+左键 = 后台打开解码后的链接">
 <!ENTITY	lbl.showMenu    "显示菜单">
@@ -33,3 +32,10 @@
 <!ENTITY	downAllHotKey 	 "显示xThunder全部链接的热键">
 <!ENTITY	downInSaveFile   "xThunder项在保存方式对话框中">
 <!ENTITY	downListInSaveFile "显示xThunder项旁的下拉列表">
+<!ENTITY	moveUpButton    "上移">
+<!ENTITY	moveDownButton  "下移">
+<!ENTITY	lbl.agentTip    "提示：">
+<!ENTITY	tip.lClickList  "1. 左键点击上面列表选中并取反某项，">
+<!ENTITY	tip.rClickList  "    右键点击仅选中">
+<!ENTITY	tip.lClickMenu  "2. 左键点击xThunder菜单项使用首个，">
+<!ENTITY	tip.rClickMenu  "    右键 - 第二，中键 - 第三下载器">

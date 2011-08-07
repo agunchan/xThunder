@@ -8,3 +8,4 @@
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
 <!ENTITY	udown.bak       "BAK">
+<!ENTITY	defaultAgent    "Default downloader">
