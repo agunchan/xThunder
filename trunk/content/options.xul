@@ -2,11 +2,15 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://xthunder/skin/menu.css" type="text/css"?>
 <!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/options.dtd" >
-<prefwindow id="xThunder-prefs"
+<dialog id="xThunder-prefs"
     title="&options;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     onload="xThunderOptions.loadPrefs();"
-    ondialogaccept="xThunderOptions.savePrefs();">
+    buttons="extra2,accept,cancel"
+    buttonlabelextra2="&restoreDefault;"
+    ondialogaccept="xThunderOptions.savePrefs();"
+    ondialogextra2="xThunderOptions.restoreDefPrefs();"
+    persist="screenX screenY">
 
     <script type="application/javascript" src="chrome://xthunder/content/pref.js"/>
     <script type="application/javascript" src="chrome://xthunder/content/options.js"/>
@@ -110,25 +114,25 @@
                 </tabpanel>
 
                 <tabpanel orient="vertical" flex="1">
+                    <hbox>
+                        <vbox>
+                            <listbox id="agentListBox" rows="10" onselect="xThunderOptions.agentListSelect()" flex="1"/>
+                        </vbox>
+                        <vbox pack="start" >
+                            <button id="moveUpButton" disabled="true" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>
+                            <button id="moveDownButton" disabled="true" label="&moveDownButton;" oncommand="xThunderOptions.moveCurAgent(1);"/>
+                        </vbox>
+                    </hbox>
                     <groupbox>
-                        <caption label="&lbl.showAgent;"/>
-                        <grid>
-                            <columns>
-                                <column/>
-                                <column flex="1"/>
-                            </columns>
-                            <rows id="agentRows" />
-                        </grid>
-                    </groupbox>
-                    <groupbox>
-                        <caption label="&lbl.defaultAgent;"/>
-                        <menulist id="defagentList">
-                            <menupopup id="defagentPopup" />
-                        </menulist>
+                        <caption label="&lbl.agentTip;" style="color:red;"/>
+                        <label id="tipLClickList" value="&tip.lClickList;"/>
+                        <label id="tipRClickList" value="&tip.rClickList;"/>
+                        <label id="tipLClickMenu" value="&tip.lClickMenu;" style="margin-top:10px;"/>
+                        <label id="tipRClickMenu" value="&tip.rClickMenu;"/>
                     </groupbox>
                 </tabpanel>
             </tabpanels>
         </tabbox>
     </prefpane>
 
-</prefwindow>
+</dialog>

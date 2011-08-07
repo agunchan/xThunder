@@ -27,7 +27,7 @@ var xThunderDecode = {
                     (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("Flashget_SetHref") != -1)
                 || protocals[i] == "qqdl" &&
                     (url.indexOf("qqdl:") == 0 ||
-                    link.getAttribute("qhref") != null)
+                    link.getAttribute("qhref"))
                 || protocals[i] == "ed2k" &&
                     (url.indexOf("ed2k:") == 0 ||
                     link.getAttribute("ed2k"))
@@ -76,13 +76,6 @@ var xThunderDecode = {
                     url = "http://bt.xunbo.cc/" + matches[1] + "/" + matches[2];
                 }
             }
-        } else if (/^http:\/\/lixian\.qq\.com\/main\.html/i.test(referrer)){
-            if (matches = link.id.match(/task_dk_lc_(\d+)/)) {
-                var taskId = matches[1];
-                if (matches = htmlDocument.defaultView.wrappedJSObject.g_task_op) {
-                    url = matches.last_task_info[taskId].file_url;
-                }
-            }
         } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
             if (matches = matches.match(/Flashget_SetHref_js\(this,'(.+)','.*'\)/)) {
                 url = matches[1];
@@ -90,7 +83,9 @@ var xThunderDecode = {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
-            url = referrer;
+            if (matches = matches.match(/'(http:\/\/u\.115\.com\/file\/[\w\d]+)'/)) {
+                url = matches[1];
+            }
         }
 
         //In gernal
@@ -108,7 +103,7 @@ var xThunderDecode = {
         }
 
         url = this.getDecodedUrl(url);
-        if (link.getAttribute('href') == "#" && this.downReg.test(link.innerHTML) && url.replace(/#.*/i, "") == referrer.replace(/#.*/i, "")) {
+        if (link.getAttribute('href') == "#" && this.downReg.test(link.innerHTML) && url.split("#")[0] == referrer.split("#")[0]) {
             url = link.innerHTML.replace(/&nbsp;/g, "");
         }
         return url;
@@ -143,9 +138,7 @@ var xThunderDecode = {
         return url;
     },
 
-    //////////////////////////////////////////////////////////////////////
-    //	Decode thunder,flashget,qqdownload and rayfile link -- Base64 Decode
-    //////////////////////////////////////////////////////////////////////
+    // Decode thunder,flashget,qqdownload and rayfile link -- Base64 Decode
     decode64 : function(input) {
         input = window.atob(input);                     //base64 decode
         try {
@@ -159,9 +152,7 @@ var xThunderDecode = {
         return input;
     },
 
-    ////////////////////////////////////////////////////////////
-    //	Get download link of 115u file
-    ////////////////////////////////////////////////////////////
+    // Get download link of 115u file
     uDown : function (url) {
         var matches = url.match(this.udownReg);
         var downUrl = url;
