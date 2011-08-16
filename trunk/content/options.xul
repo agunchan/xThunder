@@ -28,13 +28,15 @@
             <preference id="pref_agentName" name="extensions.xthunder.agentName" type="string"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
             <preference id="pref_altNoMonitor" name="extensions.xthunder.altNoMonitor" type="bool"/>
-            <preference id="pref_downOffLineInCxtMenu" name="extensions.xthunder.downOffLineInCxtMenu" type="bool"/>
             <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
             <preference id="pref_downSubMenu" name="extensions.xthunder.downSubMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
             <preference id="pref_downAllHotKey" name="extensions.xthunder.downAllHotKey" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
             <preference id="pref_downListInSaveFile" name="extensions.xthunder.downListInSaveFile" type="bool"/>
+            <preference id="pref_downOffLineInCxtMenu" name="extensions.xthunder.downOffLineInCxtMenu" type="bool"/>
+            <preference id="pref_downOffLineSubMenu" name="extensions.xthunder.downOffLineSubMenu" type="bool"/>
+            <preference id="pref_downOffLineInSaveFile" name="extensions.xthunder.downOffLineInSaveFile" type="bool"/>
             <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
             <preference id="pref_showStatusIcon" name="extensions.xthunder.showStatusIcon" type="bool"/>
         </preferences>
@@ -52,7 +54,7 @@
                         <grid>
                             <columns>
                                 <column/>
-                                <column flex="1"/>
+                                <column/>
                             </columns>
                             <rows>
                                 <row align="baseline">
@@ -88,7 +90,7 @@
                         <radiogroup id="udownradiogroup" preference="pref_udown" orient="horizontal">
                             <radio id="tel" label="&udown.tel;" value="0"/>
                             <radio id="cnc" label="&udown.cnc;" value="1"/>
-                            <radio id="bak" label="&udown.bak;" value="2"/>
+                            <radio id="auto" label="&udown.auto;" value="2"/>
                         </radiogroup>
                      </groupbox>
                 </tabpanel>
@@ -103,13 +105,19 @@
                         <caption label="&lbl.showMenu;"/>
                         <checkbox id="showStatusIcon" label="&showStatusIcon;" preference="pref_showStatusIcon"/>
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
-                        <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu" oncommand="document.getElementById('downSubMenu').disabled = !this.checked;"/>
                         <checkbox id="downSubMenu" label="&downSubMenu;" style="margin-left:22px;"  preference="pref_downSubMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu" oncommand="document.getElementById('downAllHotKey').disabled = !this.checked;"/>
                         <checkbox id="downAllHotKey" label="&downAllHotKey;" style="margin-left:22px;" preference="pref_downAllHotKey"/>
                         <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile" oncommand="document.getElementById('downListInSaveFile').disabled = !this.checked;"/>
                         <checkbox id="downListInSaveFile" label="&downListInSaveFile;" style="margin-left:22px;" preference="pref_downListInSaveFile"/>
+                     </groupbox>
+                     
+                     <groupbox>
+                        <caption label="&lbl.offLine;"/>
+                        <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
+                        <checkbox id="downOffLineSubMenu" label="&downOffLineSubMenu;" preference="pref_downOffLineSubMenu"/>
+                        <checkbox id="downOffLineInSaveFile" label="&downOffLineInSaveFile;" preference="pref_downOffLineInSaveFile"/>
                      </groupbox>
                 </tabpanel>
 

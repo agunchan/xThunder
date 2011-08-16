@@ -75,7 +75,7 @@ window.addEventListener('load', function() {
     } 
 
     var xThunderRadio = $('xThunderRadio');
-    xThunderPref.appendAgentList($('xThunderAgentPopup'), 'xThunderAgent');
+    xThunderPref.appendAgentList($('xThunderAgentPopup'), 'xThunderAgent', null, false, xThunderPref.getValue('downOffLineInSaveFile'));
     var xThunderAgentList = $('xThunderAgentList');
     xThunderAgentList.value = xThunderPref.getValue('agentName');
     xThunderAgentList.setAttribute("hidden", !xThunderPref.getValue('downListInSaveFile'));
@@ -96,7 +96,7 @@ window.addEventListener('load', function() {
     var remember = $('rememberChoice');
 
     //same width as open radio
-    var openRadio = $("open");
+    var openRadio = $('open');
     if(openRadio) {
         var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
         if(maxWidth > 0) openRadio.width = xThunderRadio.width = maxWidth;
@@ -114,7 +114,7 @@ window.addEventListener('load', function() {
 		} 
 	}, false);
 
-	addEventListener('dialogaccept', function(evt) {
+	addEventListener('dialogaccept', function() {
 		if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {
                 xThunderPref.setValue('supportExt', ext + supportExt);
