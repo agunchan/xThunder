@@ -2,8 +2,8 @@
 //	Event handler,require xThunder.js,pref.js,decode.js
 ///////////////////////////////////////////////////////////////////
 window.addEventListener("load", function(){
-    xThunderMain.addContextMenuListener();
     xThunderMain.setIconVisible(xThunderPref.getValue("showStatusIcon"));
+    xThunderMain.addContextMenuListener();
     xThunderMain.addClickSupport();
 }, false);
 
@@ -12,7 +12,7 @@ var xThunderMain = {
     clickVntAdded : false,
 
     setIconVisible : function(visible) {
-        document.getElementById('xThunderStatusBtn').setAttribute('hidden', !visible);
+        document.getElementById("xThunderStatusBtn").setAttribute("hidden", !visible);
     },
 
     addClickSupport : function() {
@@ -44,7 +44,7 @@ var xThunderMain = {
                 if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor")) {
                     //remember value is 0:never down, 1: auto down, -1: no down this time
                     if (remExt == 1) {
-                        xThunderPref.setValue('remember', -1);
+                        xThunderPref.setValue("remember", -1);
                     }
 
                     //udown link is got asynchronously, so decodedUrl may be null
@@ -63,7 +63,7 @@ var xThunderMain = {
                     return true;
                 } else {
                     if (remExt == -1) {
-                        xThunderPref.setValue('remember', 1);
+                        xThunderPref.setValue("remember", 1);
                     }
                 }
 
@@ -97,8 +97,8 @@ var xThunderMain = {
     },
 
     addContextMenuListener : function() {
-        this.ctxMenu = document.getElementById('contentAreaContextMenu');
-        this.ctxMenu.addEventListener('popupshowing', function(event){
+        this.ctxMenu = document.getElementById("contentAreaContextMenu");
+        this.ctxMenu.addEventListener("popupshowing", function(event){
             if (event.target == this)
                 xThunderMain.OnContextMenu();
         }, false);
@@ -142,17 +142,24 @@ var xThunderMain = {
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
 
-    getDownloadAgent : function(event) {
+    getDownloadAgent : function(event, addoffLine) {
         if(event && event.button != 0) {
             var agentList = xThunderPref.getFixedAgentList();
-            for (var i=0; i<agentList.length-1; ++i) {
+            var enableAgentList = [];
+            for (var i=0; i<agentList.length; ++i) {
                 var agentItem = agentList[i].split("|");
                 var agent = agentItem[0];
                 if (agentItem.length == 1) {
-                    if (event.button == 2 && i==1
-                        || event.button == 1 && i==2)
-                        //right click using second agent, middle click using third agent
-                        return agent;
+                    enableAgentList.push(agent);
+                    if (event.button == 1 && enableAgentList.length >= 3) {
+                        // middle click to use third agent
+                        return enableAgentList[2];
+                    } else if (event.button == 2 && enableAgentList.length >= 2) {
+                        // right click to use second agent
+                        return enableAgentList[1];
+                    } else if (addoffLine && (agent == "Thunder" || agent == "QQDownload")) {
+                        agentList.push(agent + "OffLine");
+                    }
                 }
             }
         }
@@ -174,7 +181,8 @@ var xThunderMain = {
     OnThunderDownload : function(event, agentName, offLine) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
-        xThunder.init(htmlDocument.URL, 1, agentName || this.getDownloadAgent(event), offLine);
+        var agent = agentName || this.getDownloadAgent(event, xThunderPref.getValue("downOffLineSubMenu"));
+        xThunder.init(htmlDocument.URL, 1, agent, offLine);
         
         if (gContextMenu.onLink) {
             // Get current link URL
@@ -200,7 +208,7 @@ var xThunderMain = {
 
     OnThunderDownloadOffLine : function(event) {
         var agent = this.getDownloadAgent(event);
-        if (agent != "Thunder" && agent != "QQDownload") {
+        if (!(agent == "Thunder" || agent == "QQDownload")) {
             agent = xThunderPref.getValue("agentName");
         }
         this.OnThunderDownload(null, agent, true);
@@ -222,22 +230,19 @@ var xThunderMain = {
         }
 
         if (xThunderPref.getValue("agentName") == "ToolbarThunder" && linkCount+imageCount > 1) {
-            alert('MiniThunder does not support batch downloading!');
+            alert("MiniThunder does not support batch downloading!");
             return false;
         }
 
-        var totalTask = linkCount+imageCount;
-        var filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
-                            ? xThunderPref.getValue("supportExt") : "";
-        xThunder.init(htmlDocument.URL, totalTask, this.getDownloadAgent(event));
+        xThunder.init(htmlDocument.URL, linkCount+imageCount, this.getDownloadAgent(event));
 
         for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
             if (!xThunderDecode.udownReg.test(links[i].href)) {
-                xThunder.addTask(url, links[i].textContent, filerExtStr);
+                xThunder.addTask(url, links[i].textContent);
             } else {
                 //udown link is got asynchronously, so do not use wrong textContent
-                xThunder.addTask(url, "", filerExtStr);
+                xThunder.addTask(url, "");
             }
         }
 
@@ -252,11 +257,11 @@ var xThunderMain = {
     },
 
     OnThunderDownloadPopup : function(target) {
-        xThunderPref.appendAgentList(target, 'xThunderBy', 'xThunderMain.OnThunderDownloadBy', true);
+        xThunderPref.appendAgentList(target, "xThunderBy", "xThunderMain.OnThunderDownloadBy", true, xThunderPref.getValue("downOffLineSubMenu"));
         //set nonsupport agents item's className to agentNonsup
         var url;
         if (gContextMenu.onLink)
-            url = gContextMenu.target.getAttribute('fg') || gContextMenu.linkURL;
+            url = gContextMenu.target.getAttribute("fg") || gContextMenu.linkURL;
         else if (gContextMenu.onImage)
             url = gContextMenu.target.src;
         else
@@ -272,7 +277,7 @@ var xThunderMain = {
     },
 
     OnThunderOptsPopup : function() {
-        xThunderPref.appendAgentList(document.getElementById("xThunderOptsDefAgentPopup"), 'xThunderOptsAgent', 'xThunderMain.OnChangeAgent', true);
+        xThunderPref.appendAgentList(document.getElementById("xThunderOptsDefAgentPopup"), "xThunderOptsAgent", "xThunderMain.OnChangeAgent", true);
         document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
         document.getElementById("xThunderOptsFilterExt").setAttribute("checked", xThunderPref.getValue("filterExt"));
         document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));
@@ -295,6 +300,6 @@ var xThunderMain = {
     },
 
     OnOpenOptionsDlg : function() {
-        window.openDialog('chrome://xthunder/content/options.xul', 'xthunderOptions', 'chrome,modal=yes,resizable=no').focus();
+        window.openDialog("chrome://xthunder/content/options.xul", "xthunderOptions", "chrome,modal=yes,resizable=no").focus();
     }
 };

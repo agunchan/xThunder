@@ -1,22 +1,34 @@
 var xThunder = {
-	xthunderComponent: null,
-    xthunderExePath : "chrome://xthunder/content/xThunder.exe",
-    agentName : null,
+    EXE_PATH : "chrome://xthunder/content/xThunder.exe",
+    DEF_STR : " ",
+    xthunderComponent: null,
+    agentName : "",
     referrer : "",
     urls : [],
     cookies : [],
     descs : [],
+    cids : [],
     totalTask : 0,
     offLine : false,
+    filerExtStr : "",
 
     init : function(referrer, totalTask, agentName, offLine){
         this.referrer = referrer;
         this.urls = [];
         this.cookies = [];
         this.descs = [];
+        this.cids = [];
         this.totalTask = totalTask;
-        this.agentName = agentName || xThunderPref.getValue("agentName");
-        this.offLine = offLine || false;
+        if (agentName) {
+            var agent = agentName.replace("OffLine", "");
+            this.agentName = agent;
+            this.offLine = (agent != agentName) || offLine || false;
+        } else {
+            this.agentName = xThunderPref.getValue("agentName");
+            this.offLine = false;
+        }
+        this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
+                            ? xThunderPref.getValue("supportExt") : "";
     },
 	callThunder : function(url, referrer){
         this.init(referrer, 1);
@@ -33,25 +45,18 @@ var xThunder = {
                 this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].getService().wrappedJSObject;
             }
             
-            var result;
+            var result,browser;
             if (this.agentName == "DTA") {
                 result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
-            } else if (this.offLine && this.agentName == "Thunder" && this.totalTask == 1 && gBrowser) {
+            } else if (this.agentName == "Thunder" && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
                 //Thunder offline
                 var thunderOffUrl = "http://lixian.vip.xunlei.com/";
-                gBrowser.selectedTab = gBrowser.addTab(this.urls[0].indexOf(thunderOffUrl) != -1 
-                                                        ? this.urls[0]
-                                                        : thunderOffUrl + "lixian_login.html?furl=" + this.urls[0]);
-                return true;
+                browser.selectedTab = browser.addTab(this.urls[0].indexOf(thunderOffUrl) != -1 
+                                                   ? this.urls[0] : thunderOffUrl + "lixian_login.html?furl=" + this.urls[0]);
+                result = true;
             } else {
                 var args = this.createJobFile();
-
-                if (this.offLine && this.agentName == "QQDownload" && this.totalTask == 1) {
-                    //QQ offline
-                    args.push("-e", 10600);
-                }
-
-                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.xthunderExePath, args);
+                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.EXE_PATH, args);
             }
 
             switch(result) {
@@ -70,6 +75,16 @@ var xThunder = {
         
         return false;
 	},
+    getGBrowser : function() {
+        if (typeof gBrowser != "undefined") {
+            return gBrowser;
+        } else {
+            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                            .getService(Components.interfaces.nsIWindowMediator);
+            var mainWindow = wm.getMostRecentWindow("navigator:browser");
+            return mainWindow ? mainWindow.gBrowser : null;
+        }
+    },
     createJobFile : function() {
         var file = Components.classes["@mozilla.org/file/directory_service;1"]
                 .getService(Components.interfaces.nsIProperties)
@@ -83,12 +98,12 @@ var xThunder = {
         
         var jobLines = [];
         for (var j = 0; j < this.totalTask; ++j) {
-            jobLines.push(this.urls[j], this.cookies[j], this.descs[j])
+            jobLines.push(this.urls[j], this.cookies[j], this.descs[j], this.cids[j]);
         }
         var job = jobLines.join("\n");
         
         var data = xThunderPref.getValue("downDir") + "\n"
-                + this.referrer + "\n" + job; 
+                + this.referrer + "\n" + job + "\n"; 
         var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
                        .createInstance(Components.interfaces.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
@@ -119,7 +134,7 @@ var xThunder = {
         } catch(ex) {}
 		
 		if (!strCookie) {
-			strCookie = " ";
+			strCookie = this.DEF_STR;
 		}
 		return strCookie;
 	},
@@ -136,7 +151,20 @@ var xThunder = {
 
         return href;
     },
-	addTask : function(url, des, filerExtStr){
+    getCid : function(href) {
+        var cid = this.DEF_STR;
+        if (this.agentName == "QQDownload" && this.offLine) {
+            cid = 10600;
+        } else if (this.agentName == "Thunder") {
+            var matches;
+            if (matches = href.match(/^http:\/\/(?:thunder\.ffdy\.cc|www\.7369\.com|bt\.xunbo\.cc)\/([0-9A-F]+)\//)) {
+                cid = matches[1];
+            }
+        }
+        
+        return cid;
+    },
+	addTask : function(url, des){
         if (url == null) {
             //115u async method
             return; 
@@ -148,7 +176,7 @@ var xThunder = {
             //nonsupport or filtered url
             var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
             if (xThunderPref.inArray(this.agentName, agentsNonsup)
-                || filerExtStr && agentsNonsup.length==0 && !xThunderPref.isExtSupURL(url, filerExtStr)) {
+                || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
                 --this.totalTask;
                 return;
             }
@@ -157,10 +185,11 @@ var xThunder = {
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));
         if (this.totalTask == 1) {
-            des = " ";
+            des = this.DEF_STR;
         } else if (!des) {
             des = this.getFileName(url);
         }
         this.descs.push(des);
+        this.cids.push(this.getCid(url));
 	}
 };

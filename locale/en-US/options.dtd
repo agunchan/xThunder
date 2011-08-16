@@ -4,34 +4,37 @@
 <!ENTITY	tab.interface   "Interface">
 <!ENTITY	tab.downloader  "Downloader">
 <!ENTITY	lbl.supClick    "Left Click">
-<!ENTITY	pro.thunder     "thunder (thunder://)">
-<!ENTITY	pro.flashget    "flashget (flashget://)">
-<!ENTITY	pro.qqdl        "qqdownload (qqdl://)">
-<!ENTITY	pro.fs2you      "rayfile (fs2you://)">
-<!ENTITY	pro.ed2k        "emule (ed2k://)">
-<!ENTITY	pro.magnet      "magnet (magnet:?)">
-<!ENTITY	pro.115         "115 (u.115.com/file)">
+<!ENTITY	pro.thunder     "thunder(thunder://)">
+<!ENTITY	pro.flashget    "flashget(flashget://)">
+<!ENTITY	pro.qqdl        "qqdownload(qqdl://)">
+<!ENTITY	pro.fs2you      "rayfile(fs2you://)">
+<!ENTITY	pro.ed2k        "emule(ed2k://)">
+<!ENTITY	pro.magnet      "magnet(magnet:?)">
+<!ENTITY	pro.115         "115(u.115.com/file)">
 <!ENTITY	pro.udown       "udown">
 <!ENTITY	remember        "Associated common file type">
 <!ENTITY	filterext       "Filter files by above extension first">
 <!ENTITY	lbl.udown       "UDown Link">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
-<!ENTITY	udown.bak       "BAK">
+<!ENTITY	udown.auto      "AUTO">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
-<!ENTITY	lbl.monitor     "Monitor Link">
-<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background">
-<!ENTITY	lbl.showMenu    "Show Menu">
-<!ENTITY	showStatusIcon   "Show icon in status bar">
-<!ENTITY	showMenuIcons   "Show context menu icons">
-<!ENTITY	downOffLineInCxtMenu "xThunder OffLine in context menu">
-<!ENTITY	downInCxtMenu    "xThunder Link in context menu">
-<!ENTITY	downSubMenu      "Show sub menu of xThunder Link">
-<!ENTITY	downAllInCxtMenu "xThunder All in context menu">
-<!ENTITY	downAllHotKey    "Show hot key of xThunder All ">
-<!ENTITY	downInSaveFile   "xThunder radio in save as dialog">
-<!ENTITY	downListInSaveFile "Show drop down aside xThunder radio">
+<!ENTITY	lbl.monitor             "Monitor Link">
+<!ENTITY	ctrlNoMonitor           "Ctrl+Click=Open decoded link in back tab">
+<!ENTITY	lbl.showMenu            "Show Menu">
+<!ENTITY	showStatusIcon          "Show icon in status bar">
+<!ENTITY	showMenuIcons           "Show context menu icons">
+<!ENTITY	downInCxtMenu           "xThunder Link in context menu">
+<!ENTITY	downSubMenu             "Show sub menu of xThunder Link">
+<!ENTITY	downAllInCxtMenu        "xThunder All in context menu">
+<!ENTITY	downAllHotKey           "Show hot key of xThunder All ">
+<!ENTITY	downInSaveFile          "xThunder Radio in save as dialog">
+<!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
+<!ENTITY	lbl.offLine             "OffLine Download">
+<!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
+<!ENTITY	downOffLineSubMenu      "OffLine items in xThuner Link submenu">
+<!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
 <!ENTITY	moveUpButton    "Move Up">
 <!ENTITY	moveDownButton  "Move Down">
 <!ENTITY	lbl.agentTip    "Tips: ">

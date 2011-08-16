@@ -54,29 +54,33 @@ var xThunderDecode = {
             if (matches = htmlDocument.getElementById('quickDown')) {
                 url = matches.href;
             }
-        } else if (/^http:\/\/www\.ffdy\.cc\/.*\/\d+\.html/i.test(referrer)) {
-            var sibling = link.previousSibling;
-            var params;
-            if (sibling && sibling.name == "checkbox" && (params = sibling.value)) {
+        } else if (!link.getAttribute('thunderhref') && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
+            var input = link.parentNode;
+            var params,cid,mc;
+            if ((input = input.firstChild) && input.getAttribute('type') == "checkbox" && (params = input.value)) {    
                 params = params.split("&");
                 for (var i=0; i<params.length; ++i) {
                     if (matches = params[i].match(/xzurl=(.*)/)) {
                         url = matches[1];
                         break;
                     } else if (matches = params[i].match(/cid=(.*)/)) {
-                        url = "http://thunder.ffdy.cc/" + matches[1] + "/" + link.innerHTML;
+                        cid = matches[1];
+                    } else if (matches = params[i].match(/mc=(.*)/)) {
+                        mc = matches[1];
                     }
                 }
-            }
-        } else if (/^http:\/\/xunbo\.cc\/Html\/GP\d+\.html/i.test(referrer)) {
-            var sib = link.previousSibling;
-            var param;
-            if (sib && sib.name == "xcheckbox" && (param = sib.value)) {
-                if (matches = param.match(/cid=(.*)&mc=(.*)/)) {
-                    url = "http://bt.xunbo.cc/" + matches[1] + "/" + matches[2];
+                
+                if (!url) {
+                    if (/^http:\/\/www\.ffdy\.cc\//i.test(referrer)) {
+                        url = "http://thunder.ffdy.cc/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
+                    } else if (/^http:\/\/www\.7369\.com\//i.test(referrer)) {
+                        url = "http://www.7369.com/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
+                    } else if (/^http:\/\/xunbo\.cc\//i.test(referrer)) {
+                        url = "http://bt.xunbo.cc/" + cid + "/" + mc;
+                    } 
                 }
-            }
-        } else if ((matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
+            }     
+        } else if (!link.getAttribute('fg') && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
             if (matches = matches.match(/Flashget_SetHref_js\(this,'(.+)','.*'\)/)) {
                 url = matches[1];
             } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
@@ -103,9 +107,6 @@ var xThunderDecode = {
         }
 
         url = this.getDecodedUrl(url);
-        if (link.getAttribute('href') == "#" && this.downReg.test(link.innerHTML) && url.split("#")[0] == referrer.split("#")[0]) {
-            url = link.innerHTML.replace(/&nbsp;/g, "");
-        }
         return url;
     },
 
@@ -159,8 +160,8 @@ var xThunderDecode = {
 
         if(matches)
         {
-            var tcode = matches[1];
-            url = 'http://uapi.115.com:80/?ct=upload_api&ac=get_pick_code_info&version=1172&pickcode='+tcode;
+            var tcode = matches[1].split('#')[0];
+            url = 'http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode='+tcode+'&version=1176';
             var xmlhttp = new XMLHttpRequest();
             //max-persistent-connections-per-server is 6
             var async = xThunderDecode.asyncReq < 2;
@@ -179,7 +180,7 @@ var xThunderDecode = {
                 xmlhttp.open('GET', url, async);
             }
 
-            xmlhttp.setRequestHeader('User-Agent','115UDownClient 2.1.11.122');
+            xmlhttp.setRequestHeader('User-Agent','115UDownClient 2.1.11.126');
             xmlhttp.setRequestHeader('Host','uapi.115.com');
             xmlhttp.setRequestHeader('Cache-Control','no-cache');
             xmlhttp.send(null);
@@ -198,10 +199,23 @@ var xThunderDecode = {
         var uDownUrl = JSON.parse(responseText).DownloadUrl;
 
         if (uDownUrl && uDownUrl.length > 0) {
-            var index = xThunderPref.getValue('udown');  //tel,cnc,bak
-            if (index >= uDownUrl.length) {
-                index = 0;
+            var index = xThunderPref.getValue('udown');  //tel,cnc
+            if (uDownUrl.length < 2) {
+                index = 0;  // only one url
+            } else if (index == 2) {
+                // auto choose the url having nearer ip
+                var urlOne = uDownUrl[0].Url;
+                var urlTwo = uDownUrl[1].Url;
+                var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+/;
+                var matchesOne, matchesTwo;
+                if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg))
+                    && matchesOne[2] == matchesTwo[2]) {
+                    //compare ipv4 Leading address 
+                    index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2])
+                            ? 0 : 1;
+                }
             }
+            
             return uDownUrl[index].Url;
         } else {
             return null;

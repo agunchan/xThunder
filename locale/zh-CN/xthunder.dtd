@@ -7,5 +7,5 @@
 <!ENTITY	moreOptions     "更多选项...">
 <!ENTITY	udown.tel       "电信">
 <!ENTITY	udown.cnc       "联通">
-<!ENTITY	udown.bak       "备份">
+<!ENTITY	udown.auto      "自动">
 <!ENTITY	defaultAgent    "默认下载器">

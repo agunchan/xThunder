@@ -91,7 +91,7 @@ var xThunderOptions = {
         }
         var stringBundle = document.getElementById("xThunderAgentStrings");
         var agentList = xThunderPref.getFixedAgentList();
-        for (var i=0; i<agentList.length-1; ++i) {
+        for (var i=0; i<agentList.length; ++i) {
             var agentItem = agentList[i].split("|");
             var agent = agentItem[0];
             createListitem({
@@ -130,11 +130,11 @@ var xThunderOptions = {
             enableAgents = defAgent + ",";
             disableAgents = disableAgents.replace(defAgent + "|0,", "");
         }
-        if (enableAgents == defAgent + ",") {
-            //close submenu and dropdown if there is only one agent
-            xThunderPref.setValue("downSubMenu", false);
-            xThunderPref.setValue("downListInSaveFile", false);
-        }
+//        if (enableAgents == defAgent + ",") {
+//            //close submenu and dropdown if there is only one agent
+//            xThunderPref.setValue("downSubMenu", false);
+//            xThunderPref.setValue("downListInSaveFile", false);
+//        }
 
         xThunderPref.setValue("agentName", defAgent);
         xThunderPref.setValue("showAgents", enableAgents + disableAgents);

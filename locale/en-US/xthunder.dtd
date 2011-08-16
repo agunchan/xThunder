@@ -7,5 +7,5 @@
 <!ENTITY	moreOptions     "More Options...">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
-<!ENTITY	udown.bak       "BAK">
+<!ENTITY	udown.auto      "AUTO">
 <!ENTITY	defaultAgent    "Default downloader">

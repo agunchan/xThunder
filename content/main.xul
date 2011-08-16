@@ -39,7 +39,7 @@
             <menuseparator id="xThunderOptsSep" />
             <menuitem id="xThunderOptsUdown0" label="&udown.tel;" name="udown" type="radio" oncommand="xThunderMain.OnChangeUdown(0);"/>
             <menuitem id="xThunderOptsUdown1" label="&udown.cnc;" name="udown" type="radio" oncommand="xThunderMain.OnChangeUdown(1);"/>
-            <menuitem id="xThunderOptsUdown2" label="&udown.bak;" name="udown" type="radio" oncommand="xThunderMain.OnChangeUdown(2);"/>
+            <menuitem id="xThunderOptsUdown2" label="&udown.auto;" name="udown" type="radio" oncommand="xThunderMain.OnChangeUdown(2);"/>
         </menupopup>
     </popupset>
 

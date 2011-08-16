@@ -7,14 +7,14 @@ var xThunderPref = {
                      "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA"]},
 
     //show only available agents in list
-    appendAgentList : function(menupop, idpre, func, isradio){
+    appendAgentList : function(menupop, idpre, func, isradio, addoffLine){
         var ownDoc = menupop.ownerDocument;
         while(menupop.firstChild) {
             menupop.removeChild(menupop.firstChild);
         }
         var stringBundle = document.getElementById("xThunderAgentStrings");
         var agentList = this.getFixedAgentList();
-        for (var i=0; i<agentList.length-1; ++i) {
+        for (var i=0; i<agentList.length; ++i) {
             var agentItem = agentList[i].split("|");
             var agent = agentItem[0];
             if (agentItem.length == 1) {
@@ -30,6 +30,9 @@ var xThunderPref = {
                     if (i==0)
                         mi.setAttribute("checked", true);
                 }
+                if (addoffLine && (agent == "Thunder" || agent == "QQDownload")) {
+                    agentList.push(agent + "OffLine");
+                }
             }
         }
 
@@ -44,7 +47,7 @@ var xThunderPref = {
     
     getFixedAgentList : function() {
         var showAgents = this.getValue("showAgents");
-        var agentList = showAgents.split(",");  //last element is an empty string
+        var agentList = showAgents.split(",");
         if (agentList.length-1 < this.agents.length) {
             // for v1.0.2 before user config
             for (var i=0; i<this.agents.length; ++i) {
@@ -58,11 +61,12 @@ var xThunderPref = {
         var defAgent = this.getValue("agentName");
         if (defAgent != agentList[0]) {
             // default agent must be first
-            showAgents = defAgent + "," + 
-                showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
+            showAgents = defAgent + "," + showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
         }
+        //last element is an empty string
+        agentList.pop();
         return agentList;
     },
 
