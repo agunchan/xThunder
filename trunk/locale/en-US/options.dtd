@@ -4,13 +4,13 @@
 <!ENTITY	tab.interface   "Interface">
 <!ENTITY	tab.downloader  "Downloader">
 <!ENTITY	lbl.supClick    "Left Click">
-<!ENTITY	pro.thunder     "thunder(thunder://)">
-<!ENTITY	pro.flashget    "flashget(flashget://)">
-<!ENTITY	pro.qqdl        "qqdownload(qqdl://)">
-<!ENTITY	pro.fs2you      "rayfile(fs2you://)">
-<!ENTITY	pro.ed2k        "emule(ed2k://)">
-<!ENTITY	pro.magnet      "magnet(magnet:?)">
-<!ENTITY	pro.115         "115(u.115.com/file)">
+<!ENTITY	pro.thunder     "thunder (thunder://)">
+<!ENTITY	pro.flashget    "flashget (flashget://)">
+<!ENTITY	pro.qqdl        "qqdownload (qqdl://)">
+<!ENTITY	pro.fs2you      "rayfile (fs2you://)">
+<!ENTITY	pro.ed2k        "emule (ed2k://)">
+<!ENTITY	pro.magnet      "magnet (magnet:?)">
+<!ENTITY	pro.115         "115 (u.115.com/file)">
 <!ENTITY	pro.udown       "udown">
 <!ENTITY	remember        "Associated common file type">
 <!ENTITY	filterext       "Filter files by above extension first">
@@ -21,7 +21,7 @@
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
 <!ENTITY	lbl.monitor             "Monitor Link">
-<!ENTITY	ctrlNoMonitor           "Ctrl+Click=Open decoded link in back tab">
+<!ENTITY	ctrlNoMonitor           "Ctrl+Click = Open decoded link in back tab">
 <!ENTITY	lbl.showMenu            "Show Menu">
 <!ENTITY	showStatusIcon          "Show icon in status bar">
 <!ENTITY	showMenuIcons           "Show context menu icons">

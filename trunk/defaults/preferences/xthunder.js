@@ -5,7 +5,8 @@ pref("extensions.xthunder.supportExt", ".exe;.msi;.torrent;.rar;.tar;.zip;.iso;.
 pref("extensions.xthunder.filterExt", false);
 pref("extensions.xthunder.includeImages", true);
 pref("extensions.xthunder.ctrlNoMonitor", true);
-pref("extensions.xthunder.altNoMonitor", true);
+pref("extensions.xthunder.showMenuIcons", true);
+pref("extensions.xthunder.showStatusIcon", true);
 pref("extensions.xthunder.downInCxtMenu", true);
 pref("extensions.xthunder.downSubMenu", true);
 pref("extensions.xthunder.downAllInCxtMenu", true);
@@ -15,8 +16,6 @@ pref("extensions.xthunder.downListInSaveFile", true);
 pref("extensions.xthunder.downOffLineInCxtMenu", false);
 pref("extensions.xthunder.downOffLineSubMenu", true);
 pref("extensions.xthunder.downOffLineInSaveFile", true);
-pref("extensions.xthunder.showMenuIcons", true);
-pref("extensions.xthunder.showStatusIcon", true);
 pref("extensions.xthunder.agentName", "Thunder");
 pref("extensions.xthunder.showAgents", "Thunder,QQDownload,DTA,ToolbarThunder|0,FlashGet3|0,BitComet|0,IDM|0,");
 pref("extensions.xthunder.downDir", "C:\\");

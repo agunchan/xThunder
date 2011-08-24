@@ -1,6 +1,6 @@
 var xThunder = {
     EXE_PATH : "chrome://xthunder/content/xThunder.exe",
-    DEF_STR : " ",
+    DEF_STR : "",
     xthunderComponent: null,
     agentName : "",
     referrer : "",
@@ -139,17 +139,20 @@ var xThunder = {
 		return strCookie;
 	},
     getFileName : function(href) {
+        var fileName = "index.html";
         try {
-            var names = href.split("?")[0].split("/");
-            href = names[names.length-1];
-            if (href == "" || href == "#")
-                href = "index.html";
-            else
-                href = decodeURIComponent(href);
+            if (/^(?:ftp|https?):/i.test(href)) {
+                var names = href.split("?")[0].split("#")[0].split("/");
+                fileName = names[names.length-1];
+                if (fileName != "") 
+                    fileName = decodeURIComponent(fileName);
+            } else {
+                fileName = href.split(":")[0];
+            }
         }
         catch(ex) {}
 
-        return href;
+        return fileName;
     },
     getCid : function(href) {
         var cid = this.DEF_STR;

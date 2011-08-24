@@ -97,16 +97,18 @@ var xThunderPref = {
             supExt = this.getValue("supportExt");
         }
         var download = false;
-        var subUrls = trimmedUrl.split("?");
-        var matches = (subUrls[0].split("#"))[0].match(/^(?:ftp|https?):\/\/.*(\.\w+)/i);
-        if (matches) {
-            if (supExt.indexOf(matches[1] + ";") != -1) {
+        if (/^(?:ftp|https?):/i.test(trimmedUrl)) {
+            var subUrls = trimmedUrl.split("?");
+            var names = subUrls[0].split("#")[0].split("/");
+            var fileName = names[names.length-1];
+            var matches = fileName.match(/(\.\w+)$/i);
+            if (matches && supExt.indexOf(matches[1] + ";") != -1) {
                 download = true;
-            } else if (subUrls.length > 1 && /\.(jsp|php)/i.test(matches[1])){
+            } else if (subUrls.length > 1 && matches && /\.(jsp|php)/i.test(matches[1])) {
                 //the parameter of jsp|php url may contain supporting ext
                 var subParams = subUrls[1].split("&");
                 for (var j=0; j<subParams.length; ++j) {
-                    matches = subParams[j].match(/(\.\w+)/i);
+                    matches = subParams[j].match(/(\.\w+)$/i);
                     if (matches && supExt.indexOf(matches[1] + ";") != -1) {
                         download = true;
                         break;

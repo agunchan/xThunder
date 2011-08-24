@@ -19,7 +19,7 @@ var xThunderDecode = {
         for (var i=0; i<protocals.length; ++i) {
             if (protocals[i] == "thunder" &&
                     (url.indexOf("thunder:") == 0 ||
-                    link.getAttribute("thunderhref") ||
+                    link.getAttribute("thunderhref") || link.getAttribute("downloadurl") ||
                     (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("ThunderNetwork_SetHref") != -1)
                 || protocals[i] == "flashget" &&
                     (url.indexOf("flashget:") == 0 ||
@@ -100,8 +100,8 @@ var xThunderDecode = {
             if (!link) {
                 url = "";
             } else {
-                url = link.getAttribute('thunderhref') || link.getAttribute('fg')
-                    || link.getAttribute('qhref') || link.getAttribute('ed2k')
+                url = link.getAttribute('thunderhref') || link.getAttribute("downloadurl")
+                    || link.getAttribute('fg') || link.getAttribute('qhref') || link.getAttribute('ed2k')
                     || link.href || link.name;
             }
         }

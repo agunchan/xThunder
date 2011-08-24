@@ -76,9 +76,8 @@ window.addEventListener('load', function() {
 
     var xThunderRadio = $('xThunderRadio');
     xThunderPref.appendAgentList($('xThunderAgentPopup'), 'xThunderAgent', null, false, xThunderPref.getValue('downOffLineInSaveFile'));
-    var xThunderAgentList = $('xThunderAgentList');
-    xThunderAgentList.value = xThunderPref.getValue('agentName');
-    xThunderAgentList.setAttribute("hidden", !xThunderPref.getValue('downListInSaveFile'));
+    $('xThunderAgentList').value = xThunderPref.getValue('agentName');
+    $('xThunderAgentList').setAttribute("hidden", !xThunderPref.getValue('downListInSaveFile'));
 
     var ext = dialog.mLauncher.suggestedFileName.split('.');
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
