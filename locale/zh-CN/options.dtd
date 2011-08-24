@@ -4,13 +4,13 @@
 <!ENTITY	tab.interface   "界面">
 <!ENTITY	tab.downloader  "下载器">
 <!ENTITY	lbl.supClick    "左键支持链接">
-<!ENTITY	pro.thunder     "迅雷(thunder://)">
-<!ENTITY	pro.flashget    "快车(flashget://)">
-<!ENTITY	pro.qqdl        "旋风(qqdl://)">
-<!ENTITY	pro.fs2you      "飞速(fs2you://)">
-<!ENTITY	pro.ed2k        "电驴(ed2k://)">
-<!ENTITY	pro.magnet      "磁力(magnet:?)">
-<!ENTITY	pro.115         "115(u.115.com/file)">
+<!ENTITY	pro.thunder     "迅雷 (thunder://)">
+<!ENTITY	pro.flashget    "快车 (flashget://)">
+<!ENTITY	pro.qqdl        "旋风 (qqdl://)">
+<!ENTITY	pro.fs2you      "飞速 (fs2you://)">
+<!ENTITY	pro.ed2k        "电驴 (ed2k://)">
+<!ENTITY	pro.magnet      "磁力 (magnet:?)">
+<!ENTITY	pro.115         "115 (u.115.com/file)">
 <!ENTITY	pro.udown       "优蛋">
 <!ENTITY	remember        "关联普通文件类型">
 <!ENTITY	filterext       "预先以上述扩展名过滤文件">
@@ -21,7 +21,7 @@
 <!ENTITY	lbl.downloadAll "下载全部链接">
 <!ENTITY	includeImages   "包含当前页面中的图片">
 <!ENTITY	lbl.monitor             "监视链接">
-<!ENTITY	ctrlNoMonitor           "Ctrl+左键=后台标签页打开解码的链接">
+<!ENTITY	ctrlNoMonitor           "Ctrl+左键 = 后台标签页打开解码的链接">
 <!ENTITY	lbl.showMenu            "显示菜单">
 <!ENTITY	showStatusIcon          "显示状态栏图标">
 <!ENTITY	showMenuIcons           "显示右键菜单图标">
