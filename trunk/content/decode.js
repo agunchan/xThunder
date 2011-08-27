@@ -160,8 +160,8 @@ var xThunderDecode = {
 
         if(matches)
         {
-            var tcode = matches[1].split('#')[0];
-            url = 'http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode='+tcode+'&version=1176';
+            var pcode = matches[1].split('#')[0];
+            url = 'http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode='+pcode+'&version=1176';
             var xmlhttp = new XMLHttpRequest();
             //max-persistent-connections-per-server is 6
             var async = xThunderDecode.asyncReq < 2;
@@ -206,13 +206,15 @@ var xThunderDecode = {
                 // auto choose the url having nearer ip
                 var urlOne = uDownUrl[0].Url;
                 var urlTwo = uDownUrl[1].Url;
-                var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+/;
+                var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=api\|(\d+)\.\d+\.\d+\.\d+\|/;
                 var matchesOne, matchesTwo;
                 if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg))
                     && matchesOne[2] == matchesTwo[2]) {
-                    //compare ipv4 Leading address 
+                    //compare ipv4 Leading address
                     index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2])
                             ? 0 : 1;
+                } else {
+                    index = uDownUrl.length - 1;
                 }
             }
             
