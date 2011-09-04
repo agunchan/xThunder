@@ -1,10 +1,10 @@
 var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA"],
-    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA"],
-                     "magnet" : ["ToolbarThunder", "IDM", "DTA"],
-                     "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA"]},
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite"],
+    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini"],
+                    "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini"],
+                    "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite"]},
 
     //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio, addoffLine){
@@ -51,7 +51,7 @@ var xThunderPref = {
         if (agentList.length-1 < this.agents.length) {
             // for v1.0.2 before user config
             for (var i=0; i<this.agents.length; ++i) {
-                if (!this.inArray(this.agents[i], agentList)) {
+                if (!this.inArray(this.agents[i], agentList) && !this.inArray(this.agents[i]+"|0", agentList)) {
                     showAgents = showAgents + this.agents[i] + "|0,";
                 }
             }

@@ -49,16 +49,15 @@ window.addEventListener('load', function() {
     function download() {
         var de = document.documentElement;
         var url = dialog.mLauncher.source.spec;
-        var openerDocument;
         var referrer;
         try {
-            openerDocument = dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                                            .getInterface(Components.interfaces.nsIDOMWindow).document;
-        } catch(ex) {
-            openerDocument = top.opener && top.opener.content && top.opener.content.document || null;
+            var openerDocument = dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                                            .getInterface(Components.interfaces.nsIDOMWindow).document;   
+            referrer = openerDocument && openerDocument.URL                            
+        } catch(ex) {}
+        if (!referrer || referrer == "about:blank") {
+            referrer = "";
         }
-
-        referrer = openerDocument && openerDocument.URL || url;
 
         xThunder.init(referrer, 1, $('xThunderAgentList').value);
         xThunder.addTask(url);
@@ -67,7 +66,7 @@ window.addEventListener('load', function() {
         de.removeAttribute('onblur');
         de.removeAttribute('onfocus');
         de.cancelDialog();
-    }
+    } // end download function
 
     if (!xThunderPref.getValue("downInSaveFile")) {
         $('xThunderDown').setAttribute("hidden", true);
