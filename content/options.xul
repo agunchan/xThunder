@@ -26,6 +26,7 @@
             <preference id="pref_includeImages" name="extensions.xthunder.includeImages" type="bool"/>
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
+            <preference id="pref_ctrlAltDecode" name="extensions.xthunder.ctrlAltDecode" type="bool"/>
             <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
             <preference id="pref_showStatusIcon" name="extensions.xthunder.showStatusIcon" type="bool"/>
             <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
@@ -74,7 +75,7 @@
                             </rows>
                         </grid>
                         <checkbox id="remember" label="&remember;"/>
-                        <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="40"/>
+                        <textbox id="supportExt" preference="pref_supportExt" multiline="true" rows="3" cols="37"/>
                     </groupbox>
 
                     <groupbox>
@@ -97,6 +98,7 @@
                     <groupbox>
                         <caption label="&lbl.monitor;"/>
                         <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
+                        <checkbox id="ctrlAltDecode" label="&ctrlAltDecode;" preference="pref_ctrlAltDecode"/>
                     </groupbox>
 
                     <groupbox>

@@ -23,7 +23,7 @@ var xThunderMain = {
             if (xThunderMain.clickVntAdded)
                 return;
             win.addEventListener("click", function(ev) {
-                if (ev.button != 0 || ev.shiftKey || ev.altKey) {
+                if (ev.button != 0 || ev.shiftKey) {
                     return true;
                 }
                 return xThunderMain.OnLeftClick(ev);
@@ -55,27 +55,36 @@ var xThunderMain = {
         var url = link.href || link.name;
         var download = false;
 
-        //Ctrl + Click
-        if (ev.ctrlKey && xThunderPref.getValue("ctrlNoMonitor")) {
-            //remember value is 0:never down, 1: auto down, -1: no down this time
-            if (remExt == 1) {
-                xThunderPref.setValue("remember", -1);
-            }
-
+        //Ctrl + Click and Ctrl + Alt + Click
+        if (ev.ctrlKey) {
             //udown link is got asynchronously, so decodedUrl may be null
-            if(!xThunderDecode.udownReg.test(url)) {
-                var decodedUrl = xThunderDecode.getDecodedNode(link);
-                if (decodedUrl && decodedUrl != url) {
-                    //Open decoded link by Firefox
-                    document.commandDispatcher.focusedWindow.location.href = decodedUrl;
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    return false;
-                }
+            if(xThunderDecode.udownReg.test(url)) {
+                return true;
             }
-
-            //Open in backgrond tab - Firefox default way
-            return true;
+            
+            try {
+                var decodedUrl = xThunderDecode.getDecodedNode(link);
+                if (ev.altKey && xThunderPref.getValue("ctrlAltDecode")) {
+                    //Copy decode url to clipboard 
+                    link.setAttribute("href", decodedUrl);
+                    const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
+                                             .getService(Components.interfaces.nsIClipboardHelper);
+                    gClipboardHelper.copyString(decodedUrl);
+                } else if (xThunderPref.getValue("ctrlNoMonitor") && decodedUrl && decodedUrl != url) {
+                    //Open decoded link by Firefox
+                    if (remExt == 1) {
+                        xThunderPref.setValue("remember", -1);//0:never down, 1: auto down, -1: no down this time
+                    }
+                    document.commandDispatcher.focusedWindow.location.href = decodedUrl;
+                } else {
+                    //Open in backgrond tab - Firefox default way
+                    return true;
+                }
+            } catch(ex) {} 
+            
+            ev.preventDefault();
+            ev.stopPropagation();
+            return false;
         } else {
             if (remExt == -1) {
                 xThunderPref.setValue("remember", 1);

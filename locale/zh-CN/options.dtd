@@ -22,6 +22,7 @@
 <!ENTITY	includeImages   "包含当前页面中的图片">
 <!ENTITY	lbl.monitor             "监视链接">
 <!ENTITY	ctrlNoMonitor           "Ctrl+左键 = 后台标签页打开解码的链接">
+<!ENTITY	ctrlAltDecode           "Ctrl+Alt+左键 = 复制解码后的链接地址">
 <!ENTITY	lbl.showMenu            "显示菜单">
 <!ENTITY	showStatusIcon          "显示状态栏图标">
 <!ENTITY	showMenuIcons           "显示右键菜单图标">
