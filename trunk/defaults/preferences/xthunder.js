@@ -5,6 +5,7 @@ pref("extensions.xthunder.supportExt", ".exe;.msi;.torrent;.rar;.tar;.zip;.iso;.
 pref("extensions.xthunder.filterExt", false);
 pref("extensions.xthunder.includeImages", true);
 pref("extensions.xthunder.ctrlNoMonitor", true);
+pref("extensions.xthunder.ctrlAltDecode", true);
 pref("extensions.xthunder.showMenuIcons", true);
 pref("extensions.xthunder.showStatusIcon", true);
 pref("extensions.xthunder.downInCxtMenu", true);

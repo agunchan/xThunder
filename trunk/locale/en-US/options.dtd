@@ -22,6 +22,7 @@
 <!ENTITY	includeImages   "Include images found in current page">
 <!ENTITY	lbl.monitor             "Monitor Link">
 <!ENTITY	ctrlNoMonitor           "Ctrl+Click = Open decoded link in back tab">
+<!ENTITY	ctrlAltDecode           "Ctrl+Alt+Click = Copy decoded link url">
 <!ENTITY	lbl.showMenu            "Show Menu">
 <!ENTITY	showStatusIcon          "Show icon in status bar">
 <!ENTITY	showMenuIcons           "Show context menu icons">

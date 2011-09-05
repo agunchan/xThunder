@@ -73,7 +73,7 @@ var xThunderDecode = {
                 if (!url) {
                     if (/^http:\/\/www\.ffdy\.cc\//i.test(referrer)) {
                         url = "http://thunder.ffdy.cc/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
-                    } else if (/^http:\/\/www\.7369\.com\//i.test(referrer)) {
+                    } else if (/^http:\/\/www\.7369\.cc\//i.test(referrer)) {
                         url = "http://www.7369.com/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
                     } else if (/^http:\/\/xunbo\.cc\//i.test(referrer)) {
                         url = "http://bt.xunbo.cc/" + cid + "/" + mc;
