@@ -1,6 +1,6 @@
 var xThunderDecode = {
     downReg : /^\s*(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
-    udownReg : /^http:\/\/u\.115\.com\/file\/(.+)/i,
+    udownReg : /^http:\/\/(?:u\.)?115\.com\/file\/([\w\d]+)/i,
     asyncReq : 0,
 
     // Flashgetx is encoded at least twice, so pre decode it.
@@ -87,7 +87,7 @@ var xThunderDecode = {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
-            if (matches = matches.match(/'(http:\/\/u\.115\.com\/file\/[\w\d]+)'/)) {
+            if (matches = matches.match(/'(http:\/\/(?:u\.)?115\.com\/file\/[\w\d]+)'/)) {
                 url = matches[1];
             }
         }
