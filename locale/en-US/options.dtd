@@ -10,7 +10,7 @@
 <!ENTITY	pro.fs2you      "rayfile (fs2you://)">
 <!ENTITY	pro.ed2k        "emule (ed2k://)">
 <!ENTITY	pro.magnet      "magnet (magnet:?)">
-<!ENTITY	pro.115         "115 (u.115.com/file)">
+<!ENTITY	pro.115         "115 (115.com/file)">
 <!ENTITY	pro.udown       "udown">
 <!ENTITY	remember        "Associated common file type">
 <!ENTITY	filterext       "Filter files by above extension first">
