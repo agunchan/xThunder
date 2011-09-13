@@ -158,13 +158,13 @@ var xThunder = {
         var cid = this.DEF_STR;
         if (this.agentName == "QQDownload" && this.offLine) {
             cid = 10600;
-        } else if (this.agentName == "Thunder") {
+        } else if (this.agentName.indexOf("Thunder") != -1) {
             var matches;
             if (matches = href.match(/^http:\/\/(?:thunder\.ffdy\.cc|www\.7369\.com|bt\.xunbo\.cc)\/([0-9A-F]+)\//)) {
                 cid = matches[1];
             }
         }
-        
+
         return cid;
     },
 	addTask : function(url, des){
