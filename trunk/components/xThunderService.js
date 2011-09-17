@@ -24,7 +24,7 @@ xThunderComponent.prototype = {
     },
 
     runNative: function(exeFile, args, blocking) {
-        var proc = Components.classes['@mozilla.org/process/util;1']
+        var proc = Components.classes["@mozilla.org/process/util;1"]
                 .createInstance(Components.interfaces.nsIProcess);
         proc.init(exeFile);
         proc["runw" in proc ? "runw" : "run"](blocking, args, args.length);
@@ -33,9 +33,9 @@ xThunderComponent.prototype = {
     
     getChromeFile : function (chromePath) {
         var url;
-        var ios = Components.classes['@mozilla.org/network/io-service;1'].getService(Components.interfaces["nsIIOService"]);
+        var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces["nsIIOService"]);
         var uri = ios.newURI(chromePath, "UTF-8", null);
-        var cr = Components.classes['@mozilla.org/chrome/chrome-registry;1'].getService(Components.interfaces["nsIChromeRegistry"]);
+        var cr = Components.classes["@mozilla.org/chrome/chrome-registry;1"].getService(Components.interfaces["nsIChromeRegistry"]);
         url = cr.convertChromeURL(uri).spec;
         if (!/^file:/.test(url))
             url = "file://"+url;

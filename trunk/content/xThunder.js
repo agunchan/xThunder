@@ -61,10 +61,10 @@ var xThunder = {
 
             switch(result) {
                 case this.xthunderComponent.EXE_NOT_FOUND:
-                    alert('xThunder.exe missing, please check if xThunder was properly installed!');
+                    alert("xThunder.exe missing, please check if xThunder was properly installed!");
                     break;
                 case this.xthunderComponent.DTA_NOT_FOUND:
-                    alert('DTA called error, please check if DTA was properly installed!');
+                    alert("DTA called error, please check if DTA was properly installed!");
                     break;
                 default:
                     return true;
@@ -171,7 +171,7 @@ var xThunder = {
         if (url == null) {
             //115u async method
             return; 
-        } else if (url == "" || (/^(javascript|data):/i.test(url))) {
+        } else if (url == "" || (/^(javascript|data|mailto):/i.test(url))) {
             //invalid url
             --this.totalTask;
             return;
@@ -191,6 +191,8 @@ var xThunder = {
             des = this.DEF_STR;
         } else if (!des) {
             des = this.getFileName(url);
+        } else {
+            des = des.replace(/^\s+|\s+$|[\r\n]+/g,"");
         }
         this.descs.push(des);
         this.cids.push(this.getCid(url));

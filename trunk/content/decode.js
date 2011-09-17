@@ -5,7 +5,7 @@ var xThunderDecode = {
 
     // Flashgetx is encoded at least twice, so pre decode it.
     getPreDecodedUrl : function(url) {
-        url = url.replace(/ /g, '');
+        url = url.replace(/ /g, "");
         var isFlashGet = /^flashget:\/\//i.test(url);
         if (isFlashGet) {
             url = this.getDecodedUrl(url);
@@ -51,13 +51,13 @@ var xThunderDecode = {
         //In special
         var matches;
         if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
-            if (matches = htmlDocument.getElementById('quickDown')) {
+            if (matches = htmlDocument.getElementById("quickDown")) {
                 url = matches.href;
             }
-        } else if (!link.getAttribute('thunderhref') && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
+        } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
             var input = link.parentNode;
             var params,cid,mc;
-            if ((input = input.firstChild) && input.getAttribute('type') == "checkbox" && (params = input.value)) {    
+            if ((input = input.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) {    
                 params = params.split("&");
                 for (var i=0; i<params.length; ++i) {
                     if (matches = params[i].match(/xzurl=(.*)/)) {
@@ -80,7 +80,7 @@ var xThunderDecode = {
                     } 
                 }
             }     
-        } else if (!link.getAttribute('fg') && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
+        } else if (!link.getAttribute("fg") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
             if (matches = matches.match(/Flashget_SetHref_js\(this,'(.+)','.*'\)/)) {
                 url = matches[1];
             } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
@@ -100,8 +100,8 @@ var xThunderDecode = {
             if (!link) {
                 url = "";
             } else {
-                url = link.getAttribute('thunderhref') || link.getAttribute("downloadurl")
-                    || link.getAttribute('fg') || link.getAttribute('qhref') || link.getAttribute('ed2k')
+                url = link.getAttribute("thunderhref") || link.getAttribute("downloadurl")
+                    || link.getAttribute("fg") || link.getAttribute("qhref") || link.getAttribute("ed2k")
                     || link.href || link.name;
             }
         }
@@ -112,12 +112,12 @@ var xThunderDecode = {
 
     getDecodedUrl : function(url) {
         try {
-            url = url.replace(/ /g, '');
+            url = url.replace(/ /g, "");
             var oriUrl = url;
             if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url))
             {
-                url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ''))
-                        .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, '');
+                url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ""))
+                        .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
 
                 if (/^flashget:\/\//i.test(oriUrl) && url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/)) {
                     // use oriUrl when it is actually flashgetx://|mhts|
@@ -160,14 +160,14 @@ var xThunderDecode = {
 
         if(matches)
         {
-            var pcode = matches[1].split('#')[0];
-            url = 'http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode='+pcode+'&version=1176';
+            var pcode = matches[1].split("#")[0];
+            url = "http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode="+pcode+"&version=1176";
             var xmlhttp = new XMLHttpRequest();
             //max-persistent-connections-per-server is 6
             var async = xThunderDecode.asyncReq < 2;
             if (async) {
                 ++xThunderDecode.asyncReq;
-                xmlhttp.open('GET', url, true);
+                xmlhttp.open("GET", url, true);
                 xmlhttp.onreadystatechange = function(){
                     if (xmlhttp.readyState == 4) {
                         --xThunderDecode.asyncReq;
@@ -177,12 +177,12 @@ var xThunderDecode = {
                     }
                 };
             } else {
-                xmlhttp.open('GET', url, async);
+                xmlhttp.open("GET", url, async);
             }
 
-            xmlhttp.setRequestHeader('User-Agent','115UDownClient 2.1.11.126');
-            xmlhttp.setRequestHeader('Host','uapi.115.com');
-            xmlhttp.setRequestHeader('Cache-Control','no-cache');
+            xmlhttp.setRequestHeader("User-Agent","115UDownClient 2.1.11.126");
+            xmlhttp.setRequestHeader("Host","uapi.115.com");
+            xmlhttp.setRequestHeader("Cache-Control","no-cache");
             xmlhttp.send(null);
 
             if (async) {
@@ -199,7 +199,7 @@ var xThunderDecode = {
         var uDownUrl = JSON.parse(responseText).DownloadUrl;
 
         if (uDownUrl && uDownUrl.length > 0) {
-            var index = xThunderPref.getValue('udown');  //tel,cnc
+            var index = xThunderPref.getValue("udown");  //tel,cnc
             if (uDownUrl.length < 2) {
                 index = 0;  // only one url
             } else if (index == 2) {

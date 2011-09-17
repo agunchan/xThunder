@@ -124,7 +124,7 @@ var xThunderPref = {
         if (this.pref == null) {
             this.pref = Components.classes["@mozilla.org/preferences-service;1"].
                             getService(Components.interfaces.nsIPrefService).
-                            getBranch('extensions.xthunder.');
+                            getBranch("extensions.xthunder.");
         }
         return this.pref;
     },
