@@ -270,7 +270,7 @@ var xThunderMain = {
 
     OnThunderDownloadPopup : function(target) {
         xThunderPref.appendAgentList(target, "xThunderBy", "xThunderMain.OnThunderDownloadBy", true, xThunderPref.getValue("downOffLineSubMenu"));
-        //set nonsupport agents item's className to agentNonsup
+        //set className of nonsupport agents item to agentNonsup
         var url;
         if (gContextMenu.onLink)
             url = gContextMenu.target.getAttribute("fg") || gContextMenu.linkURL;

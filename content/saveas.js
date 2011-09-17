@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //	Save as file dialog,require xThunder.js,pref.js
 ////////////////////////////////////////////////////////////
-window.addEventListener('load', function() {
+window.addEventListener("load", function() {
     function $() {
         if (arguments.length == 1) {
             return document.getElementById(arguments[0]);
@@ -18,10 +18,10 @@ window.addEventListener('load', function() {
     }
 
     function forceNormal() {
-        var basicBox = $('basicBox');
-        var normalBox = $('normalBox');
+        var basicBox = $("basicBox");
+        var normalBox = $("normalBox");
         if(basicBox && (!basicBox.collapsed || (normalBox && normalBox.collapsed))) {
-            ['open'].forEach(
+            ["open"].forEach(
                 function(e) {
                     e = $(e);
                     e.parentNode.collapsed = true;
@@ -29,7 +29,7 @@ window.addEventListener('load', function() {
                 }
             );
             normalBox.collapsed = false;
-            var nodes = normalBox.getElementsByTagName('separator');
+            var nodes = normalBox.getElementsByTagName("separator");
 
             for (var i = 0; i < nodes.length; ++i) {
                 nodes[i].collapsed = true;
@@ -59,29 +59,29 @@ window.addEventListener('load', function() {
             referrer = "";
         }
 
-        xThunder.init(referrer, 1, $('xThunderAgentList').value);
+        xThunder.init(referrer, 1, $("xThunderAgentList").value);
         xThunder.addTask(url);
         xThunder.callAgent();
-        de.removeAttribute('ondialogaccept');
-        de.removeAttribute('onblur');
-        de.removeAttribute('onfocus');
+        de.removeAttribute("ondialogaccept");
+        de.removeAttribute("onblur");
+        de.removeAttribute("onfocus");
         de.cancelDialog();
     } // end download function
 
     if (!xThunderPref.getValue("downInSaveFile")) {
-        $('xThunderDown').setAttribute("hidden", true);
+        $("xThunderDown").setAttribute("hidden", true);
         return;
     } 
 
-    var xThunderRadio = $('xThunderRadio');
-    xThunderPref.appendAgentList($('xThunderAgentPopup'), 'xThunderAgent', null, false, xThunderPref.getValue('downOffLineInSaveFile'));
-    $('xThunderAgentList').value = xThunderPref.getValue('agentName');
-    $('xThunderAgentList').setAttribute("hidden", !xThunderPref.getValue('downListInSaveFile'));
+    var xThunderRadio = $("xThunderRadio");
+    xThunderPref.appendAgentList($("xThunderAgentPopup"), "xThunderAgent", null, false, xThunderPref.getValue("downOffLineInSaveFile"));
+    $("xThunderAgentList").value = xThunderPref.getValue("agentName");
+    $("xThunderAgentList").setAttribute("hidden", !xThunderPref.getValue("downListInSaveFile"));
 
-    var ext = dialog.mLauncher.suggestedFileName.split('.');
+    var ext = dialog.mLauncher.suggestedFileName.split(".");
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
-    var supportExt = xThunderPref.getValue('supportExt');
-    var rememberExt = xThunderPref.getValue('remember');
+    var supportExt = xThunderPref.getValue("supportExt");
+    var rememberExt = xThunderPref.getValue("remember");
     var extExists = supportExt.indexOf(ext) != -1;
     if (extExists && rememberExt > 0) {
         download();
@@ -90,11 +90,11 @@ window.addEventListener('load', function() {
 
     forceNormal();
 
-    var mode = $('mode');
-    var remember = $('rememberChoice');
+    var mode = $("mode");
+    var remember = $("rememberChoice");
 
     //same width as open radio
-    var openRadio = $('open');
+    var openRadio = $("open");
     if(openRadio) {
         var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
         if(maxWidth > 0) openRadio.width = xThunderRadio.width = maxWidth;
@@ -106,26 +106,26 @@ window.addEventListener('load', function() {
         remember.disabled = false;
     } 
 
-    mode.addEventListener('select', function() {
+    mode.addEventListener("select", function() {
 		if (mode.selectedItem == xThunderRadio) {
 			remember.disabled = false;
 		} 
 	}, false);
 
-	addEventListener('dialogaccept', function() {
+	addEventListener("dialogaccept", function() {
 		if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {
-                xThunderPref.setValue('supportExt', ext + supportExt);
+                xThunderPref.setValue("supportExt", ext + supportExt);
             }
 
             if (remember.checked) {
-                xThunderPref.setValue('remember', 1);
+                xThunderPref.setValue("remember", 1);
             }
 
             download();
 		} else {
             if (extExists) {
-                xThunderPref.setValue('supportExt', supportExt.replace(ext, ""));
+                xThunderPref.setValue("supportExt", supportExt.replace(ext, ""));
             }
         }
 	}, false); // dialogaccept
