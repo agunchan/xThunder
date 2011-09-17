@@ -15,27 +15,32 @@ var xThunderDecode = {
 
     // Whether the link with special protocal can be decoded
     isProSupNode : function(link, url, protocals) {
-        var contextmenu;
+        var attr;
         for (var i=0; i<protocals.length; ++i) {
-            if (protocals[i] == "thunder" &&
-                    (url.indexOf("thunder:") == 0 ||
-                    link.getAttribute("thunderhref") || link.getAttribute("downloadurl") ||
-                    (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("ThunderNetwork_SetHref") != -1)
+            if (protocals[i] == "thunder" && 
+                    ( url.indexOf("thunder:") == 0 ||
+                      link.getAttribute("thunderhref") || 
+                      link.getAttribute("downloadurl") ||
+                      (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
+                      (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1
+                    )    
                 || protocals[i] == "flashget" &&
-                    (url.indexOf("flashget:") == 0 ||
-                    link.getAttribute("fg") ||
-                    (contextmenu = link.getAttribute("oncontextmenu")) && contextmenu.indexOf("Flashget_SetHref") != -1)
+                    ( url.indexOf("flashget:") == 0 ||
+                      link.getAttribute("fg") ||
+                      (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("Flashget_SetHref") != -1
+                    )
                 || protocals[i] == "qqdl" &&
-                    (url.indexOf("qqdl:") == 0 ||
-                    link.getAttribute("qhref"))
+                    ( url.indexOf("qqdl:") == 0 ||
+                      link.getAttribute("qhref")
+                    )
                 || protocals[i] == "ed2k" &&
-                    (url.indexOf("ed2k:") == 0 ||
-                    link.getAttribute("ed2k"))
+                    ( url.indexOf("ed2k:") == 0 ||
+                      link.getAttribute("ed2k")
+                    )
                 || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
                 || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
                 || protocals[i] == "115" && this.udownReg.test(url)
-                || protocals[i] == "udown" &&
-                    link.id == "udown" && (contextmenu = link.getAttribute("onclick")) && contextmenu.indexOf("AddDownTask") != -1
+                || protocals[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
                 )
                 return true;
         }
@@ -55,6 +60,7 @@ var xThunderDecode = {
                 url = matches.href;
             }
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
+            // thunder url in oncontextmenu attribute
             var input = link.parentNode;
             var params,cid,mc;
             if ((input = input.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) {    
@@ -80,13 +86,20 @@ var xThunderDecode = {
                     } 
                 }
             }     
+        } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("onclick")) && matches.indexOf("thunder://") != -1) {
+            // thunder url in onclick attribute
+            if (matches = matches.match(/'(thunder:\/\/.*?)'/)) {
+                url = matches[1];
+            }
         } else if (!link.getAttribute("fg") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
+            // flashget url in oncontextmenu attribute
             if (matches = matches.match(/Flashget_SetHref_js\(this,'(.+)','.*'\)/)) {
                 url = matches[1];
             } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
+            // udown url in onclick attribute
             if (matches = matches.match(/'(http:\/\/(?:u\.)?115\.com\/file\/[\w\d]+)'/)) {
                 url = matches[1];
             }
