@@ -3,6 +3,7 @@
 <!ENTITY	tab.general		"General">
 <!ENTITY	tab.interface   "Interface">
 <!ENTITY	tab.downloader  "Downloader">
+<!ENTITY	tab.advanced    "Advanced">
 <!ENTITY	lbl.supClick    "Left Click">
 <!ENTITY	pro.thunder     "thunder (thunder://)">
 <!ENTITY	pro.flashget    "flashget (flashget://)">
@@ -14,7 +15,7 @@
 <!ENTITY	pro.udown       "udown">
 <!ENTITY	remember        "Associated common file type">
 <!ENTITY	filterext       "Filter files by above extension first">
-<!ENTITY	lbl.udown       "UDown Link">
+<!ENTITY	lbl.udown       "UDown Url">
 <!ENTITY	udown.tel       "TEL">
 <!ENTITY	udown.cnc       "CNC">
 <!ENTITY	udown.auto      "AUTO">
@@ -29,13 +30,15 @@
 <!ENTITY	downInCxtMenu           "xThunder Link in context menu">
 <!ENTITY	downSubMenu             "Show sub menu of xThunder Link">
 <!ENTITY	downAllInCxtMenu        "xThunder All in context menu">
-<!ENTITY	downAllHotKey           "Show hot key of xThunder All ">
+<!ENTITY	downAllHotKey           "Show hot key(Alt+F1) of xThunder All">
 <!ENTITY	downInSaveFile          "xThunder Radio in save as dialog">
 <!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
 <!ENTITY	lbl.offLine             "OffLine Download">
 <!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
-<!ENTITY	downOffLineSubMenu      "OffLine items in xThuner Link submenu">
+<!ENTITY	downOffLineSep          "Show seprator beofre offLine items">
+<!ENTITY	downOffLineSubMenu      "OffLine items in downloader submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
+<!ENTITY	downOffLineAutoHide     "Auto hide offLine items if agent unused">
 <!ENTITY	moveUpButton    "Move Up">
 <!ENTITY	moveDownButton  "Move Down">
 <!ENTITY	lbl.agentTip    "Tips: ">

@@ -137,7 +137,8 @@ var xThunderMain = {
                 downHidden = !xThunderDecode.downReg.test(selText);
             }
         }
-        downOffLineHidden = downHidden || downOffLineHidden || (defAgentName != "Thunder" && defAgentName != "QQDownload");
+        downOffLineHidden = downHidden || downOffLineHidden 
+            || defAgentName != "Thunder" && defAgentName != "QQDownload" && xThunderPref.getValue("downOffLineAutoHide");
         downAllHidden = downAllHidden || defAgentName == "ToolbarThunder";
 
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
@@ -154,25 +155,15 @@ var xThunderMain = {
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
 
-    getDownloadAgent : function(event, addoffLine) {
+    getDownloadAgent : function(event, addOffLine) {
         if(event && event.button != 0) {
-            var agentList = xThunderPref.getFixedAgentList();
-            var enableAgentList = [];
-            for (var i=0; i<agentList.length; ++i) {
-                var agentItem = agentList[i].split("|");
-                var agent = agentItem[0];
-                if (agentItem.length == 1) {
-                    enableAgentList.push(agent);
-                    if (event.button == 1 && enableAgentList.length >= 3) {
-                        // middle click to use third agent
-                        return enableAgentList[2];
-                    } else if (event.button == 2 && enableAgentList.length >= 2) {
-                        // right click to use second agent
-                        return enableAgentList[1];
-                    } else if (addoffLine && (agent == "Thunder" || agent == "QQDownload")) {
-                        agentList.push(agent + "OffLine");
-                    }
-                }
+            var agentList = xThunderPref.getEnabledAgentList(addOffLine);
+            if (event.button == 1 && agentList.length >= 3) {
+                // middle click to use third agent
+                return agentList[2];
+            } else if (event.button == 2 && agentList.length >= 2) {
+                // right click to use second agent
+                return agentList[1];
             }
         }
 
@@ -220,8 +211,8 @@ var xThunderMain = {
 
     OnThunderDownloadOffLine : function(event) {
         var agent = this.getDownloadAgent(event);
-        if (!(agent == "Thunder" || agent == "QQDownload")) {
-            agent = xThunderPref.getValue("agentName");
+        if (agent != "Thunder" && agent != "QQDownload") {
+            agent = "Thunder";
         }
         this.OnThunderDownload(null, agent, true);
     },

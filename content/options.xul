@@ -38,6 +38,8 @@
             <preference id="pref_downOffLineInCxtMenu" name="extensions.xthunder.downOffLineInCxtMenu" type="bool"/>
             <preference id="pref_downOffLineSubMenu" name="extensions.xthunder.downOffLineSubMenu" type="bool"/>
             <preference id="pref_downOffLineInSaveFile" name="extensions.xthunder.downOffLineInSaveFile" type="bool"/>
+            <preference id="pref_downOffLineSep" name="extensions.xthunder.downOffLineSep" type="bool"/>
+            <preference id="pref_downOffLineAutoHide" name="extensions.xthunder.downOffLineAutoHide" type="bool"/>
         </preferences>
 
         <tabbox class="text">
@@ -45,6 +47,7 @@
                 <tab label="&tab.general;"/>
                 <tab label="&tab.interface;"/>
                 <tab label="&tab.downloader;"/>
+                <tab label="&tab.advanced;"/>
             </tabs>
             <tabpanels flex="1">
                 <tabpanel orient="vertical" flex="1">
@@ -96,12 +99,6 @@
 
                 <tabpanel orient="vertical" flex="1">
                     <groupbox>
-                        <caption label="&lbl.monitor;"/>
-                        <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
-                        <checkbox id="ctrlAltDecode" label="&ctrlAltDecode;" preference="pref_ctrlAltDecode"/>
-                    </groupbox>
-
-                    <groupbox>
                         <caption label="&lbl.showMenu;"/>
                         <checkbox id="showStatusIcon" label="&showStatusIcon;" preference="pref_showStatusIcon"/>
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
@@ -116,15 +113,17 @@
                     <groupbox>
                         <caption label="&lbl.offLine;"/>
                         <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
+                        <checkbox id="downOffLineSep" label="&downOffLineSep;" preference="pref_downOffLineSep"/>
                         <checkbox id="downOffLineSubMenu" label="&downOffLineSubMenu;" preference="pref_downOffLineSubMenu"/>
                         <checkbox id="downOffLineInSaveFile" label="&downOffLineInSaveFile;" preference="pref_downOffLineInSaveFile"/>
+                        <checkbox id="downOffLineAutoHide" label="&downOffLineAutoHide;" preference="pref_downOffLineAutoHide"/>
                     </groupbox>
                 </tabpanel>
 
                 <tabpanel orient="vertical" flex="1">
                     <hbox>
                         <vbox>
-                            <listbox id="agentListBox" rows="10" onselect="xThunderOptions.agentListSelect()" flex="1"/>
+                            <listbox id="agentListBox" rows="11" onselect="xThunderOptions.agentListSelect()" flex="1"/>
                         </vbox>
                         <vbox pack="start" >
                             <button id="moveUpButton" disabled="true" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>
@@ -139,6 +138,14 @@
                         <label id="tipRClickMenu" value="&tip.rClickMenu;"/>
                     </groupbox>
                 </tabpanel>
+                
+                <tabpanel orient="vertical" flex="1">
+                    <groupbox>
+                        <caption label="&lbl.monitor;"/>
+                        <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
+                        <checkbox id="ctrlAltDecode" label="&ctrlAltDecode;" preference="pref_ctrlAltDecode"/>
+                    </groupbox>
+                </tabpanel>    
             </tabpanels>
         </tabbox>
     </prefpane>
