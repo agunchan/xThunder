@@ -185,6 +185,7 @@ var xThunderDecode = {
                     if (xmlhttp.readyState == 4) {
                         --xThunderDecode.asyncReq;
                         downUrl = xThunderDecode.getDownUrl(xmlhttp.responseText) || downUrl;
+                        xThunder.referrer = "http://115.com/file/" + pcode;
                         xThunder.addTask(downUrl);
                         xThunder.callAgent();
                     }

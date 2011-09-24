@@ -1,38 +1,37 @@
 var xThunderPref = {
     pref : null,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit"],
-    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit"],
-                    "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit"],
-                    "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit"]},
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM"],
+    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM"],
+                    "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM"],
+                    "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit", "FDM"]},
 
     //show only available agents in list
-    appendAgentList : function(menupop, idpre, func, isradio, addoffLine){
+    appendAgentList : function(menupop, idpre, func, isradio, addOffLine){
         var ownDoc = menupop.ownerDocument;
         while(menupop.firstChild) {
             menupop.removeChild(menupop.firstChild);
         }
         var stringBundle = document.getElementById("xThunderAgentStrings");
-        var agentList = this.getFixedAgentList();
+        var agentList = this.getEnabledAgentList(addOffLine);
+        var downOffLineSep = this.getValue("downOffLineSep");
         for (var i=0; i<agentList.length; ++i) {
-            var agentItem = agentList[i].split("|");
-            var agent = agentItem[0];
-            if (agentItem.length == 1) {
-                var mi = createMenuitem({
-                    id : idpre + agent,
-                    label : stringBundle.getString(agent),
-                    value : agent,
-                    oncommand : func ? (func + "('" + agent + "')") : ""
-                });
-                if(isradio) {
-                    mi.setAttribute("name", "agent");
-                    mi.setAttribute("type", "radio");
-                    if (i==0)
-                        mi.setAttribute("checked", true);
-                }
-                if (addoffLine && (agent == "Thunder" || agent == "QQDownload")) {
-                    agentList.push(agent + "OffLine");
-                }
+            var agent = agentList[i];
+            var mi = createMenuitem({
+                id : idpre + agent,
+                label : stringBundle.getString(agent),
+                value : agent,
+                oncommand : func ? (func + "('" + agent + "')") : ""
+            });
+            if(isradio) {
+                mi.setAttribute("name", "agent");
+                mi.setAttribute("type", "radio");
+                if (i==0)
+                    mi.setAttribute("checked", true);
+            }
+            if(agent.indexOf("OffLine") != -1 && downOffLineSep) {
+                menupop.insertBefore(ownDoc.createElement("menuseparator"), mi);
+                downOffLineSep = false;
             }
         }
 
@@ -43,7 +42,24 @@ var xThunderPref = {
             return menupop.appendChild(mi);
         }
     },
-
+    
+    getEnabledAgentList : function(addOffLine) {
+        var agentList = this.getFixedAgentList();
+        var enableAgentList = [];
+        for (var i=0; i<agentList.length; ++i) {
+            var agentItem = agentList[i].split("|");
+            var agent = agentItem[0];
+            if (addOffLine && agent == "Thunder" && (!this.getValue("downOffLineAutoHide") || agentItem.length == 1)
+                || addOffLine && agent == "QQDownload" && agentItem.length == 1) {
+                //add Thunder anyway, but only QQDownload is available
+                agentList.push(agent + "OffLine");
+            }
+            if (agentItem.length == 1) {
+                enableAgentList.push(agent);
+            }
+        }
+        return enableAgentList;
+    },
     
     getFixedAgentList : function() {
         var showAgents = this.getValue("showAgents");

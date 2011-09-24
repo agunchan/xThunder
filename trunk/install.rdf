@@ -5,10 +5,10 @@
 	
         <em:id>xthunder@lshai.com</em:id>
         <em:name>xThunder</em:name>
-        <em:version>1.1.1b2</em:version>
-        <em:description>Manage popular downloaders(Thunder,QQDownload,FlashGet,BitComet,IDM) and support special links.</em:description>
+        <em:version>1.1.1</em:version>
+        <em:description>Manage popular downloaders(Thunder,QQDownload,FlashGet,BitComet,IDM) and support special links decoding.</em:description>
         <em:creator>agunchan</em:creator>
-        <em:homepageURL>http://blog.lshai.com</em:homepageURL>
+        <em:homepageURL>http://www.fxthunder.com</em:homepageURL>
         <em:iconURL>chrome://xthunder/skin/icon.png</em:iconURL>
         <em:optionsURL>chrome://xthunder/content/options.xul</em:optionsURL>
         <em:type>2</em:type>
@@ -18,9 +18,9 @@
             <Description>
                 <em:locale>zh-CN</em:locale>
                 <em:name>xThunder</em:name>
-                <em:description>管理常用下载器（迅雷，旋风，快车，比特彗星，IDM）并支持专用链.</em:description>
+                <em:description>管理常用下载器（迅雷，旋风，快车，比特彗星，IDM）并支持专用链解码.</em:description>
                 <em:creator>agunchan</em:creator>
-                <em:homepageURL>http://blog.lshai.com</em:homepageURL>
+                <em:homepageURL>http://www.fxthunder.com</em:homepageURL>
             </Description>
         </em:localized>
 
