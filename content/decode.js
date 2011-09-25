@@ -1,5 +1,4 @@
 var xThunderDecode = {
-    downReg : /^\s*(ftp|https?|thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
     udownReg : /^http:\/\/(?:u\.)?115\.com\/file\/([\w\d]+)/i,
     asyncReq : 0,
 
@@ -107,7 +106,7 @@ var xThunderDecode = {
 
         //In gernal
         if (!url) {
-            while (link && typeof link.href == "undefined" && !this.downReg.test(link.name)) {
+            while (link && typeof link.href == "undefined" && !xThunderPref.proSupReg.test(link.name)) {
                 link = link.parentNode;
             }
             if (!link) {

@@ -1,5 +1,7 @@
 var xThunderPref = {
     pref : null,
+    uriSupReg : /^(?:ftp|https?):/i,
+    proSupReg : /^(thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
     agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM"],
     agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM"],
@@ -113,7 +115,7 @@ var xThunderPref = {
             supExt = this.getValue("supportExt");
         }
         var download = false;
-        if (/^(?:ftp|https?):/i.test(trimmedUrl)) {
+        if (this.uriSupReg.test(trimmedUrl)) {
             var subUrls = trimmedUrl.split("?");
             var names = subUrls[0].split("#")[0].split("/");
             var fileName = names[names.length-1];
