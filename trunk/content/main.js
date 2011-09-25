@@ -45,7 +45,7 @@ var xThunderMain = {
         var remExt = xThunderPref.getValue("remember");
 
         var link = ev.target;
-        if (typeof link.href == "undefined" && !xThunderDecode.downReg.test(link.name)) {
+        if (typeof link.href == "undefined" && !xThunderPref.proSupReg.test(link.name)) {
             link = link.parentNode;
             if (!link || typeof link.href == "undefined") {
                 return true;
@@ -134,7 +134,8 @@ var xThunderMain = {
                 downHidden = false;
             } else {
                 var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
-                downHidden = !xThunderDecode.downReg.test(selText);
+                selText = selText.replace(/^\s+/g, "");
+                downHidden = !xThunderPref.uriSupReg.test(selText) && !xThunderPref.proSupReg.test(selText);
             }
         }
         downOffLineHidden = downHidden || downOffLineHidden 

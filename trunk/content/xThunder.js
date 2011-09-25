@@ -141,7 +141,7 @@ var xThunder = {
     getFileName : function(href) {
         var fileName = "index.html";
         try {
-            if (/^(?:ftp|https?):/i.test(href)) {
+            if (xThunderPref.uriSupReg.test(href)) {
                 var names = href.split("?")[0].split("#")[0].split("/");
                 fileName = names[names.length-1];
                 if (fileName != "") 
