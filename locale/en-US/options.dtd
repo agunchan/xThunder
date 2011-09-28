@@ -35,9 +35,9 @@
 <!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
 <!ENTITY	lbl.offLine             "OffLine Download">
 <!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
-<!ENTITY	downOffLineSep          "Show seprator beofre offLine items">
 <!ENTITY	downOffLineSubMenu      "OffLine items in downloader submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
+<!ENTITY	downOffLineSep          "Show separator before offLine items">
 <!ENTITY	downOffLineAutoHide     "Auto hide offLine items if agent unused">
 <!ENTITY	moveUpButton    "Move Up">
 <!ENTITY	moveDownButton  "Move Down">
