@@ -113,9 +113,9 @@
                     <groupbox>
                         <caption label="&lbl.offLine;"/>
                         <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
-                        <checkbox id="downOffLineSep" label="&downOffLineSep;" preference="pref_downOffLineSep"/>
                         <checkbox id="downOffLineSubMenu" label="&downOffLineSubMenu;" preference="pref_downOffLineSubMenu"/>
                         <checkbox id="downOffLineInSaveFile" label="&downOffLineInSaveFile;" preference="pref_downOffLineInSaveFile"/>
+                        <checkbox id="downOffLineSep" label="&downOffLineSep;" preference="pref_downOffLineSep"/>
                         <checkbox id="downOffLineAutoHide" label="&downOffLineAutoHide;" preference="pref_downOffLineAutoHide"/>
                     </groupbox>
                 </tabpanel>
