@@ -65,8 +65,11 @@ var xThunderPref = {
     
     getFixedAgentList : function() {
         var showAgents = this.getValue("showAgents");
+        var defAgent = this.getValue("agentName");
         var agentList = showAgents.split(",");
-        if (agentList.length-1 < this.agents.length) {
+        var agentLen = agentList.length-1;
+
+        if (agentLen < this.agents.length) {
             // for v1.0.2 before user config
             for (var i=0; i<this.agents.length; ++i) {
                 if (!this.inArray(this.agents[i], agentList) && !this.inArray(this.agents[i]+"|0", agentList)) {
@@ -75,14 +78,24 @@ var xThunderPref = {
             }
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
+        } else if(agentLen > this.agents.length) {
+            // for v1.1.1 after user config
+            for (var j=0; j<agentLen; ++j) {
+                if (!this.inArray(agentList[j].split("|")[0], this.agents)) {
+                    showAgents = showAgents.replace(agentList[j] + ",", "");
+                }
+            }
+            this.setValue("showAgents", showAgents);
+            agentList = showAgents.split(",");
         }
-        var defAgent = this.getValue("agentName");
+        
         if (defAgent != agentList[0]) {
             // default agent must be first
             showAgents = defAgent + "," + showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
         }
+        
         //last element is an empty string
         agentList.pop();
         return agentList;
