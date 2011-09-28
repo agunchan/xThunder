@@ -140,7 +140,6 @@ var xThunderMain = {
         }
         downOffLineHidden = downHidden || downOffLineHidden 
             || defAgentName != "Thunder" && defAgentName != "QQDownload" && xThunderPref.getValue("downOffLineAutoHide");
-        downAllHidden = downAllHidden || defAgentName == "ToolbarThunder";
 
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
         var showAllHotKey = xThunderPref.getValue("downAllHotKey");
@@ -233,20 +232,23 @@ var xThunderMain = {
             imageCount = images.length;
         }
 
-        if (xThunderPref.getValue("agentName") == "ToolbarThunder" && linkCount+imageCount > 1) {
-            alert("MiniThunder does not support batch downloading!");
+        var taskCount = linkCount + imageCount;
+        var agent = this.getDownloadAgent(event);
+        if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
+            this.endMenuClick(event);
+            alert(agent + " does not support batch downloading!");
             return false;
         }
 
-        xThunder.init(htmlDocument.URL, linkCount+imageCount, this.getDownloadAgent(event));
+        xThunder.init(htmlDocument.URL, taskCount, agent);
 
         for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
-            if (!xThunderDecode.udownReg.test(links[i].href)) {
-                xThunder.addTask(url, links[i].textContent);
-            } else {
+            if (xThunderDecode.udownReg.test(links[i].href)) {
                 //udown link is got asynchronously, so do not use wrong textContent
                 xThunder.addTask(url, "");
+            } else {
+                xThunder.addTask(url, links[i].textContent);
             }
         }
 
