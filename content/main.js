@@ -67,8 +67,8 @@ var xThunderMain = {
                 if (ev.altKey && xThunderPref.getValue("ctrlAltDecode")) {
                     //Copy decode url to clipboard 
                     link.setAttribute("href", decodedUrl);
-                    const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
-                                             .getService(Components.interfaces.nsIClipboardHelper);
+                    var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
+                                        .getService(Components.interfaces.nsIClipboardHelper);
                     gClipboardHelper.copyString(decodedUrl);
                 } else if (xThunderPref.getValue("ctrlNoMonitor") && decodedUrl && decodedUrl != url) {
                     //Open decoded link by Firefox
@@ -126,10 +126,9 @@ var xThunderMain = {
         var downOffLineHidden = !xThunderPref.getValue("downOffLineInCxtMenu");
         var downAllHidden = !xThunderPref.getValue("downAllInCxtMenu");
         var downSubMenuShown = xThunderPref.getValue("downSubMenu");
-        var defAgentName = xThunderPref.getValue("agentName");
 
         if (!downHidden) {
-            //Show download link in context menu if needed
+            //Show xThunder link in context menu if needed
             if (gContextMenu.onLink || gContextMenu.onImage) {
                 downHidden = false;
             } else {
@@ -138,8 +137,10 @@ var xThunderMain = {
                 downHidden = !xThunderPref.uriSupReg.test(selText) && !xThunderPref.proSupReg.test(selText);
             }
         }
-        downOffLineHidden = downHidden || downOffLineHidden 
-            || defAgentName != "Thunder" && defAgentName != "QQDownload" && xThunderPref.getValue("downOffLineAutoHide");
+        if (!downOffLineHidden) {
+            //Show xThunder offLine anyway or if needed
+            downOffLineHidden = !xThunderPref.getValue("downOffLineAnyway") && downHidden;
+        }
 
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
         var showAllHotKey = xThunderPref.getValue("downAllHotKey");
@@ -147,7 +148,7 @@ var xThunderMain = {
         downloadLinkItem.className = downloadOffLineItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
         downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
         downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
-        downloadOffLineItem.setAttribute("hidden", downHidden || downOffLineHidden);
+        downloadOffLineItem.setAttribute("hidden", downOffLineHidden);
         //Fix Bug 630830 before Firefox5 - "key" attribute changes to menuitems are not handled
         downloadAllItem.setAttribute("acceltext", showAllHotKey ? "Alt+F1" : "");
         downloadAllItem.setAttribute("key", showAllHotKey ? "xThunderAllKey" : "");
@@ -181,6 +182,29 @@ var xThunderMain = {
         }
     },
 
+    pasteUrlFromClipborad : function() {
+        var pastetext;
+        try {
+            var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
+            var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+            var str       = new Object();
+            var strLength = new Object();
+            trans.addDataFlavor("text/unicode");
+            clip.getData(trans, clip.kGlobalClipboard);
+            trans.getTransferData("text/unicode", str, strLength);
+            if (str) {
+                str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+                pastetext = str.data.substring(0, strLength.value / 2);
+            }
+        } catch (ex) { }
+        
+        if(pastetext && (xThunderPref.uriSupReg.test(pastetext) || xThunderPref.proSupReg.test(pastetext))) {
+            return pastetext;
+        } else {
+            return "http://";
+        }
+    },
+
     OnThunderDownload : function(event, agentName, offLine) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
@@ -197,6 +221,9 @@ var xThunderMain = {
         } else {
             // Get selected url
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
+            if (url == "") {
+                url = this.pasteUrlFromClipborad();
+            }
             url = xThunderDecode.getDecodedUrl(url);
         }
 

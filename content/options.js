@@ -21,7 +21,8 @@ var xThunderOptions = {
         document.getElementById("downSubMenu").disabled = !xThunderPref.getValue("downInCxtMenu");
         document.getElementById("downAllHotKey").disabled = !xThunderPref.getValue("downAllInCxtMenu");
         document.getElementById("downListInSaveFile").disabled = !xThunderPref.getValue("downInSaveFile");
-
+        document.getElementById("downOffLineAnyway").disabled = !xThunderPref.getValue("downOffLineInCxtMenu");
+        
         //Get agents, click added and status icon
         this.getAgents();
         this.oriStatusIcon = xThunderPref.getValue("showStatusIcon");

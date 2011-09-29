@@ -35,6 +35,7 @@
 <!ENTITY	downListInSaveFile      "显示xThunder项旁的下拉列表">
 <!ENTITY	lbl.offLine             "离线下载">
 <!ENTITY	downOffLineInCxtMenu    "xThunder离线下载在右键菜单">
+<!ENTITY	downOffLineAnyway       "始终显示xThunder离线下载">
 <!ENTITY	downOffLineSubMenu      "离线下载项在右键下载的二级菜单">
 <!ENTITY	downOffLineInSaveFile   "离线下载项在保存对话框下拉列表">
 <!ENTITY	downOffLineSep          "显示离线下载项前的分隔线">

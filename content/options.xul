@@ -36,6 +36,7 @@
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
             <preference id="pref_downListInSaveFile" name="extensions.xthunder.downListInSaveFile" type="bool"/>
             <preference id="pref_downOffLineInCxtMenu" name="extensions.xthunder.downOffLineInCxtMenu" type="bool"/>
+            <preference id="pref_downOffLineAnyway" name="extensions.xthunder.downOffLineAnyway" type="bool"/>
             <preference id="pref_downOffLineSubMenu" name="extensions.xthunder.downOffLineSubMenu" type="bool"/>
             <preference id="pref_downOffLineInSaveFile" name="extensions.xthunder.downOffLineInSaveFile" type="bool"/>
             <preference id="pref_downOffLineSep" name="extensions.xthunder.downOffLineSep" type="bool"/>
@@ -104,6 +105,8 @@
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu" oncommand="document.getElementById('downSubMenu').disabled = !this.checked;"/>
                         <checkbox id="downSubMenu" label="&downSubMenu;" style="margin-left:22px;"  preference="pref_downSubMenu"/>
+                        <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu" oncommand="document.getElementById('downOffLineAnyway').disabled = !this.checked;"/>
+                        <checkbox id="downOffLineAnyway" label="&downOffLineAnyway;" style="margin-left:22px;" preference="pref_downOffLineAnyway"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu" oncommand="document.getElementById('downAllHotKey').disabled = !this.checked;"/>
                         <checkbox id="downAllHotKey" label="&downAllHotKey;" style="margin-left:22px;" preference="pref_downAllHotKey"/>
                         <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile" oncommand="document.getElementById('downListInSaveFile').disabled = !this.checked;"/>
@@ -112,7 +115,6 @@
                      
                     <groupbox>
                         <caption label="&lbl.offLine;"/>
-                        <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
                         <checkbox id="downOffLineSubMenu" label="&downOffLineSubMenu;" preference="pref_downOffLineSubMenu"/>
                         <checkbox id="downOffLineInSaveFile" label="&downOffLineInSaveFile;" preference="pref_downOffLineInSaveFile"/>
                         <checkbox id="downOffLineSep" label="&downOffLineSep;" preference="pref_downOffLineSep"/>
