@@ -127,8 +127,7 @@ var xThunder = {
             if (/^https?:\/\//i.test(href)) {
                 var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
                 uri.spec = href;
-                strCookie = Components.classes["@mozilla.org/cookieService;1"]
-                        .getService(Components.interfaces.nsICookieService)
+                strCookie = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService)
                         .getCookieString(uri, null);
             }
         } catch(ex) {}
