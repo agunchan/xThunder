@@ -70,15 +70,19 @@ var xThunderMain = {
                     var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
                                         .getService(Components.interfaces.nsIClipboardHelper);
                     gClipboardHelper.copyString(decodedUrl);
-                } else if (xThunderPref.getValue("ctrlNoMonitor") && decodedUrl && decodedUrl != url) {
-                    //Open decoded link by Firefox
-                    if (remExt == 1) {
-                        xThunderPref.setValue("remember", -1);//0:never down, 1: auto down, -1: no down this time
-                    }
-                    document.commandDispatcher.focusedWindow.location.href = decodedUrl;
                 } else {
-                    //Open in backgrond tab - Firefox default way
-                    return true;
+                    if (remExt == 1) {
+                        //0:never down, 1: auto down, -1: no down this time
+                        xThunderPref.setValue("remember", -1);
+                    }
+                    
+                    if (xThunderPref.getValue("ctrlNoMonitor") && decodedUrl && decodedUrl != url) {
+                        //Open decoded link in current tab
+                        document.commandDispatcher.focusedWindow.location.href = decodedUrl;
+                    } else {
+                        //Open in backgrond new tab - Firefox default behavior
+                        return true;
+                    }
                 }
             } catch(ex) {} 
             

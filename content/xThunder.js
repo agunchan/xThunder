@@ -45,17 +45,18 @@ var xThunder = {
                 this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].getService().wrappedJSObject;
             }
             
-            var result,browser;
-            if (this.agentName == "DTA") {
-                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs);
-            } else if (this.agentName == "Thunder" && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
-                //Thunder offline
+            var result,browser,args;
+             if (this.agentName == "Thunder" && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
+                //Thunder offline webpage
                 var thunderOffUrl = "http://lixian.vip.xunlei.com/";
                 browser.selectedTab = browser.addTab(this.urls[0].indexOf(thunderOffUrl) != -1 
                                                    ? this.urls[0] : thunderOffUrl + "lixian_login.html?furl=" + this.urls[0]);
                 result = true;
+            } else if (this.agentName == "DTA") {
+                args = xThunderPref.getValue("dtaOneClick");
+                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, null, args);
             } else {
-                var args = this.createJobFile();
+                args = this.createJobFile();
                 result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.EXE_PATH, args);
             }
 

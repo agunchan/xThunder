@@ -81,9 +81,9 @@ window.addEventListener("load", function() {
     var ext = dialog.mLauncher.suggestedFileName.split(".");
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
     var supportExt = xThunderPref.getValue("supportExt");
-    var rememberExt = xThunderPref.getValue("remember");
+    var remExt = xThunderPref.getValue("remember");
     var extExists = supportExt.indexOf(ext) != -1;
-    if (extExists && rememberExt > 0) {
+    if (extExists && remExt > 0) {
         download();
         return;
     }
@@ -91,7 +91,6 @@ window.addEventListener("load", function() {
     forceNormal();
 
     var mode = $("mode");
-    var remember = $("rememberChoice");
 
     //same width as open radio
     var openRadio = $("open");
@@ -101,25 +100,13 @@ window.addEventListener("load", function() {
     }
 
     if (extExists) {
-        remember.checked = rememberExt;
         mode.selectedItem = xThunderRadio;
-        remember.disabled = false;
     } 
-
-    mode.addEventListener("select", function() {
-		if (mode.selectedItem == xThunderRadio) {
-			remember.disabled = false;
-		} 
-	}, false);
 
 	addEventListener("dialogaccept", function() {
 		if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {
                 xThunderPref.setValue("supportExt", ext + supportExt);
-            }
-
-            if (remember.checked) {
-                xThunderPref.setValue("remember", 1);
             }
 
             download();

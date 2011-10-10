@@ -39,7 +39,10 @@ var xThunderDecode = {
                 || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
                 || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
                 || protocals[i] == "115" && this.udownReg.test(url)
-                || protocals[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
+                || protocals[i] == "udown" && 
+                    ( this.udownReg.test(url) ||
+                      link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
+                    )   
                 )
                 return true;
         }
@@ -126,8 +129,7 @@ var xThunderDecode = {
         try {
             url = url.replace(/ /g, "");
             var oriUrl = url;
-            if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url))
-            {
+            if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url)) {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ""))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
 
@@ -170,8 +172,7 @@ var xThunderDecode = {
         var matches = url.match(this.udownReg);
         var downUrl = url;
 
-        if(matches)
-        {
+        if(matches) {
             var pcode = matches[1].split("#")[0];
             url = "http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode="+pcode+"&version=1176";
             var xmlhttp = new XMLHttpRequest();

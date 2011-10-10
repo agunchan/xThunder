@@ -13,12 +13,12 @@ xThunderComponent.prototype = {
     EXE_NOT_FOUND:      -3,
 
     //exeFile : string or nsILocalFile
-    callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, exePath, cmdArgs) {
+    callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, exePath, args) {
         var result;
         if (agentName == "DTA") {
-            result = this.DTADownload(totalTask, referrer, urls, descs);
+            result = this.DTADownload(totalTask, referrer, urls, descs, args);
         } else {
-            result = this.COMDownload(exePath, cmdArgs, false);
+            result = this.COMDownload(exePath, args, false);
         }
         return result;
     },
@@ -56,7 +56,7 @@ xThunderComponent.prototype = {
         return this.runNative(this.COMExeFile, args, blocking);
     },
 
-    DTADownload : function(totalTask, refer, urls, descs) {
+    DTADownload : function(totalTask, refer, urls, descs, oneClick) {
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                             .getService(Components.interfaces.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");
@@ -81,7 +81,7 @@ xThunderComponent.prototype = {
 
         var DTA = this.DTA;
         if (totalTask == 1 && DTA.saveSingleLink) {
-            DTA.saveSingleLink(mainWindow, false, urls[0], refer, descs[0]);
+            DTA.saveSingleLink(mainWindow, oneClick, urls[0], refer, descs[0]);
         } else if(totalTask > 1 && DTA.saveLinkArray) {
             var anchors = [], images = [];
             var wrapURL = function(url, cs) {return new DTA.URL(DTA.IOService.newURI(url, cs, null));}

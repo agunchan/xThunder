@@ -12,7 +12,7 @@
 <!ENTITY	pro.ed2k        "电驴 (ed2k://)">
 <!ENTITY	pro.magnet      "磁力 (magnet:?)">
 <!ENTITY	pro.115         "115 (115.com/file)">
-<!ENTITY	pro.udown       "优蛋">
+<!ENTITY	pro.udown       "优蛋 (javascript:)">
 <!ENTITY	remember        "关联普通文件类型">
 <!ENTITY	filterext       "预先以上述扩展名过滤文件">
 <!ENTITY	lbl.udown       "115默认下载">
