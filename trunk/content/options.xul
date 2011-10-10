@@ -73,8 +73,8 @@
                                     <checkbox id="fs2you" label="&pro.fs2you;"/>
                                 </row>
                                 <row align="baseline">
-                                    <checkbox id="115" label="&pro.115;"/>
                                     <checkbox id="udown" label="&pro.udown;"/>
+                                    <checkbox id="115" label="&pro.115;"/>
                                 </row>
                             </rows>
                         </grid>
