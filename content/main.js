@@ -243,7 +243,7 @@ var xThunderMain = {
     OnThunderDownloadOffLine : function(event) {
         var agent = this.getDownloadAgent(event);
         if (agent != "Thunder" && agent != "QQDownload") {
-            agent = "Thunder";
+            agent = event && event.button == 2 && xThunderPref.getValue("qqOffLineWeb") ? "QQDownload" : "Thunder";
         }
         this.OnThunderDownload(null, agent, true);
     },
