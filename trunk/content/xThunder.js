@@ -46,11 +46,13 @@ var xThunder = {
             }
             
             var result,browser,args;
-             if (this.agentName == "Thunder" && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
-                //Thunder offline webpage
-                var thunderOffUrl = "http://lixian.vip.xunlei.com/";
-                browser.selectedTab = browser.addTab(this.urls[0].indexOf(thunderOffUrl) != -1 
-                                                   ? this.urls[0] : thunderOffUrl + "lixian_login.html?furl=" + this.urls[0]);
+             if ((this.agentName == "Thunder" || this.agentName=="QQDownload" && xThunderPref.getValue("qqOffLineWeb")) 
+                 && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
+                var offUrls = ["http://lixian.vip.xunlei.com/", "http://lixian.qq.com/"];
+                var params = ["lixian_login.html?furl=", "main.html?url="];
+                var i = this.agentName == "Thunder" ? 0 : 1;
+                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[i]) != -1 
+                                                   ? this.urls[0] : offUrls[i] + params[i] + this.urls[0]);
                 result = true;
             } else if (this.agentName == "DTA") {
                 args = xThunderPref.getValue("dtaOneClick");

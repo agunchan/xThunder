@@ -35,11 +35,11 @@
 <!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
 <!ENTITY	lbl.offLine             "OffLine Download">
 <!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
-<!ENTITY	downOffLineAnyway       "Show xThunder OffLine anyway">
+<!ENTITY	downOffLineAnyway       "Show xThunder OffLine always">
 <!ENTITY	downOffLineSubMenu      "OffLine items in downloader submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
 <!ENTITY	downOffLineSep          "Show separator before offLine items">
-<!ENTITY	downOffLineAutoHide     "Auto hide offLine items if agent unused">
+<!ENTITY	qqOffLineWeb            "Use web version for QQDownload offLine">
 <!ENTITY	moveUpButton    "Move Up">
 <!ENTITY	moveDownButton  "Move Down">
 <!ENTITY	lbl.agentTip    "Tips: ">

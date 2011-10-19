@@ -51,9 +51,9 @@ var xThunderPref = {
         for (var i=0; i<agentList.length; ++i) {
             var agentItem = agentList[i].split("|");
             var agent = agentItem[0];
-            if (addOffLine && agent == "Thunder" && (!this.getValue("downOffLineAutoHide") || agentItem.length == 1)
-                || addOffLine && agent == "QQDownload" && agentItem.length == 1) {
-                //add Thunder anyway, but only QQDownload is available
+            if (addOffLine && (agent == "Thunder" || agent == "QQDownload") && 
+                (!this.getValue("downOffLineAutoHide") || agentItem.length == 1)) {
+                //add Thunder and QQDownload anyway
                 agentList.push(agent + "OffLine");
             }
             if (agentItem.length == 1) {

@@ -25,3 +25,4 @@ pref("extensions.xthunder.showAgents", "Thunder,QQDownload,DTA,ToolbarThunder|0,
 pref("extensions.xthunder.downDir", "C:\\");
 pref("extensions.xthunder.sleepSecond", 15);
 pref("extensions.xthunder.dtaOneClick", false);
+pref("extensions.xthunder.qqOffLineWeb", false);
