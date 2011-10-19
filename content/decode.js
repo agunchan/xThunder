@@ -39,10 +39,7 @@ var xThunderDecode = {
                 || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
                 || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
                 || protocals[i] == "115" && this.udownReg.test(url)
-                || protocals[i] == "udown" && 
-                    ( this.udownReg.test(url) ||
-                      link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
-                    )   
+                || protocals[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
                 )
                 return true;
         }
@@ -95,8 +92,8 @@ var xThunderDecode = {
             }
         } else if (!link.getAttribute("fg") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
             // flashget url in oncontextmenu attribute
-            if (matches = matches.match(/Flashget_SetHref_js\(this,'(.+)','.*'\)/)) {
-                url = matches[1];
+            if (matches = matches.match(/Flashget_SetHref_js\(this,(?:'(.+)','.*')|(?:'(flashget:.*)')\)/)) {
+                url = matches[1] || matches[2];
             } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
                 url = matches;
             }
@@ -132,10 +129,11 @@ var xThunderDecode = {
             if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url)) {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ""))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
-
-                if (/^flashget:\/\//i.test(oriUrl) && url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/)) {
-                    // use oriUrl when it is actually flashgetx://|mhts|
-                    url = oriUrl;
+                if (/^flashget:\/\//i.test(oriUrl)) {
+                    if (url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))
+                        url = oriUrl; // use oriUrl when it is actually flashgetx://|mhts|
+                    else
+                        url = this.getDecodedUrl(url);  // decode twice
                 } else if(/^ftp:\/\//i.test(url)) {
                     // decode username,dir when url is like ftp://%E7%BA%A2%E6%97@wt4.hltm.cc:3101/E5%BD%B1%E5.rmvb
                     url = decodeURIComponent(url);
