@@ -42,7 +42,7 @@ var xThunder = {
 
         try {
             if (this.xthunderComponent == null) {
-                this.xthunderComponent = Components.classes["@lshai.com/xthundercomponent;1"].getService().wrappedJSObject;
+                this.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
             }
             
             var result,browser,args;
