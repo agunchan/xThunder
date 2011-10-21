@@ -5,8 +5,7 @@ locale  xthunder zh-CN locale/zh-CN/
 
 # Gecko 2 JavaScript component registration
 component {77683972-8cb9-4f92-a962-aea5b6f1e2a1} components/xThunderService.js
-contract @lshai.com/xthundercomponent;1 {77683972-8cb9-4f92-a962-aea5b6f1e2a1}
-category profile-after-change xThunderComponent @lshai.com/xthundercomponent;1
+contract @fxthunder.com/component;1 {77683972-8cb9-4f92-a962-aea5b6f1e2a1}
 
 ## overlay ##
 overlay chrome://browser/content/browser.xul chrome://xthunder/content/main.xul

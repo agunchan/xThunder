@@ -1,11 +1,12 @@
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm"); 
+
 function xThunderComponent() {
     this.wrappedJSObject = this;
 }
  
 xThunderComponent.prototype = {
     classID:            Components.ID("{77683972-8cb9-4f92-a962-aea5b6f1e2a1}"),
-    contractID:         "@lshai.com/xthundercomponent;1",
+    contractID:         "@fxthunder.com/component;1",
     QueryInterface:     XPCOMUtils.generateQI(),
     DTA:                null,
     COMExeFile:         null,
