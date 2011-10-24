@@ -175,16 +175,15 @@ var xThunder = {
             return; 
         } else if (url == "" || (/^(javascript|data|mailto):/i.test(url))) {
             //invalid url
+            url = this.referrer;
+        }
+        
+        //nonsupport or filtered url
+        var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
+        if (xThunderPref.inArray(this.agentName, agentsNonsup)
+            || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
             --this.totalTask;
             return;
-        } else {
-            //nonsupport or filtered url
-            var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
-            if (xThunderPref.inArray(this.agentName, agentsNonsup)
-                || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
-                --this.totalTask;
-                return;
-            }
         }
 
         this.urls.push(url);

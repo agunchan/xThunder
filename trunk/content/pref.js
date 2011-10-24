@@ -131,7 +131,7 @@ var xThunderPref = {
         if (this.uriSupReg.test(trimmedUrl)) {
             var subUrls = trimmedUrl.split("?");
             var names = subUrls[0].split("#")[0].split("/");
-            var fileName = names[names.length-1];
+            var fileName = names[names.length-1].replace(/%2E/g, ".");
             var matches = fileName.match(/(\.\w+)$/i);
             if (matches && supExt.indexOf(matches[1] + ";") != -1) {
                 download = true;

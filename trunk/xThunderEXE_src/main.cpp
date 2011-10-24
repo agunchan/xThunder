@@ -12,12 +12,8 @@
 #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 #endif
 
-#define ARG_ERROR -100
-#define COM_ERROR -99
-#define INVOKE_ERROR -98
-#define JOB_ERROR -97
+enum callError { ARG_ERROR = -100, COM_ERROR, INVOKE_ERROR, JOB_ERROR};
 #define MB_TITLE L"xThunder"
-
 #define BUF_SIZE 16384
 char g_buf[BUF_SIZE];
 wchar_t g_wbuf[BUF_SIZE];
