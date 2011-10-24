@@ -82,7 +82,15 @@ xThunderComponent.prototype = {
 
         var DTA = this.DTA;
         if (totalTask == 1 && DTA.saveSingleLink) {
-            DTA.saveSingleLink(mainWindow, oneClick, urls[0], refer, descs[0]);
+            try {
+                DTA.saveSingleLink(mainWindow, oneClick, urls[0], refer, descs[0]);
+            } catch(e) {
+                //use dta dialog to set download directory if oneClick failed
+                if (oneClick)
+                    DTA.saveSingleLink(mainWindow, false, urls[0], refer, descs[0]);
+                else
+                    throw e;
+            }
         } else if(totalTask > 1 && DTA.saveLinkArray) {
             var anchors = [], images = [];
             var wrapURL = function(url, cs) {return new DTA.URL(DTA.IOService.newURI(url, cs, null));}
