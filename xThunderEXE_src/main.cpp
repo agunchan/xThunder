@@ -36,8 +36,8 @@ wchar_t * readLine(FILE *stream)
 //				Directory
 //				Referrer
 //				url       -
-//				cookie      \  repeat n 
-//				desc        /
+//				desc       \  repeat n 
+//				cookie     /
 //				cid		  -
 //
 //////////////////////////////////////////////////////////////////////////
@@ -51,8 +51,8 @@ int parseJob(DownloadInfo & downInfo, char * jobFilePath)
 		for (int i=0; i<downInfo.count; ++i)
 		{
 			downInfo.urls[i] = readLine(f);
-			downInfo.cookies[i] = readLine(f);
 			downInfo.descs[i] = readLine(f);
+			downInfo.cookies[i] = readLine(f);
 			downInfo.cids[i] = readLine(f);
 		}
 		fclose(f);

@@ -30,11 +30,6 @@ var xThunder = {
         this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
                             ? xThunderPref.getValue("supportExt") : "";
     },
-	callThunder : function(url, referrer){
-        this.init(referrer, 1);
-        this.addTask(url);
-        this.callAgent();
-	},
     callAgent : function(){
         if (this.urls.length != this.totalTask || this.totalTask <= 0) {
             return false;
@@ -101,7 +96,7 @@ var xThunder = {
         
         var jobLines = [];
         for (var j = 0; j < this.totalTask; ++j) {
-            jobLines.push(this.urls[j], this.cookies[j], this.descs[j], this.cids[j]);
+            jobLines.push(this.urls[j], this.descs[j], this.cookies[j], this.cids[j]);
         }
         var job = jobLines.join("\n");
         
