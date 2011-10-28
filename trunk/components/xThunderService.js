@@ -13,7 +13,7 @@ xThunderComponent.prototype = {
     DTA_NOT_FOUND:      -2,
     EXE_NOT_FOUND:      -3,
 
-    //exeFile : string or nsILocalFile
+
     callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, exePath, args) {
         var result;
         if (agentName == "DTA") {
