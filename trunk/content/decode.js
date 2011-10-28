@@ -172,6 +172,10 @@ var xThunderDecode = {
 
         if(matches) {
             var pcode = matches[1].split("#")[0];
+            if (xThunder.agentName == "UDown") {
+                downUrl = "http://u.115.com/file/" + pcode;
+                return downUrl;
+            }
             url = "http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode="+pcode+"&version=1176";
             var xmlhttp = new XMLHttpRequest();
             //max-persistent-connections-per-server is 6

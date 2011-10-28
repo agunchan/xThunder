@@ -19,17 +19,17 @@ var xThunderMain = {
         if (xThunderPref.getValue("supportClick") != "" ||
             xThunderPref.getValue("supportExt") != "" && xThunderPref.getValue("remember")) {
 
-            var win = window.gBrowser || window;
-            if (xThunderMain.clickVntAdded)
-                return;
-            win.addEventListener("click", function(ev) {
-                if (ev.button != 0 || ev.shiftKey) {
-                    return true;
-                }
-                return xThunderMain.OnLeftClick(ev);
-            }, true);
+            if (!xThunderMain.clickVntAdded) {
+                var win = window.gBrowser || window;
+                win.addEventListener("click", function(ev) {
+                    if (ev.button != 0 || ev.shiftKey) {
+                        return true;
+                    }
+                    return xThunderMain.OnLeftClick(ev);
+                }, true);
 
-            xThunderMain.clickVntAdded = true;
+                xThunderMain.clickVntAdded = true;
+            }
         }
     },
 
@@ -101,17 +101,21 @@ var xThunderMain = {
         }
 
         //click support for protocals
-        var supstr = xThunderPref.getValue("supportClick");
-        if (!download && supstr != "") {
-            download = xThunderDecode.isProSupNode(link, url, supstr.split(","));
+        if (!download) {
+            var supstr = xThunderPref.getValue("supportClick");
+            download = supstr != "" && xThunderDecode.isProSupNode(link, url, supstr.split(","));
             if(download) {
+                xThunder.init(link.ownerDocument.URL, 1);
                 url = xThunderDecode.getDecodedNode(link);
             }
+        } else {
+            xThunder.init(link.ownerDocument.URL, 1);
         }
 
         //download url by thunder
         if (download) {
-            xThunder.callThunder(url, link.ownerDocument.URL);
+            xThunder.addTask(url);
+            xThunder.callAgent();
             ev.preventDefault();
             ev.stopPropagation();
             return false;

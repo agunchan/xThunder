@@ -125,7 +125,7 @@
                 <tabpanel orient="vertical" flex="1">
                     <hbox>
                         <vbox>
-                            <listbox id="agentListBox" rows="11" onselect="xThunderOptions.agentListSelect()" flex="1"/>
+                            <listbox id="agentListBox" rows="12" onselect="xThunderOptions.agentListSelect()" flex="1"/>
                         </vbox>
                         <vbox pack="start" >
                             <button id="moveUpButton" disabled="true" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>

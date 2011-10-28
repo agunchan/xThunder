@@ -15,15 +15,15 @@ struct DownloadInfo
 	_variant_t dir;
 	_variant_t referrer;
 	_variant_t * urls;
-	_variant_t * cookies;
 	_variant_t * descs;
+	_variant_t * cookies;
 	_variant_t * cids;
 
 	DownloadInfo(unsigned int c) : count(c)
 	{
 		urls = new _variant_t[count];
-		cookies = new _variant_t[count];
 		descs = new _variant_t[count];
+		cookies = new _variant_t[count];
 		cids = new _variant_t[count];;
 	}
 
@@ -33,13 +33,13 @@ struct DownloadInfo
 		{
 			delete [] urls;
 		}	
-		if (cookies) 
-		{
-			delete [] cookies;
-		}
 		if (descs) 
 		{
 			delete [] descs;
+		}
+		if (cookies) 
+		{
+			delete [] cookies;
 		}
 		if (cids) 
 		{

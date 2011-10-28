@@ -585,6 +585,47 @@ public:
 	}
 };
 
+class DMUDown : public DMSupportCOM
+{
+protected:
+	const char * getProgId() { return "UDownAgent.UDownAgentObj"; }
+
+public:
+	static const char * getName() { return "UDown"; }
+
+	long dispatch(DownloadInfo & downInfo)
+	{
+		prepareCOMObj();
+
+		// COM: bool AddDownTask(string AUrl, string AComments, string ARefer)
+		if (downInfo.count == 1) 
+		{
+			_variant_t v[3];
+			v[2] = downInfo.urls[0];
+			v[1] = downInfo.descs[0];
+			v[0] = downInfo.referrer;
+			invoke("AddDownTask", v, 3);
+		} 
+		else if (downInfo.count > 1)
+		{
+			// COM: void DownAllLink(object AURLList)
+			_variant_t v[1];
+			URLInfoArray urlArr(downInfo, true);
+			urlArr.asVariant(&v[0]);
+			if (v[0].pparray)
+			{
+				invoke("DownAllLink", v, 1);
+			}
+			else
+			{
+				return SAFEARRAY_FAILED;
+			}
+		}
+
+		return 0;
+	}
+};
+
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -604,6 +645,7 @@ DMSupportCOM * DMSupportCOMFactory::getDMAgent(const char *agentname)
 	CREATE_DM(DMThunderLite);
 	CREATE_DM(DMOrbit);
 	CREATE_DM(DMFDM);
+	CREATE_DM(DMUDown);
 
 	return NULL;
 }
