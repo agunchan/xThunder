@@ -81,7 +81,8 @@ protected:
 		COMCALL(comObj.InvokeN(A2OLE(memberName),parms,parmsCount));
 	}
 
-	void set(char *propertyName, VARIANT *val) {
+	void set(char *propertyName, VARIANT *val) 
+	{
 		USES_CONVERSION;
 		COMCALL(comObj.PutPropertyByName(A2COLE(propertyName), val));
 	}
@@ -98,8 +99,6 @@ public:
 	}
 
 	virtual long dispatch(DownloadInfo & downInfo) = 0;
-
-	static const char * getName() {	return "DMSupportCOM"; }
 };
 
 

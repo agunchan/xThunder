@@ -75,8 +75,8 @@ int main(int argc, char* argv[])
 		return ARG_ERROR;
 	}
 
-	char * agentName;
-	char * jobFilePath;
+	char * agentName = NULL;
+	char * jobFilePath = NULL;
 	int count = 1;
 	int sleepSec = 10;
 
@@ -117,9 +117,12 @@ int main(int argc, char* argv[])
 				retVal = dmAgent->dispatch(downInfo);
 			}
 		}
-		#ifdef NDEBUG
-		remove(jobFilePath);
-		#endif
+#ifdef NDEBUG
+		if (jobFilePath != NULL)
+		{
+			remove(jobFilePath);
+		}
+#endif
 	}
 	catch (_com_error& e)
 	{

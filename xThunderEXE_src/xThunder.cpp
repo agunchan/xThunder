@@ -334,8 +334,8 @@ public:
 		else if (downInfo.count > 1)
 		{
 			// COM: void AddLinkList(ref object pHtmlText, ref object pRefUrl, ref object pTitle, ref object pLinkInfo, ref object pFlashLinkInfo)
-			/*		pLinkInfo - a pointer to 1 dimensional SAFEARRAY array of VT_VARIANT strings. <url, desc> pairs
-			pFlashLinkInfo - a pointer to 1 dimensional SAFEARRAY array of VT_VARIANT strings. <url, desc> pairs
+			/*	pLinkInfo - a pointer to 1 dimensional SAFEARRAY array of VT_VARIANT strings. <url, desc> pairs
+				pFlashLinkInfo - a pointer to 1 dimensional SAFEARRAY array of VT_VARIANT strings. <url, desc> pairs
 			*/
 			_variant_t v[5];
 			v[4] = L"";
