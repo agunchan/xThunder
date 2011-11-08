@@ -12,7 +12,6 @@
 struct DownloadInfo 
 {
 	unsigned int count;
-	_variant_t dir;
 	_variant_t referrer;
 	_variant_t * urls;
 	_variant_t * descs;

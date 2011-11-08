@@ -131,11 +131,6 @@ var xThunderOptions = {
             enableAgents = defAgent + ",";
             disableAgents = disableAgents.replace(defAgent + "|0,", "");
         }
-//        if (enableAgents == defAgent + ",") {
-//            //close submenu and dropdown if there is only one agent
-//            xThunderPref.setValue("downSubMenu", false);
-//            xThunderPref.setValue("downListInSaveFile", false);
-//        }
 
         xThunderPref.setValue("agentName", defAgent);
         xThunderPref.setValue("showAgents", enableAgents + disableAgents);

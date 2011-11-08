@@ -21,9 +21,6 @@
 <!ENTITY	udown.auto      "AUTO">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
-<!ENTITY	lbl.monitor             "Monitor Link">
-<!ENTITY	ctrlNoMonitor           "Ctrl+Click = Open decoded link in back tab">
-<!ENTITY	ctrlAltDecode           "Ctrl+Alt+Click = Copy decoded link url">
 <!ENTITY	lbl.showMenu            "Show Menu">
 <!ENTITY	showStatusIcon          "Show icon in status bar">
 <!ENTITY	showMenuIcons           "Show context menu icons">
@@ -47,3 +44,6 @@
 <!ENTITY	tip.rClickList  "    right click to select item only">
 <!ENTITY	tip.lClickMenu  "2. Left click xThunder menuitem to use FIRST,">
 <!ENTITY	tip.rClickMenu  "    right click - SECOND, middle click - THIRD">
+<!ENTITY	lbl.monitor     "Monitor Link">
+<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in back tab">
+<!ENTITY	ctrlAltDecode   "Ctrl+Alt+Click = Copy decoded link url">

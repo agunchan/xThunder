@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://xthunder/skin/menu.css" type="text/css"?>
-<!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/xthunder.dtd" >
+<!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/main.dtd" >
 <overlay id="xThunder-overlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   
