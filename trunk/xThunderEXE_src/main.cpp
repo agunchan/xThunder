@@ -33,7 +33,6 @@ wchar_t * readLine(FILE *stream)
 //////////////////////////////////////////////////////////////////////////
 //
 // File Format:
-//				Directory
 //				Referrer
 //				url       -
 //				desc       \  repeat n 
@@ -46,7 +45,6 @@ int parseJob(DownloadInfo & downInfo, char * jobFilePath)
 	FILE *f;
 	if(fopen_s(&f, jobFilePath, "rb") == 0) 
 	{
-		downInfo.dir = readLine(f);
 		downInfo.referrer = readLine(f);
 		for (int i=0; i<downInfo.count; ++i)
 		{

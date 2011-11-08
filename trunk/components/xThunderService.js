@@ -14,12 +14,22 @@ xThunderComponent.prototype = {
     EXE_NOT_FOUND:      -3,
 
 
-    callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, exePath, args) {
+    callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result;
         if (agentName == "DTA") {
-            result = this.DTADownload(totalTask, referrer, urls, descs, args);
+            result = this.dtaDownload(totalTask, referrer, urls, descs, args[0]);
         } else {
-            result = this.COMDownload(exePath, args, false);
+            //COM download
+            if (!this.COMExeFile && (/^chrome:/i.test(exePath))) {
+                this.COMExeFile = this.getChromeFile(exePath);
+            }
+
+            if (!this.COMExeFile || !this.COMExeFile.exists()) {
+                return this.EXE_NOT_FOUND;
+            }
+            
+            this.createJobFile(agentName, totalTask, referrer, urls, cookies, descs, cids, args);
+            result = this.runNative(this.COMExeFile, args, false);
         }
         return result;
     },
@@ -44,20 +54,40 @@ xThunderComponent.prototype = {
                         .createInstance(Components.interfaces.nsIFileProtocolHandler);
         return ph.getFileFromURLSpec(url);
     },
-
-    COMDownload : function(exePath, args, blocking) {
-        if (!this.COMExeFile && (/^chrome:/i.test(exePath))) {
-            this.COMExeFile = this.getChromeFile(exePath);
+    
+    createJobFile : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
+        var file = Components.classes["@mozilla.org/file/directory_service;1"]
+                .getService(Components.interfaces.nsIProperties)
+                .get("TmpD", Components.interfaces.nsIFile);
+        file.append("xThunder");
+        if (!file.exists()) {
+            file.create(1, 0700);
         }
-
-        if (!this.COMExeFile || !this.COMExeFile.exists()) {
-            return this.EXE_NOT_FOUND;
+        file.append("xThunder" + Date.now() + ".xtd");
+        file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0700);
+        
+        var jobLines = [];
+        for (var j = 0; j < totalTask; ++j) {
+            jobLines.push(urls[j], descs[j], cookies[j], cids[j]);
         }
+        var job = jobLines.join("\n");
+        
+        var data = referrer + "\n" + job + "\n"; 
+        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                       .createInstance(Components.interfaces.nsIFileOutputStream);
+        foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
+        var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+                        .createInstance(Components.interfaces.nsIConverterOutputStream);
+        converter.init(foStream, "UTF-8", 0, 0);
+        converter.writeString(data);
+        converter.close();
 
-        return this.runNative(this.COMExeFile, args, blocking);
+        args.push("-a", agentName);
+        args.push("-p", file.path);
+        args.push("-n", totalTask);
     },
 
-    DTADownload : function(totalTask, refer, urls, descs, oneClick) {
+    dtaDownload : function(totalTask, refer, urls, descs, oneClick) {
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                             .getService(Components.interfaces.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");

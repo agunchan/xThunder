@@ -1,6 +1,6 @@
 var xThunder = {
     EXE_PATH : "chrome://xthunder/content/xThunder.exe",
-    DEF_STR : "",
+    ARG_DEF_STR : "",
     xthunderComponent: null,
     agentName : "",
     referrer : "",
@@ -36,36 +36,43 @@ var xThunder = {
         }
 
         try {
-            if (this.xthunderComponent == null) {
-                this.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
-            }
-            
-            var result,browser,args;
-             if ((this.agentName == "Thunder" || this.agentName=="QQDownload" && xThunderPref.getValue("qqOffLineWeb")) 
+            var result,browser,exePath,args;
+            if ((this.agentName == "Thunder" || this.agentName=="QQDownload" && xThunderPref.getValue("qqOffLineWeb")) 
                  && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
+                //OffLine download in web page
                 var offUrls = ["http://lixian.vip.xunlei.com/", "http://lixian.qq.com/"];
                 var params = ["lixian_login.html?furl=", "main.html?url="];
                 var i = this.agentName == "Thunder" ? 0 : 1;
                 browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[i]) != -1 
                                                    ? this.urls[0] : offUrls[i] + params[i] + this.urls[0]);
-                result = true;
-            } else if (this.agentName == "DTA") {
-                args = xThunderPref.getValue("dtaOneClick");
-                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, null, args);
+                return true;
             } else {
-                args = this.createJobFile();
-                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.EXE_PATH, args);
-            }
-
-            switch(result) {
-                case this.xthunderComponent.EXE_NOT_FOUND:
-                    alert("xThunder.exe missing, please check if xThunder was properly installed!");
-                    break;
-                case this.xthunderComponent.DTA_NOT_FOUND:
-                    alert("DTA called error, please check if DTA was properly installed!");
-                    break;
-                default:
-                    return true;
+                //Normal download
+                if (this.xthunderComponent == null) {
+                    this.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
+                }
+                
+                args = [];
+                if (this.agentName == "DTA") {
+                    exePath = null;
+                    args.push(xThunderPref.getValue("dtaOneClick"));
+                } else {
+                    exePath = this.EXE_PATH;
+                    args.push("-s", xThunderPref.getValue("sleepSecond"));
+                }
+                
+                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);
+                
+                switch(result) {
+                    case this.xthunderComponent.EXE_NOT_FOUND:
+                        alert("xThunder.exe missing, please check if xThunder was properly installed!");
+                        break;
+                    case this.xthunderComponent.DTA_NOT_FOUND:
+                        alert("DTA called error, please check if DTA was properly installed!");
+                        break;
+                    default:
+                        return true;
+                }
             }
         } catch(ex) {
             alert(ex);
@@ -83,41 +90,6 @@ var xThunder = {
             return mainWindow ? mainWindow.gBrowser : null;
         }
     },
-    createJobFile : function() {
-        var file = Components.classes["@mozilla.org/file/directory_service;1"]
-                .getService(Components.interfaces.nsIProperties)
-                .get("TmpD", Components.interfaces.nsIFile);
-        file.append("xThunder");
-        if (!file.exists()) {
-            file.create(1, 0700);
-        }
-        file.append("xThunder" + Date.now() + ".xtd");
-        file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0700);
-        
-        var jobLines = [];
-        for (var j = 0; j < this.totalTask; ++j) {
-            jobLines.push(this.urls[j], this.descs[j], this.cookies[j], this.cids[j]);
-        }
-        var job = jobLines.join("\n");
-        
-        var data = xThunderPref.getValue("downDir") + "\n"
-                + this.referrer + "\n" + job + "\n"; 
-        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                       .createInstance(Components.interfaces.nsIFileOutputStream);
-        foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
-        var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
-                        .createInstance(Components.interfaces.nsIConverterOutputStream);
-        converter.init(foStream, "UTF-8", 0, 0);
-        converter.writeString(data);
-        converter.close(); // this closes foStream
-
-        var args = [];
-        args.push("-a", this.agentName);
-        args.push("-p", file.path);
-        args.push("-n", this.totalTask);
-        args.push("-s", xThunderPref.getValue("sleepSecond"));
-        return args;
-    },
 	getCookie : function(href){
         var strCookie;
 
@@ -131,7 +103,7 @@ var xThunder = {
         } catch(ex) {}
 		
 		if (!strCookie) {
-			strCookie = this.DEF_STR;
+			strCookie = this.ARG_DEF_STR;
 		}
 		return strCookie;
 	},
@@ -152,7 +124,7 @@ var xThunder = {
         return fileName;
     },
     getCid : function(href) {
-        var cid = this.DEF_STR;
+        var cid = this.ARG_DEF_STR;
         if (this.agentName == "QQDownload" && this.offLine) {
             cid = 10600;
         } else if (this.agentName.indexOf("Thunder") != -1) {
@@ -184,7 +156,7 @@ var xThunder = {
         this.urls.push(url);
         this.cookies.push(this.getCookie(url));
         if (this.totalTask == 1) {
-            des = this.DEF_STR;
+            des = this.ARG_DEF_STR;
         } else if (!des) {
             des = this.getFileName(url);
         } else {
