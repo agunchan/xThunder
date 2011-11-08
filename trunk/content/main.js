@@ -243,7 +243,7 @@ var xThunderMain = {
 
         xThunder.addTask(url);
         this.endMenuClick(event);
-        xThunder.callAgent();
+        xThunder.callAgent(xThunderPref.getValue("sleepSecond"));
     },
 
     OnThunderDownloadBy : function(agentName) {
@@ -299,7 +299,7 @@ var xThunderMain = {
         }
 
         this.endMenuClick(event);
-        xThunder.callAgent();
+        xThunder.callAgent(xThunderPref.getValue("sleepSecond"));
         return true;
     },
 
