@@ -30,13 +30,13 @@ var xThunder = {
         this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
                             ? xThunderPref.getValue("supportExt") : "";
     },
-    callAgent : function(){
+    callAgent : function(delay){
         if (this.urls.length != this.totalTask || this.totalTask <= 0) {
             return false;
         }
 
         try {
-            var result,browser,exePath,args;
+            var browser;
             if ((this.agentName == "Thunder" || this.agentName=="QQDownload" && xThunderPref.getValue("qqOffLineWeb")) 
                  && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
                 //OffLine download in web page
@@ -45,41 +45,47 @@ var xThunder = {
                 var i = this.agentName == "Thunder" ? 0 : 1;
                 browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[i]) != -1 
                                                    ? this.urls[0] : offUrls[i] + params[i] + this.urls[0]);
-                return true;
             } else {
                 //Normal download
-                if (this.xthunderComponent == null) {
-                    this.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
-                }
-                
-                args = [];
-                if (this.agentName == "DTA") {
-                    exePath = null;
-                    args.push(xThunderPref.getValue("dtaOneClick"));
+                if (delay) {
+                    window.setTimeout(this.externDownload, delay, this);
                 } else {
-                    exePath = this.EXE_PATH;
-                    args.push("-s", xThunderPref.getValue("sleepSecond"));
-                }
-                
-                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);
-                
-                switch(result) {
-                    case this.xthunderComponent.EXE_NOT_FOUND:
-                        alert("xThunder.exe missing, please check if xThunder was properly installed!");
-                        break;
-                    case this.xthunderComponent.DTA_NOT_FOUND:
-                        alert("DTA called error, please check if DTA was properly installed!");
-                        break;
-                    default:
-                        return true;
+                    this.externDownload(this);
                 }
             }
         } catch(ex) {
             alert(ex);
+            return false;
         } 
         
-        return false;
+        return true;
 	},
+    externDownload : function(that) {
+        var result,exePath,args;
+        if (that.xthunderComponent == null) {
+            that.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
+        }
+                
+        args = [];
+        if (that.agentName == "DTA") {
+            exePath = null;
+            args.push(xThunderPref.getValue("dtaOneClick"));
+        } else {
+            exePath = that.EXE_PATH;
+            args.push("-s", xThunderPref.getValue("sleepSecond"));
+        }
+                
+        result = that.xthunderComponent.callAgent(that.agentName, that.totalTask, that.referrer, that.urls, that.cookies, that.descs, that.cids, exePath, args);
+                
+        switch(result) {
+            case that.xthunderComponent.EXE_NOT_FOUND:
+                alert("xThunder.exe missing, please check if xThunder was properly installed!");
+                break;
+            case that.xthunderComponent.DTA_NOT_FOUND:
+                alert("DTA called error, please check if DTA was properly installed!");
+                break;
+        }
+    },
     getGBrowser : function() {
         if (typeof gBrowser != "undefined") {
             return gBrowser;
