@@ -17,7 +17,7 @@ xThunderComponent.prototype = {
     callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result;
         if (agentName == "DTA") {
-            result = this.dtaDownload(totalTask, referrer, urls, descs, args[0]);
+            result = this.DTADownload(totalTask, referrer, urls, descs, args[0]);
         } else {
             //COM download
             if (!this.COMExeFile && (/^chrome:/i.test(exePath))) {
@@ -28,8 +28,19 @@ xThunderComponent.prototype = {
                 return this.EXE_NOT_FOUND;
             }
             
-            this.createJobFile(agentName, totalTask, referrer, urls, cookies, descs, cids, args);
-            result = this.runNative(this.COMExeFile, args, false);
+            var proc = Components.classes["@mozilla.org/process/util;1"]
+                .createInstance(Components.interfaces.nsIProcess);
+            var hasRunW = "runw" in proc;
+            proc.init(this.COMExeFile);
+            
+            if (totalTask == 1 && hasRunW) {
+                //empty string arguments ignored
+                args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] === "" ? " " : cids[0]);
+            } else {
+                //before Firefox 4 wstring can only be passed by file
+                this.createJobFile(totalTask, referrer, urls, cookies, descs, cids, args);
+            }
+            result = proc[hasRunW ? "runw" : "run"](false, args, args.length);
         }
         return result;
     },
@@ -55,7 +66,7 @@ xThunderComponent.prototype = {
         return ph.getFileFromURLSpec(url);
     },
     
-    createJobFile : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
+    createJobFile : function(totalTask, referrer, urls, cookies, descs, cids, args) {
         var file = Components.classes["@mozilla.org/file/directory_service;1"]
                 .getService(Components.interfaces.nsIProperties)
                 .get("TmpD", Components.interfaces.nsIFile);
@@ -72,7 +83,7 @@ xThunderComponent.prototype = {
         }
         var job = jobLines.join("\n");
         
-        var data = referrer + "\n" + job + "\n"; 
+        var data = totalTask + "\n" + referrer + "\n" + job + "\n"; 
         var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
                        .createInstance(Components.interfaces.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
@@ -82,12 +93,10 @@ xThunderComponent.prototype = {
         converter.writeString(data);
         converter.close();
 
-        args.push("-a", agentName);
-        args.push("-p", file.path);
-        args.push("-n", totalTask);
+        args.push("-f", file.path);
     },
 
-    dtaDownload : function(totalTask, refer, urls, descs, oneClick) {
+    DTADownload : function(totalTask, refer, urls, descs, oneClick) {
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
                             .getService(Components.interfaces.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");

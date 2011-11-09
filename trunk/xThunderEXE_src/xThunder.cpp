@@ -113,7 +113,7 @@ public:
 			v[3] = L"";
 			v[2] = downInfo.cookies[0];
 			v[1] = 0;
-			v[0] = downInfo.cids[0] == _variant_t("") ? 0 : downInfo.cids[0];	//OffLine - 10600 or 10300(lixian.qq.com), Normal - 0 
+			v[0] = downInfo.cids[0];	//OffLine - 10600 or 10300(lixian.qq.com), Normal - 0 
 			invoke("SendUrl2", v, 6);
 		} 
 		else if (downInfo.count > 1)

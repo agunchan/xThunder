@@ -72,11 +72,11 @@ var xThunder = {
             args.push(xThunderPref.getValue("dtaOneClick"));
         } else {
             exePath = that.EXE_PATH;
+            args.push("-a", that.agentName);
             args.push("-s", xThunderPref.getValue("sleepSecond"));
         }
                 
-        result = that.xthunderComponent.callAgent(that.agentName, that.totalTask, that.referrer, that.urls, that.cookies, that.descs, that.cids, exePath, args);
-                
+        result = that.xthunderComponent.callAgent(that.agentName, that.totalTask, that.referrer, that.urls, that.cookies, that.descs, that.cids, exePath, args);       
         switch(result) {
             case that.xthunderComponent.EXE_NOT_FOUND:
                 alert("xThunder.exe missing, please check if xThunder was properly installed!");
@@ -131,8 +131,8 @@ var xThunder = {
     },
     getCid : function(href) {
         var cid = this.ARG_DEF_STR;
-        if (this.agentName == "QQDownload" && this.offLine) {
-            cid = 10600;
+        if (this.agentName == "QQDownload") {
+            cid = this.offLine ? 10600 : 0;
         } else if (this.agentName.indexOf("Thunder") != -1) {
             var matches;
             if (matches = href.match(/^http:\/\/(?:thunder\.ffdy\.cc|www\.7369\.com|bt\.xunbo\.cc)\/([0-9A-F]+)\//)) {
