@@ -18,12 +18,18 @@ struct DownloadInfo
 	_variant_t * cookies;
 	_variant_t * cids;
 
-	DownloadInfo(unsigned int c) : count(c)
+	DownloadInfo() : count(0), urls(NULL), descs(NULL), cookies(NULL), cids(NULL)
 	{
+		
+	}
+
+	void init(unsigned c) 
+	{
+		count = c;
 		urls = new _variant_t[count];
 		descs = new _variant_t[count];
 		cookies = new _variant_t[count];
-		cids = new _variant_t[count];;
+		cids = new _variant_t[count];
 	}
 
 	~DownloadInfo() 

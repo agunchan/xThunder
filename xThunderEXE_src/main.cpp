@@ -15,6 +15,7 @@
 enum callError { ARG_ERROR = -100, COM_ERROR, INVOKE_ERROR, JOB_ERROR};
 #define MB_TITLE L"xThunder"
 #define BUF_SIZE 16384
+#define SPACE_ASCII 32
 char g_buf[BUF_SIZE];
 wchar_t g_wbuf[BUF_SIZE];
 
@@ -45,6 +46,7 @@ int parseJob(DownloadInfo & downInfo, char * jobFilePath)
 	FILE *f;
 	if(fopen_s(&f, jobFilePath, "rb") == 0) 
 	{
+		downInfo.init(_wtoi(readLine(f)));
 		downInfo.referrer = readLine(f);
 		for (int i=0; i<downInfo.count; ++i)
 		{
@@ -66,17 +68,19 @@ int parseJob(DownloadInfo & downInfo, char * jobFilePath)
 
 int main(int argc, char* argv[])
 {
-	//-a agentName -p jobFilePath -n taskCount -s sleepSecond
+	//-a agentName -f jobFilePath -s sleepSecond
 	if(argc < 5)
 	{
-		MessageBox(NULL, L"Wrong number of arguments.\n -a agentName(*)\n -p jobFilePath(*)\n -n taskCount\n -s sleepSec\n", MB_TITLE, MB_OK);
+		MessageBox(NULL, L"Wrong number of arguments.\n -a agentName(*)\n -f taskCount jobFilePath\n -s sleepSec\n", MB_TITLE, MB_OK);
 		return ARG_ERROR;
 	}
 
 	char * agentName = NULL;
 	char * jobFilePath = NULL;
 	int count = 1;
-	int sleepSec = 10;
+	int sleepSec = 15;
+	DownloadInfo downInfo;
+	int retVal = 0;
 
 	int i = 1;
 	while(i<argc)
@@ -85,13 +89,23 @@ int main(int argc, char* argv[])
 		{
 			agentName = argv[++i];
 		}
-		else if (!strcmp("-p", argv[i]))
+		else if (!strcmp("-f", argv[i]))
 		{
 			jobFilePath = argv[++i];
+			retVal = parseJob(downInfo, jobFilePath);
+			if (retVal < 0)
+			{
+				return retVal;
+			}
 		}
-		else if (!strcmp("-n", argv[i]))
+		else if (!strcmp("-d", argv[i]))
 		{
-			count = atoi(argv[++i]);
+			downInfo.init(1);
+			downInfo.urls[0] = argv[++i];
+			downInfo.referrer = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+			downInfo.descs[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+			downInfo.cookies[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+			downInfo.cids[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
 		}
 		else if (!strcmp("-s", argv[i]))
 		{
@@ -102,18 +116,12 @@ int main(int argc, char* argv[])
 	}
 
 	DMSupportCOM * dmAgent = NULL;
-	int retVal = 0;
 	try
 	{
-		DownloadInfo downInfo(count);
-		retVal = parseJob(downInfo, jobFilePath);
-		if (retVal >= 0)
+		dmAgent = DMSupportCOMFactory::Instance().getDMAgent(agentName);
+		if (dmAgent)
 		{
-			dmAgent = DMSupportCOMFactory::Instance().getDMAgent(agentName);
-			if (dmAgent)
-			{
-				retVal = dmAgent->dispatch(downInfo);
-			}
+			retVal = dmAgent->dispatch(downInfo);
 		}
 #ifdef NDEBUG
 		if (jobFilePath != NULL)
