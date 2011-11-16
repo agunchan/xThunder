@@ -74,7 +74,7 @@
                                 </row>
                                 <row align="baseline">
                                     <checkbox id="udown" label="&pro.udown;"/>
-                                    <checkbox id="115" label="&pro.115;"/>
+                                    <checkbox id="115" hidden="true" label="&pro.115;"/>
                                 </row>
                             </rows>
                         </grid>
@@ -125,7 +125,7 @@
                 <tabpanel orient="vertical" flex="1">
                     <hbox>
                         <vbox>
-                            <listbox id="agentListBox" rows="12" onselect="xThunderOptions.agentListSelect()" flex="1"/>
+                            <listbox id="agentListBox" rows="13" onselect="xThunderOptions.agentListSelect()" flex="1"/>
                         </vbox>
                         <vbox pack="start" >
                             <button id="moveUpButton" disabled="true" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>

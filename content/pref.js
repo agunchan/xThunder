@@ -2,11 +2,11 @@ var xThunderPref = {
     pref : null,
     uriSupReg : /^(?:ftp|https?):/i,
     proSupReg : /^(thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
-    pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "115", "udown"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
+    pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "udown", "115"],
+    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"],
     agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
-                    "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit", "FDM", "UDown"]},
+                    "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"]},
 
     //show only available agents in list
     appendAgentList : function(menupop, idpre, func, isradio, addOffLine){

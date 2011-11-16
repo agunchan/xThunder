@@ -56,12 +56,7 @@ var xThunderMain = {
         var download = false;
 
         //Ctrl + Click and Ctrl + Alt + Click
-        if (ev.ctrlKey) {
-            //udown link is got asynchronously, so decodedUrl may be null
-            if(xThunderDecode.udownReg.test(url)) {
-                return true;
-            }
-            
+        if (ev.ctrlKey) {            
             try {
                 var decodedUrl;
                 if (ev.altKey) {
@@ -285,12 +280,7 @@ var xThunderMain = {
 
         for (var i=0; i<linkCount; ++i) {
             url = xThunderDecode.getDecodedNode(links[i]);
-            if (xThunderDecode.udownReg.test(links[i].href)) {
-                //udown link is got asynchronously, so do not use wrong textContent
-                xThunder.addTask(url, "");
-            } else {
-                xThunder.addTask(url, links[i].textContent);
-            }
+            xThunder.addTask(url, links[i].textContent);
         }
 
         for (var j=0; j<imageCount; ++j) {

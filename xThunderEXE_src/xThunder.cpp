@@ -236,16 +236,17 @@ public:
 class URLInfoArray
 {
 private:
-	SAFEARRAY *pSA_URL;
+	SAFEARRAY *pSA;
 
 public:
+	//<url, desc> pair array
 	URLInfoArray(DownloadInfo & downInfo, bool includeReferrer)
 	{
-		pSA_URL = NULL;
-		SAFEARRAYBOUND bound_url[1];
-		bound_url[0].lLbound = 0;
-		bound_url[0].cElements = 2 * downInfo.count + (includeReferrer ? 1 : 0);
-		if ( pSA_URL = SafeArrayCreate(VT_VARIANT, 1, bound_url) ) 
+		pSA = NULL;
+		SAFEARRAYBOUND bound[1];
+		bound[0].lLbound = 0;
+		bound[0].cElements = 2 * downInfo.count + (includeReferrer ? 1 : 0);
+		if ( pSA = SafeArrayCreate(VT_VARIANT, 1, bound) ) 
 		{
 			long index[1];
 			index[0] = 0;
@@ -254,30 +255,31 @@ public:
 			if (includeReferrer)
 			{
 				varStr = downInfo.referrer;
-				SafeArrayPutElement(pSA_URL, index, &varStr);
+				SafeArrayPutElement(pSA, index, &varStr);
 				index[0]++;
 			}
 
 			for (int j=0; j<downInfo.count; ++j) 
 			{
 				varStr = downInfo.urls[j];
-				SafeArrayPutElement(pSA_URL, index, &varStr);
+				SafeArrayPutElement(pSA, index, &varStr);
 				index[0]++;
 
 				varStr = downInfo.descs[j];
-				SafeArrayPutElement(pSA_URL, index, &varStr);
+				SafeArrayPutElement(pSA, index, &varStr);
 				index[0]++;
 			}
 		}
 	}
 
+	//<element> array
 	URLInfoArray(_variant_t * elements, unsigned int count)
 	{
-		pSA_URL = NULL;
-		SAFEARRAYBOUND bound_url[1];
-		bound_url[0].lLbound = 0;
-		bound_url[0].cElements = count;
-		if ( pSA_URL = SafeArrayCreate(VT_VARIANT, 1, bound_url) ) 
+		pSA = NULL;
+		SAFEARRAYBOUND bound[1];
+		bound[0].lLbound = 0;
+		bound[0].cElements = count;
+		if ( pSA = SafeArrayCreate(VT_VARIANT, 1, bound) ) 
 		{
 			long index[1];
 			index[0] = 0;
@@ -286,7 +288,7 @@ public:
 			for (int j=0; j<count; ++j) 
 			{
 				varStr = elements[j];
-				SafeArrayPutElement(pSA_URL, index, &varStr);
+				SafeArrayPutElement(pSA, index, &varStr);
 				index[0]++;
 			}
 		}
@@ -295,14 +297,25 @@ public:
 	void asVariant(VARIANT * initVar) 
 	{
 		initVar->vt = VT_ARRAY | VT_BYREF | VT_VARIANT;
-		initVar->pparray = &pSA_URL;
+		initVar->pparray = &pSA;
+	}
+
+	void variantAccessData(VARIANT * initVar) 
+	{
+		initVar->vt = VT_BYREF | VT_VARIANT;
+		SafeArrayAccessData(pSA, (void **)&(initVar->pparray));
+	}
+
+	void variantUnaccessData()
+	{
+		SafeArrayUnaccessData(pSA);
 	}
 
 	~URLInfoArray() 
 	{
-		if (pSA_URL)
+		if (pSA)
 		{
-			SafeArrayDestroy(pSA_URL);
+			SafeArrayDestroy(pSA);
 		}
 	}
 };
@@ -588,14 +601,22 @@ public:
 class DMUDown : public DMSupportCOM
 {
 protected:
-	const char * getProgId() { return "UDownAgent.UDownAgentObj"; }
+	const char * getProgId() { return "UDiskAgent.UDiskAgentObj"; }
 
 public:
 	static const char * getName() { return "UDown"; }
 
 	long dispatch(DownloadInfo & downInfo)
 	{
-		prepareCOMObj();
+		try
+		{
+			prepareCOMObj();
+		}
+		catch (_com_error& e)
+		{
+			//before v2.2
+			prepareCOMObj("UDownAgent.UDownAgentObj");
+		}
 
 		// COM: bool AddDownTask(string AUrl, string AComments, string ARefer)
 		if (downInfo.count == 1) 
@@ -615,6 +636,60 @@ public:
 			if (v[0].pparray)
 			{
 				invoke("DownAllLink", v, 1);
+			}
+			else
+			{
+				return SAFEARRAY_FAILED;
+			}
+		}
+
+		return 0;
+	}
+};
+
+class DMNetTransport : public DMSupportCOM
+{
+protected:
+	const char * getProgId() { return "NXIEHelper.NXIEAddURL"; }
+
+public:
+	static const char * getName() { return "NetTransport"; }
+
+	long dispatch(DownloadInfo & downInfo)
+	{
+		try
+		{
+			prepareCOMObj();
+		}
+		catch (_com_error& e)
+		{
+			//before v2
+			prepareCOMObj("NTIEHelper.NTIEAddUrl");
+		}
+
+		// COM: void AddLink(string bstrReferer, string bstrURL, string bstrComment)
+		if (downInfo.count == 1) 
+		{
+			_variant_t v[3];
+			v[2] = downInfo.referrer;
+			v[1] = downInfo.urls[0];
+			v[0] = downInfo.descs[0];
+			invoke("AddLink", v, 3);
+		} 
+		else if (downInfo.count > 1)
+		{
+			// COM: void AddList(string bstrReferer, ref object bstrURLs, ref object bstrComments)
+			_variant_t v[3];
+			v[2] = downInfo.referrer;
+			URLInfoArray urlArr(downInfo.urls, downInfo.count);
+			urlArr.variantAccessData(&v[1]);
+			URLInfoArray descArr(downInfo.descs, downInfo.count);
+			descArr.variantAccessData(&v[0]);
+			if (v[1].pparray && v[0].pparray)
+			{
+				invoke("AddList", v, 3);
+				urlArr.variantUnaccessData();
+				descArr.variantUnaccessData();
 			}
 			else
 			{
@@ -646,6 +721,7 @@ DMSupportCOM * DMSupportCOMFactory::getDMAgent(const char *agentname)
 	CREATE_DM(DMOrbit);
 	CREATE_DM(DMFDM);
 	CREATE_DM(DMUDown);
+	CREATE_DM(DMNetTransport);
 
 	return NULL;
 }

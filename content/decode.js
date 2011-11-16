@@ -1,7 +1,4 @@
 var xThunderDecode = {
-    udownReg : /^http:\/\/(?:u\.)?115\.com\/file\/([\w\d]+)/i,
-    asyncReq : 0,
-
     // Flashgetx is encoded at least twice, so pre decode it.
     getPreDecodedUrl : function(url) {
         url = url.replace(/ /g, "");
@@ -38,7 +35,6 @@ var xThunderDecode = {
                     )
                 || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
                 || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
-                || protocals[i] == "115" && this.udownReg.test(url)
                 || protocals[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
                 )
                 return true;
@@ -98,10 +94,8 @@ var xThunderDecode = {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
-            // udown url in onclick attribute
-            if (matches = matches.match(/'(http:\/\/(?:u\.)?115\.com\/file\/[\w\d]+)'/)) {
-                url = matches[1];
-            }
+            // download url in subling nodes
+            url = this.getUDownUrl(link, referrer);
         }
 
         //In gernal
@@ -141,9 +135,7 @@ var xThunderDecode = {
                     // cachefile*.rayfile.com
                     url = "http://" + url;
                 }
-            } else if (this.udownReg.test(url)) {
-                url = this.uDown(url);
-            }
+            } 
         } catch (ex) {
             //no operation
         }
@@ -166,77 +158,49 @@ var xThunderDecode = {
     },
 
     // Get download link of 115u file
-    uDown : function (url) {
-        var matches = url.match(this.udownReg);
-        var downUrl = url;
+    getUDownUrl : function (link, referrer) {
+        var downUrls = [];
+        var index = xThunderPref.getValue("udown");  //tel,cnc
+        var downBox = link.parentNode.childNodes; //the id of link is udown
+        for (var j=0; j<downBox.length; j++) {
+            if (downBox[j].getAttribute && downBox[j].getAttribute("class") == "btn-wrap") {
+                downBox = downBox[j].childNodes;
+                for (var i=0; i<downBox.length; i++) {
+                    if (downBox[i].href) {
+                        if (index == 0 && downBox[i].textContent.indexOf("电信") != -1
+                        || index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
+                            return downBox[i].href;
+                        }
 
-        if(matches) {
-            var pcode = matches[1].split("#")[0];
-            if (xThunder.agentName == "UDown") {
-                downUrl = "http://u.115.com/file/" + pcode;
-                return downUrl;
-            }
-            url = "http://uapi.115.com/?ct=upload_api&ac=get_pick_code_info&pickcode="+pcode+"&version=1176";
-            var xmlhttp = new XMLHttpRequest();
-            //max-persistent-connections-per-server is 6
-            var async = xThunderDecode.asyncReq < 2;
-            if (async) {
-                ++xThunderDecode.asyncReq;
-                xmlhttp.open("GET", url, true);
-                xmlhttp.onreadystatechange = function(){
-                    if (xmlhttp.readyState == 4) {
-                        --xThunderDecode.asyncReq;
-                        downUrl = xThunderDecode.getDownUrl(xmlhttp.responseText) || downUrl;
-                        xThunder.referrer = "http://115.com/file/" + pcode;
-                        xThunder.addTask(downUrl);
-                        xThunder.callAgent();
+                        downUrls.push(downBox[i].href);
                     }
-                };
-            } else {
-                xmlhttp.open("GET", url, async);
-            }
-
-            xmlhttp.setRequestHeader("User-Agent","115UDownClient 2.1.11.126");
-            xmlhttp.setRequestHeader("Host","uapi.115.com");
-            xmlhttp.setRequestHeader("Cache-Control","no-cache");
-            xmlhttp.send(null);
-
-            if (async) {
-                return null;
-            } else {
-                downUrl = xThunderDecode.getDownUrl(xmlhttp.responseText) || downUrl;
-            }
-        }
-
-        return downUrl;
-    },
-
-    getDownUrl : function(responseText) {
-        var uDownUrl = JSON.parse(responseText).DownloadUrl;
-
-        if (uDownUrl && uDownUrl.length > 0) {
-            var index = xThunderPref.getValue("udown");  //tel,cnc
-            if (uDownUrl.length < 2) {
-                index = 0;  // only one url
-            } else if (index == 2) {
-                // auto choose the url having nearer ip
-                var urlOne = uDownUrl[0].Url;
-                var urlTwo = uDownUrl[1].Url;
-                var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=api\|(\d+)\.\d+\.\d+\.\d+\|/;
-                var matchesOne, matchesTwo;
-                if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg))
-                    && matchesOne[2] == matchesTwo[2]) {
-                    //compare ipv4 Leading address
-                    index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2])
-                            ? 0 : 1;
-                } else {
-                    index = uDownUrl.length - 1;
                 }
             }
-            
-            return uDownUrl[index].Url;
-        } else {
-            return null;
         }
+    
+        if (downUrls.length == 0) {
+            return referrer;
+        } 
+        
+        if (downUrls.length == 1) {
+            // only one url
+            index = 0;  
+        } else if (index == 2) {
+            // auto choose the url having nearer ip
+            var urlOne = downUrls[0];
+            var urlTwo = downUrls[1];
+            var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+@/;
+            var matchesOne, matchesTwo;
+            if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg))
+                && matchesOne[2] == matchesTwo[2]) {
+                //compare ipv4 Leading address
+                index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2])
+                        ? 0 : 1;
+            } else {
+                index = downUrls.length - 1;
+            }
+        } 
+
+        return downUrls[index];
     }
 }

@@ -1,4 +1,6 @@
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm"); 
+const Cc = Components.classes;
+const Ci = Components.interfaces;
 
 function xThunderComponent() {
     this.wrappedJSObject = this;
@@ -28,8 +30,7 @@ xThunderComponent.prototype = {
                 return this.EXE_NOT_FOUND;
             }
             
-            var proc = Components.classes["@mozilla.org/process/util;1"]
-                .createInstance(Components.interfaces.nsIProcess);
+            var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
             var hasRunW = "runw" in proc;
             proc.init(this.COMExeFile);
             
@@ -46,8 +47,7 @@ xThunderComponent.prototype = {
     },
 
     runNative: function(exeFile, args, blocking) {
-        var proc = Components.classes["@mozilla.org/process/util;1"]
-                .createInstance(Components.interfaces.nsIProcess);
+        var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
         proc.init(exeFile);
         proc["runw" in proc ? "runw" : "run"](blocking, args, args.length);
         return proc.exitValue;
@@ -55,27 +55,25 @@ xThunderComponent.prototype = {
     
     getChromeFile : function (chromePath) {
         var url;
-        var ios = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces["nsIIOService"]);
+        var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci["nsIIOService"]);
         var uri = ios.newURI(chromePath, "UTF-8", null);
-        var cr = Components.classes["@mozilla.org/chrome/chrome-registry;1"].getService(Components.interfaces["nsIChromeRegistry"]);
+        var cr = Cc["@mozilla.org/chrome/chrome-registry;1"].getService(Ci["nsIChromeRegistry"]);
         url = cr.convertChromeURL(uri).spec;
         if (!/^file:/.test(url))
             url = "file://"+url;
-        var ph = Components.classes["@mozilla.org/network/protocol;1?name=file"]
-                        .createInstance(Components.interfaces.nsIFileProtocolHandler);
+        var ph = Cc["@mozilla.org/network/protocol;1?name=file"].createInstance(Ci.nsIFileProtocolHandler);
         return ph.getFileFromURLSpec(url);
     },
     
     createJobFile : function(totalTask, referrer, urls, cookies, descs, cids, args) {
-        var file = Components.classes["@mozilla.org/file/directory_service;1"]
-                .getService(Components.interfaces.nsIProperties)
-                .get("TmpD", Components.interfaces.nsIFile);
+        var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
+                .get("TmpD", Ci.nsIFile);
         file.append("xThunder");
         if (!file.exists()) {
-            file.create(1, 0700);
+            file.create(Ci.nsIFile.DIRECTORY_TYPE, 0700);
         }
         file.append("xThunder" + Date.now() + ".xtd");
-        file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0700);
+        file.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0700);
         
         var jobLines = [];
         for (var j = 0; j < totalTask; ++j) {
@@ -84,11 +82,9 @@ xThunderComponent.prototype = {
         var job = jobLines.join("\n");
         
         var data = totalTask + "\n" + referrer + "\n" + job + "\n"; 
-        var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
-                       .createInstance(Components.interfaces.nsIFileOutputStream);
+        var foStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
-        var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
-                        .createInstance(Components.interfaces.nsIConverterOutputStream);
+        var converter = Cc["@mozilla.org/intl/converter-output-stream;1"].createInstance(Ci.nsIConverterOutputStream);
         converter.init(foStream, "UTF-8", 0, 0);
         converter.writeString(data);
         converter.close();
@@ -97,8 +93,7 @@ xThunderComponent.prototype = {
     },
 
     DTADownload : function(totalTask, refer, urls, descs, oneClick) {
-        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                            .getService(Components.interfaces.nsIWindowMediator);
+        var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
         var mainWindow = wm.getMostRecentWindow("navigator:browser");
         if (!this.DTA) {
             if (mainWindow.DTA) {
