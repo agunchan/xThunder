@@ -15,9 +15,6 @@ toolbar[iconsize="small"] #xThunderToolbarBtn,
 #xThunderStatusBtn {
     list-style-image: url("icon16.png");
 }
-.caption-text{
-    font-weight:bold !important;
-}
 .agentNonsup {
     color: red;
 }

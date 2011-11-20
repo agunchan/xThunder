@@ -375,13 +375,25 @@ public:
 };
 
 
-//Download manager family like FlashGet
-class DMAddUrlFamily : public DMSupportCOM
+class DMFlashGet1 : public DMSupportCOM
 {
+protected:
+	const char * getProgId() { return "JetCar.Netscape"; }
+
 public:
+	static const char * getName() { return "FlashGet1"; }
+
 	long dispatch(DownloadInfo & downInfo)
 	{
-		prepareCOMObj();
+		try 
+		{
+			prepareCOMObj();
+		} 
+		catch (_com_error& e)
+		{
+			//Check version 1.9
+			prepareCOMObj("FG2CatchUrl.Netscape");
+		}
 
 		// COM: void AddUrl(string url, string desc, string ref)
 		if (downInfo.count == 1)
@@ -408,21 +420,7 @@ public:
 				return SAFEARRAY_FAILED;
 			}
 		}
-
-		return 0;
 	}
-};
-
-class DMFlashGet : public DMAddUrlFamily
-{
-protected:
-	const char * getProgId() { return "JetCar.Netscape"; }
-};
-
-class DMFlashGet19 : public DMAddUrlFamily
-{
-protected:
-	const char * getProgId() { return "FG2CatchUrl.Netscape"; }
 };
 
 class DMFlashGet3 : public DMSupportCOM
@@ -442,21 +440,9 @@ public:
 		} 
 		catch (_com_error& e)
 		{
-			//Check older version
-			DMFlashGet fg;
-			long result = 0;
-
-			try
-			{
-				result = fg.dispatch(downInfo);
-			}
-			catch (_com_error& e)
-			{
-				DMFlashGet19 fg19;
-				result = fg19.dispatch(downInfo);
-			}
-
-			return result;
+			//before v1.9
+			DMFlashGet1 fg;
+			return fg.dispatch(downInfo);
 		}
 		
 		bool isFlashGet3 = !wcscmp(L"FlashGet3", getModuleName());

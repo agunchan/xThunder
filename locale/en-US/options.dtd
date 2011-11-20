@@ -36,9 +36,20 @@
 <!ENTITY	downOffLineSubMenu      "OffLine items in downloader submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
 <!ENTITY	downOffLineSep          "Show separator before offLine items">
-<!ENTITY	qqOffLineWeb            "Use web version for QQDownload offLine">
+<!ENTITY	qqOffLineWeb            "Use web version of QQDownload offLine">
 <!ENTITY	moveUpButton    "Move Up">
 <!ENTITY	moveDownButton  "Move Down">
+<!ENTITY	editButton      "Edit">
+<!ENTITY	removeButton    "Remove">
+<!ENTITY	newButton       "New">
+<!ENTITY	lbl.newAgent    "Customize">
+<!ENTITY	agentName       "Name:">
+<!ENTITY	agentExe        "Exec:">
+<!ENTITY	agentBrowse     "Browse...">
+<!ENTITY	agentArgs       "Args:">
+<!ENTITY	agentArgsPH     "PlaceHold">
+<!ENTITY	agentFinishBtn  "Finish">
+<!ENTITY	agentCancelBtn  "Ignore">
 <!ENTITY	lbl.agentTip    "Tips: ">
 <!ENTITY	tip.lClickList  "1. Left click above list to select and toggle item,">
 <!ENTITY	tip.rClickList  "    right click to select item only">

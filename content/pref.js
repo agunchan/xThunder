@@ -16,12 +16,14 @@ var xThunderPref = {
         }
         var stringBundle = document.getElementById("xThunderAgentStrings");
         var agentList = this.getEnabledAgentList(addOffLine);
+        var cusAgentList = this.getUnicodeValue("agent.custom").split(",");
         var downOffLineSep = this.getValue("downOffLineSep");
         for (var i=0; i<agentList.length; ++i) {
             var agent = agentList[i];
             var mi = createMenuitem({
                 id : idpre + agent,
-                label : stringBundle.getString(agent),
+                label : agent.indexOf("custom") != -1 
+                        ? cusAgentList[agent.split("custom")[1]] : stringBundle.getString(agent),
                 value : agent,
                 oncommand : func ? (func + "('" + agent + "')") : ""
             });
@@ -37,7 +39,7 @@ var xThunderPref = {
             }
         }
 
-        function createMenuitem(atrs){
+        function createMenuitem(atrs) {
             var mi = ownDoc.createElement("menuitem");
             for(var k in atrs)
                 mi.setAttribute(k, atrs[k]);
@@ -68,8 +70,10 @@ var xThunderPref = {
         var defAgent = this.getValue("agentName");
         var agentList = showAgents.split(",");
         var agentLen = agentList.length-1;
+        var cusAgentList = this.getValue("agent.custom").split(",");
+        cusAgentList.pop();  //last element is an empty string
 
-        if (agentLen < this.agents.length) {
+        if (agentLen < this.agents.length + cusAgentList.length) {
             // for v1.0.2 before user config
             for (var i=0; i<this.agents.length; ++i) {
                 if (!this.inArray(this.agents[i], agentList) && !this.inArray(this.agents[i]+"|0", agentList)) {
@@ -78,7 +82,7 @@ var xThunderPref = {
             }
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
-        } else if(agentLen > this.agents.length) {
+        } else if(agentLen > this.agents.length  + cusAgentList.length) {
             // for v1.1.1 after user config
             for (var j=0; j<agentLen; ++j) {
                 if (!this.inArray(agentList[j].split("|")[0], this.agents)) {
@@ -96,8 +100,7 @@ var xThunderPref = {
             agentList = showAgents.split(",");
         }
         
-        //last element is an empty string
-        agentList.pop();
+        agentList.pop();    //last element is an empty string
         return agentList;
     },
 
@@ -172,7 +175,7 @@ var xThunderPref = {
     },
 
     setValue: function(prefName, value) {
-        var prefType=typeof(value);
+        var prefType = typeof(value);
         if (prefType != typeof(this.getValue(prefName))) {
             this.pref.deleteBranch(prefName);
         }
@@ -195,5 +198,17 @@ var xThunderPref = {
         default:
             throw new Error("Cannot set preference with datatype: " + prefType);
         }
+    },
+        
+    getUnicodeValue : function(prefName) {
+        this.getBranch();
+        return this.pref.getComplexValue(prefName, Components.interfaces.nsISupportsString).data;
+    },
+    
+    setUnicodeValue : function(prefName, value) {
+        this.getBranch();
+        var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+        str.data = value;
+        this.pref.setComplexValue(prefName, Components.interfaces.nsISupportsString, str);
     }
 }

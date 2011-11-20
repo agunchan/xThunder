@@ -26,3 +26,4 @@ pref("extensions.xthunder.sleepSecond", 15);
 pref("extensions.xthunder.delayMiliSec", 15);
 pref("extensions.xthunder.dtaOneClick", false);
 pref("extensions.xthunder.qqOffLineWeb", false);
+pref("extensions.xthunder.agent.custom", "");

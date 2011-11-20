@@ -1,5 +1,5 @@
 var xThunder = {
-    EXE_PATH : "chrome://xthunder/content/xThunder.exe",
+    COM_PATH : "chrome://xthunder/content/xThunder.exe",
     ARG_DEF_STR : "",
     xthunderComponent: null,
     agentName : "",
@@ -70,19 +70,25 @@ var xThunder = {
         if (that.agentName == "DTA") {
             exePath = null;
             args.push(xThunderPref.getValue("dtaOneClick"));
+        } else if (that.agentName.indexOf("custom") != -1) {
+            exePath = xThunderPref.getUnicodeValue("agent." + that.agentName + ".exe");
+            args.push(xThunderPref.getUnicodeValue("agent." + that.agentName + ".args"));
         } else {
-            exePath = that.EXE_PATH;
+            exePath = that.COM_PATH;
             args.push("-a", that.agentName);
             args.push("-s", xThunderPref.getValue("sleepSecond"));
         }
                 
         result = that.xthunderComponent.callAgent(that.agentName, that.totalTask, that.referrer, that.urls, that.cookies, that.descs, that.cids, exePath, args);       
         switch(result) {
-            case that.xthunderComponent.EXE_NOT_FOUND:
+            case that.xthunderComponent.COM_NOT_FOUND:
                 alert("xThunder.exe missing, please check if xThunder was properly installed!");
                 break;
             case that.xthunderComponent.DTA_NOT_FOUND:
                 alert("DTA called error, please check if DTA was properly installed!");
+                break;
+            case that.xthunderComponent.EXE_NOT_FOUND:
+                alert(exePath + " missing, please check if it was properly installed!");
                 break;
         }
     },

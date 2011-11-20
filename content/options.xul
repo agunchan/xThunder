@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://xthunder/skin/menu.css" type="text/css"?>
+<?xml-stylesheet href="chrome://xthunder/skin/options.css" type="text/css"?>
 <!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/options.dtd" >
 <dialog id="xThunder-prefs"
     title="&options;"
@@ -124,20 +124,54 @@
 
                 <tabpanel orient="vertical" flex="1">
                     <hbox>
-                        <vbox>
-                            <listbox id="agentListBox" rows="13" onselect="xThunderOptions.agentListSelect()" flex="1"/>
+                        <vbox flex="1">
+                            <listbox id="agentListBox" rows="10" onselect="xThunderOptions.agentListSelect()" flex="1"/>
                         </vbox>
-                        <vbox pack="start" >
-                            <button id="moveUpButton" disabled="true" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>
-                            <button id="moveDownButton" disabled="true" label="&moveDownButton;" oncommand="xThunderOptions.moveCurAgent(1);"/>
+                        <vbox>
+                            <button id="moveUpButton" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>
+                            <button id="moveDownButton" label="&moveDownButton;" oncommand="xThunderOptions.moveCurAgent(1);"/>
+                            <spacer flex="1"/>
+                            <button id="editButton" label="&editButton;" oncommand="xThunderOptions.editCustAgent();"/>
+                            <button id="removeButton" label="&removeButton;" oncommand="xThunderOptions.removeCustAgent();"/>
+                            <button id="newButton" label="&newButton;" oncommand="xThunderOptions.showCustAgent(true);"/>
                         </vbox>
                     </hbox>
-                    <groupbox>
-                        <caption label="&lbl.agentTip;" style="color:red;"/>
+                    <groupbox id="tipGroup">
+                        <caption label="&lbl.agentTip;" class="caption-text-strong"/>
                         <label id="tipLClickList" value="&tip.lClickList;"/>
                         <label id="tipRClickList" value="&tip.rClickList;"/>
                         <label id="tipLClickMenu" value="&tip.lClickMenu;" style="margin-top:10px;"/>
                         <label id="tipRClickMenu" value="&tip.rClickMenu;"/>
+                    </groupbox>
+                    <groupbox id="newAgentGroup" hidden="true">
+                        <caption label="&lbl.newAgent;" class="caption-text-strong"/>
+                        <hbox>
+                            <label value="&agentName;" class="agent-lbl"/>
+                            <textbox id="agentName" flex="1"/>
+                            <label value="" class="agent-lastplace"/>
+                        </hbox>
+                        <hbox>
+                            <label value="&agentExe;" class="agent-lbl"/>
+                            <textbox id="agentExe" flex="1" disabled="true"/>
+                            <button label="&agentBrowse;" class="agent-lastplace" oncommand="xThunderOptions.locateExe();" />
+                        </hbox>
+                        <hbox>
+                            <label value="&agentArgs;" class="agent-lbl"/>
+                            <textbox id="agentArgs" flex="1"/>
+                            <toolbarbutton label="&agentArgsPH;" class="agent-lastplace" type="menu">
+                                <menupopup>
+                                    <menuitem id="agentArgsPHURL" class="menuitem-non-iconic" label="URL" oncommand="xThunderOptions.insertAgentPH('[URL]');"/>
+                                    <menuitem id="agentArgsPHREFERER" class="menuitem-non-iconic" label="REFERER" oncommand="xThunderOptions.insertAgentPH('[REFERER]');"/>
+                                    <menuitem id="agentArgsPHCOOKIE" class="menuitem-non-iconic" label="COOKIE" oncommand="xThunderOptions.insertAgentPH('[COOKIE]');"/>
+                                    <menuitem id="agentArgsPHCOMMENT" class="menuitem-non-iconic" label="COMMENT" oncommand="xThunderOptions.insertAgentPH('[COMMENT]');"/>
+                                </menupopup>
+                            </toolbarbutton>
+                        </hbox>
+                        <hbox class="agent-command-box">
+                            <label value="" class="agent-lbl"/>
+                            <button label="&agentFinishBtn;" oncommand="xThunderOptions.customizeAgent();" />
+                            <button label="&agentCancelBtn;" oncommand="xThunderOptions.ignoreCustAgent();" />
+                        </hbox>
                     </groupbox>
                 </tabpanel>
                 

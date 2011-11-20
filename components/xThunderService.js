@@ -13,44 +13,20 @@ xThunderComponent.prototype = {
     DTA:                null,
     COMExeFile:         null,
     DTA_NOT_FOUND:      -2,
-    EXE_NOT_FOUND:      -3,
+    COM_NOT_FOUND:      -3,
+    EXE_NOT_FOUND:      -4,
 
 
     callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result;
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0]);
+        } else if(agentName.indexOf("custom") != -1) {
+            result = this.RunCustom(totalTask, referrer, urls, cookies, descs, exePath, args);
         } else {
-            //COM download
-            if (!this.COMExeFile && (/^chrome:/i.test(exePath))) {
-                this.COMExeFile = this.getChromeFile(exePath);
-            }
-
-            if (!this.COMExeFile || !this.COMExeFile.exists()) {
-                return this.EXE_NOT_FOUND;
-            }
-            
-            var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
-            var hasRunW = "runw" in proc;
-            proc.init(this.COMExeFile);
-            
-            if (totalTask == 1 && hasRunW) {
-                //empty string arguments ignored
-                args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] === "" ? " " : cids[0]);
-            } else {
-                //before Firefox 4 wstring can only be passed by file
-                this.createJobFile(totalTask, referrer, urls, cookies, descs, cids, args);
-            }
-            result = proc[hasRunW ? "runw" : "run"](false, args, args.length);
+            result = this.COMDownload(totalTask, referrer, urls, cookies, descs, cids, exePath, args);
         }
         return result;
-    },
-
-    runNative: function(exeFile, args, blocking) {
-        var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
-        proc.init(exeFile);
-        proc["runw" in proc ? "runw" : "run"](blocking, args, args.length);
-        return proc.exitValue;
     },
     
     getChromeFile : function (chromePath) {
@@ -65,7 +41,7 @@ xThunderComponent.prototype = {
         return ph.getFileFromURLSpec(url);
     },
     
-    createJobFile : function(totalTask, referrer, urls, cookies, descs, cids, args) {
+    createJobFile : function(totalTask, referrer, urls, cookies, descs, cids) {
         var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
                 .get("TmpD", Ci.nsIFile);
         file.append("xThunder");
@@ -88,8 +64,51 @@ xThunderComponent.prototype = {
         converter.init(foStream, "UTF-8", 0, 0);
         converter.writeString(data);
         converter.close();
+        
+        return file.path;
+    },
+    
+    RunCustom: function(totalTask, referrer, urls, cookies, descs, exePath, args) {
+        var exeFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+        exeFile.initWithPath(exePath);
+        if (exeFile.exists()) {
+            args[args.length-1] = args[args.length-1].replace(/\[REFERER\]/ig, referrer)
+                                    .replace(/\[URL\]/ig, urls[0])
+                                    .replace(/\[COOKIE\]/ig, cookies[0])
+                                    .replace(/\[COMMENT\]/ig, descs[0]);
+            //var cs = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+            //cs.logStringMessage(args[args.length-1]);
+            var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+            proc.init(exeFile);
+            proc["runw" in proc ? "runw" : "run"](false, args, args.length);
+            return proc.exitValue;
+        } else {
+            return this.EXE_NOT_FOUND;
+        }
+    },
+    
+    COMDownload : function(totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
+        //COM download
+        if (!this.COMExeFile && (/^chrome:/i.test(exePath))) {
+            this.COMExeFile = this.getChromeFile(exePath);
+        }
 
-        args.push("-f", file.path);
+        if (!this.COMExeFile || !this.COMExeFile.exists()) {
+            return this.COM_NOT_FOUND;
+        }
+
+        var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
+        var hasRunW = "runw" in proc;
+        proc.init(this.COMExeFile);
+
+        if (totalTask == 1 && hasRunW) {
+            //empty string arguments ignored
+            args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] === "" ? " " : cids[0]);
+        } else {
+            //before Firefox 4 wstring can only be passed by file
+            args.push("-f", this.createJobFile(totalTask, referrer, urls, cookies, descs, cids));
+        }
+        return proc[hasRunW ? "runw" : "run"](false, args, args.length);
     },
 
     DTADownload : function(totalTask, refer, urls, descs, oneClick) {
