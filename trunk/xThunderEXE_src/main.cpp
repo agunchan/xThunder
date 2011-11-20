@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // Call external downloader by COM
-// Version : 1.1.3
+// Version : 1.2.0
 // Creator : agunchan
 // License : MPL 1.1
 //

@@ -15,7 +15,7 @@
 <!ENTITY	pro.udown       "优蛋 (addTask)">
 <!ENTITY	remember        "关联普通文件类型">
 <!ENTITY	filterext       "预先以上述扩展名过滤文件">
-<!ENTITY	lbl.udown       "115默认下载">
+<!ENTITY	lbl.udown       "优蛋默认下载">
 <!ENTITY	udown.tel       "电信">
 <!ENTITY	udown.cnc       "联通">
 <!ENTITY	udown.auto      "自动">
@@ -39,6 +39,17 @@
 <!ENTITY	qqOffLineWeb     		"使用网页版QQ旋风离线下载">
 <!ENTITY	moveUpButton    "上移">
 <!ENTITY	moveDownButton  "下移">
+<!ENTITY	editButton      "编辑">
+<!ENTITY	removeButton    "移除">
+<!ENTITY	newButton       "新增">
+<!ENTITY	lbl.newAgent    "自定义">
+<!ENTITY	agentName       "名称:">
+<!ENTITY	agentExe        "程序:">
+<!ENTITY	agentBrowse     "浏览...">
+<!ENTITY	agentArgs       "参数:">
+<!ENTITY	agentArgsPH     "占位符">
+<!ENTITY	agentFinishBtn  "完成">
+<!ENTITY	agentCancelBtn  "忽略">
 <!ENTITY	lbl.agentTip    "提示：">
 <!ENTITY	tip.lClickList  "1. 左键点击上面列表选中并取反某项，">
 <!ENTITY	tip.rClickList  "    右键点击仅选中">
