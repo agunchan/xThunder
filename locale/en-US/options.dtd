@@ -43,11 +43,11 @@
 <!ENTITY	removeButton    "Remove">
 <!ENTITY	newButton       "New">
 <!ENTITY	lbl.newAgent    "Customize">
-<!ENTITY	agentName       "Name:">
-<!ENTITY	agentExe        "Exec:">
+<!ENTITY	agentName       "Name">
+<!ENTITY	agentExe        "Exec">
 <!ENTITY	agentBrowse     "Browse...">
-<!ENTITY	agentArgs       "Args:">
-<!ENTITY	agentArgsPH     "PlaceHold">
+<!ENTITY	agentArgs       "Args">
+<!ENTITY	agentArgsPH     "Placeholder">
 <!ENTITY	agentFinishBtn  "Finish">
 <!ENTITY	agentCancelBtn  "Ignore">
 <!ENTITY	lbl.agentTip    "Tips: ">

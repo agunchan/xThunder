@@ -43,16 +43,16 @@
 <!ENTITY	removeButton    "移除">
 <!ENTITY	newButton       "新增">
 <!ENTITY	lbl.newAgent    "自定义">
-<!ENTITY	agentName       "名称:">
-<!ENTITY	agentExe        "程序:">
+<!ENTITY	agentName       "名称">
+<!ENTITY	agentExe        "程序">
 <!ENTITY	agentBrowse     "浏览...">
-<!ENTITY	agentArgs       "参数:">
+<!ENTITY	agentArgs       "参数">
 <!ENTITY	agentArgsPH     "占位符">
 <!ENTITY	agentFinishBtn  "完成">
 <!ENTITY	agentCancelBtn  "忽略">
 <!ENTITY	lbl.agentTip    "提示：">
 <!ENTITY	tip.lClickList  "1. 左键点击上面列表选中并取反某项，">
-<!ENTITY	tip.rClickList  "    右键点击仅选中">
+<!ENTITY	tip.rClickList  "    右键点击仅选中该项">
 <!ENTITY	tip.lClickMenu  "2. 左键点击xThunder菜单项使用首个，">
 <!ENTITY	tip.rClickMenu  "    右键 - 第二，中键 - 第三下载器">
 <!ENTITY	lbl.monitor		"监视链接">
