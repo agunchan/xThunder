@@ -103,9 +103,17 @@ var xThunderOptions = {
                 type  : "checkbox",
                 checked : agentItem.length == 1
             });
+        }        
+        if (cusAgentList.length > 1) {
+            //work around BUG 250123 - listitem.value == undefined if listitem never visible
+            var visibleIndex = this.agentListBox.itemCount - 1;
+            var visibleRows = this.agentListBox.getNumberOfVisibleRows();
+            while(visibleIndex >= visibleRows) {
+                this.agentListBox.ensureIndexIsVisible(visibleIndex);
+                visibleIndex -= visibleRows;
+            }
+            this.agentListBox.scrollToIndex(0);
         }
-        this.agentListBox.ensureIndexIsVisible(this.agentListBox.itemCount-1); //work around BUG 250123
-        this.agentListBox.scrollToIndex(0);
         this.agentListSelect();
         
         function createListItem(atrs) {
@@ -124,7 +132,7 @@ var xThunderOptions = {
         for (var i=0; i<listitems.length; ++i) {
             var agentValue = listitems[i].value;
             if (typeof agentValue == "undefined") {
-                alert("agentItem " + i + " undefined");
+                alert("BUG 250123: agentItem " + i + " undefined");
                 return;
             }
             if (listitems[i].checked) {

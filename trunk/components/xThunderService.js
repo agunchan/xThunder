@@ -11,6 +11,7 @@ xThunderComponent.prototype = {
     contractID:         "@fxthunder.com/component;1",
     QueryInterface:     XPCOMUtils.generateQI(),
     DTA:                null,
+    COM_PATH :          "chrome://xthunder/content/xThunder.exe",
     COMExeFile:         null,
     DTA_NOT_FOUND:      -2,
     COM_NOT_FOUND:      -3,
@@ -24,7 +25,7 @@ xThunderComponent.prototype = {
         } else if(agentName.indexOf("custom") != -1) {
             result = this.RunCustom(totalTask, referrer, urls, cookies, descs, exePath, args);
         } else {
-            result = this.COMDownload(totalTask, referrer, urls, cookies, descs, cids, exePath, args);
+            result = this.COMDownload(totalTask, referrer, urls, cookies, descs, cids, args);
         }
         return result;
     },
@@ -87,10 +88,10 @@ xThunderComponent.prototype = {
         }
     },
     
-    COMDownload : function(totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
+    COMDownload : function(totalTask, referrer, urls, cookies, descs, cids, args) {
         //COM download
-        if (!this.COMExeFile && (/^chrome:/i.test(exePath))) {
-            this.COMExeFile = this.getChromeFile(exePath);
+        if (!this.COMExeFile) {
+            this.COMExeFile = this.getChromeFile(this.COM_PATH);
         }
 
         if (!this.COMExeFile || !this.COMExeFile.exists()) {

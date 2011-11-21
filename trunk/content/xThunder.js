@@ -1,5 +1,4 @@
 var xThunder = {
-    COM_PATH : "chrome://xthunder/content/xThunder.exe",
     ARG_DEF_STR : "",
     xthunderComponent: null,
     agentName : "",
@@ -74,7 +73,7 @@ var xThunder = {
             exePath = xThunderPref.getUnicodeValue("agent." + that.agentName + ".exe");
             args.push(xThunderPref.getUnicodeValue("agent." + that.agentName + ".args"));
         } else {
-            exePath = that.COM_PATH;
+            exePath = null;
             args.push("-a", that.agentName);
             args.push("-s", xThunderPref.getValue("sleepSecond"));
         }

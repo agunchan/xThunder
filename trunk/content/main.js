@@ -158,7 +158,7 @@ var xThunderMain = {
         downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
         downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
         downloadOffLineItem.setAttribute("hidden", downOffLineHidden);
-        //Fix Bug 630830 before Firefox5 - "key" attribute changes to menuitems are not handled
+        //work around BUG 630830 before Firefox5 - "key" attribute changes to menuitems are not handled
         downloadAllItem.setAttribute("acceltext", showAllHotKey ? "Alt+F1" : "");
         downloadAllItem.setAttribute("key", showAllHotKey ? "xThunderAllKey" : "");
         downloadAllItem.setAttribute("hidden", downAllHidden);

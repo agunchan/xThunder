@@ -48,7 +48,6 @@
                 <tab label="&tab.general;"/>
                 <tab label="&tab.interface;"/>
                 <tab label="&tab.downloader;"/>
-                <tab label="&tab.advanced;"/>
             </tabs>
             <tabpanels flex="1">
                 <tabpanel orient="vertical" flex="1">
@@ -87,7 +86,13 @@
                         <checkbox id="filterext" label="&filterext;" preference="pref_filterExt"/>
                         <checkbox id="downincludeimages" label="&includeImages;" preference="pref_includeImages"/>
                     </groupbox>
-
+                                         
+                    <groupbox>
+                        <caption label="&lbl.monitor;"/>
+                        <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
+                        <checkbox id="ctrlAltDecode" label="&ctrlAltDecode;" preference="pref_ctrlAltDecode"/>
+                    </groupbox>
+                    
                     <groupbox>
                         <caption label="&lbl.udown;"/>
                         <radiogroup id="udownradiogroup" preference="pref_udown" orient="horizontal">
@@ -125,7 +130,7 @@
                 <tabpanel orient="vertical" flex="1">
                     <hbox>
                         <vbox flex="1">
-                            <listbox id="agentListBox" rows="10" onselect="xThunderOptions.agentListSelect()" flex="1"/>
+                            <listbox id="agentListBox" rows="13" onselect="xThunderOptions.agentListSelect()" flex="1"/>
                         </vbox>
                         <vbox>
                             <button id="moveUpButton" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>
@@ -152,7 +157,7 @@
                         </hbox>
                         <hbox>
                             <label value="&agentExe;" class="agent-lbl"/>
-                            <textbox id="agentExe" flex="1" disabled="true"/>
+                            <textbox id="agentExe" flex="1" readonly="true"/>
                             <button label="&agentBrowse;" class="agent-lastplace" oncommand="xThunderOptions.locateExe();" />
                         </hbox>
                         <hbox>
@@ -173,15 +178,7 @@
                             <button label="&agentCancelBtn;" oncommand="xThunderOptions.ignoreCustAgent();" />
                         </hbox>
                     </groupbox>
-                </tabpanel>
-                
-                <tabpanel orient="vertical" flex="1">
-                    <groupbox>
-                        <caption label="&lbl.monitor;"/>
-                        <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
-                        <checkbox id="ctrlAltDecode" label="&ctrlAltDecode;" preference="pref_ctrlAltDecode"/>
-                    </groupbox>
-                </tabpanel>    
+                </tabpanel>  
             </tabpanels>
         </tabbox>
     </prefpane>
