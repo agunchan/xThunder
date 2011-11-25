@@ -51,10 +51,10 @@
 <!ENTITY	agentFinishBtn  "Finish">
 <!ENTITY	agentCancelBtn  "Ignore">
 <!ENTITY	lbl.agentTip    "Tips: ">
-<!ENTITY	tip.lClickList  "1. Left click above list to select and toggle item,">
-<!ENTITY	tip.rClickList  "    right click to select item only">
-<!ENTITY	tip.lClickMenu  "2. Left click xThunder menuitem to use FIRST,">
+<!ENTITY	tip.lClickList  "1. Left click above list to select and toggle the item,">
+<!ENTITY	tip.rClickList  "    right click or middle click to select it only">
+<!ENTITY	tip.lClickMenu  "2. Left click xThunder menuitem to use FIRST downloader,">
 <!ENTITY	tip.rClickMenu  "    right click - SECOND, middle click - THIRD">
 <!ENTITY	lbl.monitor     "Monitor Link">
-<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in back tab">
-<!ENTITY	ctrlAltDecode   "Ctrl+Alt+Click = Copy decoded link url">
+<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background tab">
+<!ENTITY	ctrlAltDecode   "Ctrl+Alt+Click = Copy decoded link url to clipboard">

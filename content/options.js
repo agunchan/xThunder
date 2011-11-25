@@ -325,7 +325,7 @@ var xThunderOptions = {
     locateExe : function() {
         var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
         var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
-        var mainWindow = wm.getMostRecentWindow("navigator:browser");
+        var mainWindow = wm.getMostRecentWindow(null);
         fp.init(mainWindow, "xThunder - Customize downloader", Components.interfaces.nsIFilePicker.modeOpen);
         fp.appendFilters(Components.interfaces.nsIFilePicker.filterApps);
         fp.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
