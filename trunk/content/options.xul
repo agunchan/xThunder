@@ -57,17 +57,16 @@
                             <columns>
                                 <column/>
                                 <column/>
+                                <column/>
                             </columns>
                             <rows>
                                 <row align="baseline">
                                     <checkbox id="thunder" label="&pro.thunder;"/>
                                     <checkbox id="flashget" label="&pro.flashget;"/>
-                                </row>
-                                <row align="baseline">
                                     <checkbox id="qqdl" label="&pro.qqdl;"/>
-                                    <checkbox id="ed2k" label="&pro.ed2k;"/>
                                 </row>
                                 <row align="baseline">
+                                    <checkbox id="ed2k" label="&pro.ed2k;"/>
                                     <checkbox id="magnet" label="&pro.magnet;"/>
                                     <checkbox id="fs2you" label="&pro.fs2you;"/>
                                 </row>
@@ -143,9 +142,9 @@
                     </hbox>
                     <groupbox id="tipGroup">
                         <caption label="&lbl.agentTip;" class="caption-text-strong"/>
-                        <label id="tipLClickList" value="&tip.lClickList;"/>
+                        <label id="tipLClickList" value="&tip.lClickList;" style="margin-top:5px;"/>
                         <label id="tipRClickList" value="&tip.rClickList;"/>
-                        <label id="tipLClickMenu" value="&tip.lClickMenu;" style="margin-top:10px;"/>
+                        <label id="tipLClickMenu" value="&tip.lClickMenu;" style="margin-top:26px;"/>
                         <label id="tipRClickMenu" value="&tip.rClickMenu;"/>
                     </groupbox>
                     <groupbox id="newAgentGroup" hidden="true">
@@ -165,10 +164,10 @@
                             <textbox id="agentArgs" flex="1"/>
                             <toolbarbutton label="&agentArgsPH;" class="agent-lastplace" type="menu">
                                 <menupopup>
-                                    <menuitem id="agentArgsPHURL" class="menuitem-non-iconic" label="URL" oncommand="xThunderOptions.insertAgentPH('[URL]');"/>
-                                    <menuitem id="agentArgsPHREFERER" class="menuitem-non-iconic" label="REFERER" oncommand="xThunderOptions.insertAgentPH('[REFERER]');"/>
-                                    <menuitem id="agentArgsPHCOOKIE" class="menuitem-non-iconic" label="COOKIE" oncommand="xThunderOptions.insertAgentPH('[COOKIE]');"/>
-                                    <menuitem id="agentArgsPHCOMMENT" class="menuitem-non-iconic" label="COMMENT" oncommand="xThunderOptions.insertAgentPH('[COMMENT]');"/>
+                                    <menuitem id="agentArgsPHURL" class="menuitem-non-iconic" label="Url" oncommand="xThunderOptions.insertAgentPH('[URL]');"/>
+                                    <menuitem id="agentArgsPHREFERER" class="menuitem-non-iconic" label="Referer" oncommand="xThunderOptions.insertAgentPH('[REFERER]');"/>
+                                    <menuitem id="agentArgsPHCOOKIE" class="menuitem-non-iconic" label="Cookie" oncommand="xThunderOptions.insertAgentPH('[COOKIE]');"/>
+                                    <menuitem id="agentArgsPHCOMMENT" class="menuitem-non-iconic" label="Comment" oncommand="xThunderOptions.insertAgentPH('[COMMENT]');"/>
                                 </menupopup>
                             </toolbarbutton>
                         </hbox>

@@ -9,33 +9,34 @@ var xThunderDecode = {
         return url;
     },
 
-    // Whether the link with special protocal can be decoded
-    isProSupNode : function(link, url, protocals) {
+    // Whether the link with special protocol can be decoded
+    isProSupNode : function(link, url, protocols) {
         var attr;
-        for (var i=0; i<protocals.length; ++i) {
-            if (protocals[i] == "thunder" && 
+        for (var i=0; i<protocols.length; ++i) {
+            if (protocols[i] == "thunder" && 
                     ( url.indexOf("thunder:") == 0 ||
+                      url.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i) ||
                       link.getAttribute("thunderhref") || 
                       link.getAttribute("downloadurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1
                     )    
-                || protocals[i] == "flashget" &&
+                || protocols[i] == "flashget" &&
                     ( url.indexOf("flashget:") == 0 ||
                       link.getAttribute("fg") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("Flashget_SetHref") != -1
                     )
-                || protocals[i] == "qqdl" &&
+                || protocols[i] == "qqdl" &&
                     ( url.indexOf("qqdl:") == 0 ||
                       link.getAttribute("qhref")
                     )
-                || protocals[i] == "ed2k" &&
+                || protocols[i] == "ed2k" &&
                     ( url.indexOf("ed2k:") == 0 ||
                       link.getAttribute("ed2k")
                     )
-                || protocals[i] == "magnet" && url.indexOf("magnet:") == 0
-                || protocals[i] == "fs2you" && url.indexOf("fs2you:") == 0
-                || protocals[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
+                || protocols[i] == "magnet" && url.indexOf("magnet:") == 0
+                || protocols[i] == "fs2you" && url.indexOf("fs2you:") == 0
+                || protocols[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
                 )
                 return true;
         }
@@ -45,19 +46,28 @@ var xThunderDecode = {
 
     getDecodedNode : function(link) {
         var url;
+        var cid;
         var htmlDocument = link.ownerDocument;
         var referrer = htmlDocument.URL;
 
         //In special
         var matches;
-        if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
+        if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
+            // thunder url in arguments of href
+            cid = matches[1];
+            url = this.getDecodedUrl(decodeURIComponent(matches[2]));
+            if (cid) {
+                url = url + "?cid=" + cid;
+            }
+            return url;
+        } else if (/^http:\/\/www\.duote\.com\/soft\//i.test(referrer)) {
             if (matches = htmlDocument.getElementById("quickDown")) {
                 url = matches.href;
             }
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
             // thunder url in oncontextmenu attribute
             var input = link.parentNode;
-            var params,cid,mc;
+            var params,mc;
             if ((input = input.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) {    
                 params = params.split("&");
                 for (var i=0; i<params.length; ++i) {
@@ -96,7 +106,7 @@ var xThunderDecode = {
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
             // download url in subling nodes
             url = this.getUDownUrl(link, referrer);
-        }
+        } 
 
         //In gernal
         if (!url) {

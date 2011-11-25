@@ -11,8 +11,8 @@ xThunderComponent.prototype = {
     contractID:         "@fxthunder.com/component;1",
     QueryInterface:     XPCOMUtils.generateQI(),
     DTA:                null,
-    COM_PATH :          "chrome://xthunder/content/xThunder.exe",
     COMExeFile:         null,
+    COM_PATH :          "chrome://xthunder/content/xThunder.exe",
     DTA_NOT_FOUND:      -2,
     COM_NOT_FOUND:      -3,
     EXE_NOT_FOUND:      -4,
@@ -20,12 +20,15 @@ xThunderComponent.prototype = {
 
     callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result;
+        if (!args) {
+            args = [];
+        }
         if (agentName == "DTA") {
-            result = this.DTADownload(totalTask, referrer, urls, descs, args[0]);
+            result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
         } else if(agentName.indexOf("custom") != -1) {
             result = this.RunCustom(totalTask, referrer, urls, cookies, descs, exePath, args);
         } else {
-            result = this.COMDownload(totalTask, referrer, urls, cookies, descs, cids, args);
+            result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args);
         }
         return result;
     },
@@ -73,10 +76,10 @@ xThunderComponent.prototype = {
         var exeFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
         exeFile.initWithPath(exePath);
         if (exeFile.exists()) {
-            args[args.length-1] = args[args.length-1].replace(/\[REFERER\]/ig, referrer)
-                                    .replace(/\[URL\]/ig, urls[0])
-                                    .replace(/\[COOKIE\]/ig, cookies[0])
-                                    .replace(/\[COMMENT\]/ig, descs[0]);
+            args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, urls[0])
+                                    .replace(/\[REFERER\]/ig, referrer || urls[0])
+                                    .replace(/\[COOKIE\]/ig, cookies[0] || 0)
+                                    .replace(/\[COMMENT\]/ig, descs[0] || 0);
             //var cs = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
             //cs.logStringMessage(args[args.length-1]);
             var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
@@ -88,7 +91,7 @@ xThunderComponent.prototype = {
         }
     },
     
-    COMDownload : function(totalTask, referrer, urls, cookies, descs, cids, args) {
+    COMDownload : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
         //COM download
         if (!this.COMExeFile) {
             this.COMExeFile = this.getChromeFile(this.COM_PATH);
@@ -102,6 +105,7 @@ xThunderComponent.prototype = {
         var hasRunW = "runw" in proc;
         proc.init(this.COMExeFile);
 
+        args.push("-a", agentName);
         if (totalTask == 1 && hasRunW) {
             //empty string arguments ignored
             args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] === "" ? " " : cids[0]);

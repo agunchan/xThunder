@@ -29,6 +29,32 @@ var xThunder = {
         this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
                             ? xThunderPref.getValue("supportExt") : "";
     },
+    addTask : function(url, des){
+        if (url == "" || (/^(javascript|data|mailto):/i.test(url))) {
+            //invalid url
+            url = this.referrer;
+        }
+        
+        //nonsupport or filtered url
+        var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
+        if (xThunderPref.inArray(this.agentName, agentsNonsup)
+            || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
+            --this.totalTask;
+            return;
+        }
+
+        this.urls.push(url);
+        this.cookies.push(this.getCookie(url));
+        if (this.totalTask == 1) {
+            des = this.ARG_DEF_STR;
+        } else if (!des) {
+            des = this.getFileName(url);
+        } else {
+            des = des.replace(/^\s+|\s+$|[\r\n]+/g,"");
+        }
+        this.descs.push(des);
+        this.cids.push(this.getCid(url));
+	},
     callAgent : function(delay){
         if (this.urls.length != this.totalTask || this.totalTask <= 0) {
             return false;
@@ -74,7 +100,6 @@ var xThunder = {
             args.push(xThunderPref.getUnicodeValue("agent." + that.agentName + ".args"));
         } else {
             exePath = null;
-            args.push("-a", that.agentName);
             args.push("-s", xThunderPref.getValue("sleepSecond"));
         }
                 
@@ -142,38 +167,11 @@ var xThunder = {
             var matches;
             if (matches = href.match(/^http:\/\/(?:thunder\.ffdy\.cc|www\.7369\.com|bt\.xunbo\.cc)\/([0-9A-F]+)\//)) {
                 cid = matches[1];
+            } else if(matches = href.match(/^http:\/\/ggxxxzzz.com.*\?cid=(.*)/)) {
+                cid = matches[1];
             }
         }
 
         return cid;
-    },
-	addTask : function(url, des){
-        if (url == null) {
-            //115u async method
-            return; 
-        } else if (url == "" || (/^(javascript|data|mailto):/i.test(url))) {
-            //invalid url
-            url = this.referrer;
-        }
-        
-        //nonsupport or filtered url
-        var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
-        if (xThunderPref.inArray(this.agentName, agentsNonsup)
-            || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
-            --this.totalTask;
-            return;
-        }
-
-        this.urls.push(url);
-        this.cookies.push(this.getCookie(url));
-        if (this.totalTask == 1) {
-            des = this.ARG_DEF_STR;
-        } else if (!des) {
-            des = this.getFileName(url);
-        } else {
-            des = des.replace(/^\s+|\s+$|[\r\n]+/g,"");
-        }
-        this.descs.push(des);
-        this.cids.push(this.getCid(url));
-	}
+    }
 };

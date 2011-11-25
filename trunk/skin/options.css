@@ -6,13 +6,13 @@
     color:red;
 }
 .agent-lbl{
-    width: 30px;
+    width: 40px;
 }
 .agent-lastplace{
     margin: 0;
     width: 90px;
 }
 .agent-command-box{
-    margin-top: 10px;
+    margin: 0;
     font-size: 8pt;
 }

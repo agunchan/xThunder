@@ -4,7 +4,7 @@ var xThunderPref = {
     proSupReg : /^(thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "udown", "115"],
     agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"],
-    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
+    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "Orbit", "FDM", "UDown"],
                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
                     "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"]},
 
