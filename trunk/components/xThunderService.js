@@ -13,6 +13,7 @@ xThunderComponent.prototype = {
     DTA:                null,
     COMExeFile:         null,
     COM_PATH :          "chrome://xthunder/content/xThunder.exe",
+    CMD_MAX_LENTH :     2000,
     DTA_NOT_FOUND:      -2,
     COM_NOT_FOUND:      -3,
     EXE_NOT_FOUND:      -4,
@@ -111,8 +112,9 @@ xThunderComponent.prototype = {
         proc.init(this.COMExeFile);
 
         args.push("-a", agentName);
-        if (totalTask == 1 && hasRunW) {
-            //empty string arguments ignored
+        if (totalTask == 1 && hasRunW && this.COMExeFile.path.length + urls[0].length + referrer.length
+            + descs[0].length + cookies[0].length + cids[0].length < this.CMD_MAX_LENTH) {
+            //Notice: empty string arguments ignored and maximum length of the string used at cmd
             args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] === "" ? " " : cids[0]);
         } else {
             //before Firefox 4 wstring can only be passed by file

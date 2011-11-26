@@ -35,9 +35,10 @@ wchar_t * readLine(FILE *stream)
 //////////////////////////////////////////////////////////////////////////
 //
 // File Format:
+//				TaskCount
 //				Referrer
 //				url       -
-//				desc       \  repeat n 
+//				desc       \  repeat TaskCount 
 //				cookie     /
 //				cid		  -
 //
@@ -72,7 +73,7 @@ int main(int argc, char* argv[])
 	//-a agentName -f jobFilePath -s sleepSecond
 	if(argc < 5)
 	{
-		MessageBox(NULL, L"Wrong number of arguments.\n -a agentName(*)\n -f taskCount jobFilePath\n -s sleepSec\n", MB_TITLE, MB_OK);
+		MessageBox(NULL, L"Wrong number of arguments.\n -a agentName(*)\n -f jobFilePath\n -s sleepSec\n", MB_TITLE, MB_OK);
 		return ARG_ERROR;
 	}
 
@@ -149,7 +150,7 @@ int main(int argc, char* argv[])
 		delete dmAgent;
 	}
 
-	//Sleep for a while in case of downloader's first start
+	//Sleep for a while in case of downloader's cold start
 	//This process should not be blocked by external call
 	Sleep(1000 * sleepSec);	
 	return retVal;
