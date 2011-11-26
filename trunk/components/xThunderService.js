@@ -71,16 +71,21 @@ xThunderComponent.prototype = {
         
         return file.path;
     },
-    
+
     RunCustom: function(totalTask, referrer, urls, cookies, descs, exePath, args) {
         var exeFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
         exeFile.initWithPath(exePath);
         if (exeFile.exists()) {
+            if (args[args.length-1].match(/\[CBURL\]/i)) {
+                var gClipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
+                gClipboardHelper.copyString(urls[0]);
+                args[args.length-1] = args[args.length-1].replace(/\[CBURL\]/ig, "");
+            }
             args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, urls[0])
                                     .replace(/\[REFERER\]/ig, referrer || urls[0])
                                     .replace(/\[COOKIE\]/ig, cookies[0] || 0)
                                     .replace(/\[COMMENT\]/ig, descs[0] || 0);
-            //var cs = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+            //var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
             //cs.logStringMessage(args[args.length-1]);
             var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
             proc.init(exeFile);
