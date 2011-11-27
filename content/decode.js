@@ -15,7 +15,7 @@ var xThunderDecode = {
         for (var i=0; i<protocols.length; ++i) {
             if (protocols[i] == "thunder" && 
                     ( url.indexOf("thunder:") == 0 ||
-                      url.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i) ||
+                      /^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i.test(url) ||
                       link.getAttribute("thunderhref") || 
                       link.getAttribute("downloadurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
@@ -84,9 +84,9 @@ var xThunderDecode = {
                 if (!url) {
                     if (/^http:\/\/www\.ffdy\.cc\//i.test(referrer)) {
                         url = "http://thunder.ffdy.cc/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
-                    } else if (/^http:\/\/www\.7369\.cc\//i.test(referrer)) {
+                    } else if (/^http:\/\/(www\.)?7369\.cc\//i.test(referrer)) {
                         url = "http://www.7369.com/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
-                    } else if (/^http:\/\/xunbo\.cc\//i.test(referrer)) {
+                    } else if (/^http:\/\/(www\.)?xunbo\.cc\//i.test(referrer)) {
                         url = "http://bt.xunbo.cc/" + cid + "/" + mc;
                     } 
                 }
@@ -134,7 +134,7 @@ var xThunderDecode = {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ""))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
                 if (/^flashget:\/\//i.test(oriUrl)) {
-                    if (url.match(/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/))
+                    if (/http:\/\/.*\/(Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*)/.test(url))
                         url = oriUrl; // use oriUrl when it is actually flashgetx://|mhts|
                     else
                         url = this.getDecodedUrl(url);  // decode twice

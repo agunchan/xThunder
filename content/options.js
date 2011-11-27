@@ -71,6 +71,10 @@ var xThunderOptions = {
     },
     
     restoreDefPrefs : function() {
+        if (!window.confirm(document.getElementById("xThunderAgentStrings").getString("ConfirmRestore"))) {
+            return;
+        }
+        
         try {
             var prefNames = xThunderPref.getBranch().getChildList( "", {} );
             for each (var aPrefName in prefNames) {
