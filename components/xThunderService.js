@@ -114,8 +114,8 @@ xThunderComponent.prototype = {
         args.push("-a", agentName);
         if (totalTask == 1 && hasRunW && this.COMExeFile.path.length + urls[0].length + referrer.length
             + descs[0].length + cookies[0].length + cids[0].length < this.CMD_MAX_LENTH) {
-            //Notice: empty string arguments ignored and maximum length of the string used at cmd
-            args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] === "" ? " " : cids[0]);
+            //empty string arguments ignored, command-line string limitation of Win2000 is 2047(XP 8191)
+            args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] || " ");
         } else {
             //before Firefox 4 wstring can only be passed by file
             args.push("-f", this.createJobFile(totalTask, referrer, urls, cookies, descs, cids));

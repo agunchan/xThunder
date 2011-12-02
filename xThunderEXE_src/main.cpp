@@ -68,12 +68,28 @@ int parseJob(DownloadInfo & downInfo, char * jobFilePath)
 	return 0;
 }
 
+//////////////////////////////////////////////////////////////////////////
+//
+// Argument Format: url desc cookie cid
+//
+//////////////////////////////////////////////////////////////////////////
+int parseArg(DownloadInfo & downInfo, char* argv[], int i) 
+{
+	downInfo.init(1);
+	downInfo.urls[0] = argv[++i];
+	downInfo.referrer = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+	downInfo.descs[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+	downInfo.cookies[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+	downInfo.cids[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
+	return i;
+}
+
 int main(int argc, char* argv[])
 {
 	//-a agentName -f jobFilePath -s sleepSecond
 	if(argc < 5)
 	{
-		MessageBox(NULL, L"Wrong number of arguments.\n -a agentName(*)\n -f jobFilePath\n -s sleepSec\n", MB_TITLE, MB_OK);
+		MessageBox(NULL, L"Wrong number of arguments.\n -a  agentName(*)\n -f  jobFilePath(*)\n -s  sleepSecond\n", MB_TITLE, MB_OK);
 		return ARG_ERROR;
 	}
 
@@ -91,6 +107,10 @@ int main(int argc, char* argv[])
 		{
 			agentName = argv[++i];
 		}
+		else if (!strcmp("-s", argv[i]))
+		{
+			sleepSec = atoi(argv[++i]);
+		}
 		else if (!strcmp("-f", argv[i]))
 		{
 			jobFilePath = argv[++i];
@@ -102,16 +122,11 @@ int main(int argc, char* argv[])
 		}
 		else if (!strcmp("-d", argv[i]))
 		{
-			downInfo.init(1);
-			downInfo.urls[0] = argv[++i];
-			downInfo.referrer = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
-			downInfo.descs[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
-			downInfo.cookies[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
-			downInfo.cids[0] = argv[++i][0] == SPACE_ASCII ? "" : argv[i];
-		}
-		else if (!strcmp("-s", argv[i]))
-		{
-			sleepSec = atoi(argv[++i]);
+			i = parseArg(downInfo, argv, i);
+			if (i >= argc) 
+			{
+				return ARG_ERROR;
+			} 
 		}
 
 		++i;
