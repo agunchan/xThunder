@@ -5,7 +5,7 @@
 	
         <em:id>xthunder@lshai.com</em:id>
         <em:name>xThunder</em:name>
-        <em:version>1.2.0b2</em:version>
+        <em:version>1.2.0b3</em:version>
         <em:description>Manage popular downloaders(Thunder,QQDownload,FlashGet,etc) and support special links decoding.</em:description>
         <em:creator>agunchan</em:creator>
         <em:homepageURL>http://fxthunder.com</em:homepageURL>

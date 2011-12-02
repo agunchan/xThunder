@@ -115,6 +115,9 @@ var xThunder = {
                 alert(exePath + " missing, please check if it was properly installed!");
                 break;
         }
+        
+        //clear array to free memory
+        that.urls.length = that.cookies.length = that.descs.length = that.cids.length = that.totalTask = 0;
     },
     getGBrowser : function() {
         if (typeof gBrowser != "undefined") {
@@ -162,7 +165,7 @@ var xThunder = {
     getCid : function(href) {
         var cid = this.ARG_DEF_STR;
         if (this.agentName == "QQDownload") {
-            cid = this.offLine ? 10600 : 0;
+            cid = this.offLine ? "10600" : "0";
         } else if (this.agentName.indexOf("Thunder") != -1) {
             var matches;
             if (matches = href.match(/^http:\/\/(?:thunder\.ffdy\.cc|www\.7369\.com|bt\.xunbo\.cc)\/([0-9A-F]+)\//)) {
