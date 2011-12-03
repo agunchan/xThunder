@@ -1,7 +1,8 @@
 var xThunderPref = {
     pref : null,
     uriSupReg : /^(?:ftp|https?):/i,
-    proSupReg : /^(thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
+    proSupReg : /^(?:thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
+    invalidReg : /^(?:javascript|data|mailto):/i,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "udown", "115"],
     agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"],
     agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "Orbit", "FDM", "UDown"],
@@ -138,7 +139,7 @@ var xThunderPref = {
             var matches = fileName.match(/(\.\w+)$/i);
             if (matches && supExt.indexOf(matches[1] + ";") != -1) {
                 download = true;
-            } else if (subUrls.length > 1 && matches && /\.(jsp|php)/i.test(matches[1])) {
+            } else if (subUrls.length > 1 && matches && /\.(?:jsp|php)/i.test(matches[1])) {
                 //the parameter of jsp|php url may contain supporting ext
                 var subParams = subUrls[1].split("&");
                 for (var j=0; j<subParams.length; ++j) {

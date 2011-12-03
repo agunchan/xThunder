@@ -143,7 +143,7 @@ var xThunderMain = {
             } else {
                 var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
                 selText = selText.replace(/^\s+/g, "");
-                downHidden = !xThunderPref.uriSupReg.test(selText) && !xThunderPref.proSupReg.test(selText);
+                downHidden = !(xThunderPref.uriSupReg.test(selText) || xThunderPref.proSupReg.test(selText));
             }
         }
         if (!downOffLineHidden) {
