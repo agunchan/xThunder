@@ -30,7 +30,7 @@ var xThunder = {
                             ? xThunderPref.getValue("supportExt") : "";
     },
     addTask : function(url, des){
-        if (url == "" || (/^(javascript|data|mailto):/i.test(url))) {
+        if (url == "" || xThunderPref.invalidReg.test(url)) {
             //invalid url
             url = this.referrer;
         }
