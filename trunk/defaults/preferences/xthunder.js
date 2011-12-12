@@ -23,7 +23,7 @@ pref("extensions.xthunder.downOffLineAutoHide", true);
 pref("extensions.xthunder.agentName", "Thunder");
 pref("extensions.xthunder.showAgents", "Thunder,QQDownload,DTA,ToolbarThunder|0,FlashGet3|0,BitComet|0,IDM|0,FlashGetMini|0,ThunderLite|0,Orbit|0,FDM|0,UDown|0,NetTransport|0,");
 pref("extensions.xthunder.sleepSecond", 15);
-pref("extensions.xthunder.delayMiliSec", 15);
+pref("extensions.xthunder.delayMilliSec", 15);
 pref("extensions.xthunder.dtaOneClick", false);
 pref("extensions.xthunder.qqOffLineWeb", false);
 pref("extensions.xthunder.agent.custom", "");
