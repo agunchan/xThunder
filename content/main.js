@@ -238,7 +238,7 @@ var xThunderMain = {
 
         xThunder.addTask(url);
         this.endMenuClick(event);
-        xThunder.callAgent(xThunderPref.getValue("delayMiliSec"));
+        xThunder.callAgent(xThunderPref.getValue("delayMilliSec"));
     },
 
     OnThunderDownloadBy : function(agentName) {
@@ -289,7 +289,7 @@ var xThunderMain = {
         }
 
         this.endMenuClick(event);
-        xThunder.callAgent(xThunderPref.getValue("delayMiliSec"));
+        xThunder.callAgent(xThunderPref.getValue("delayMilliSec"));
         return true;
     },
 
