@@ -70,12 +70,14 @@ var xThunderOptions = {
         }
     },
     
-    restoreDefPrefs : function() {
-        if (!window.confirm(document.getElementById("xThunderAgentStrings").getString("ConfirmRestore"))) {
-            return;
-        }
-        
+    restoreDefPrefs : function() {   
         try {
+            var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+                              .getService(Components.interfaces.nsIPromptService);
+            var message = document.getElementById("xThunderAgentStrings").getString("ConfirmRestore");                    
+            if (!promptService.confirm(window, "xThunder", message)) {
+                return;
+            }
             var prefNames = xThunderPref.getBranch().getChildList( "", {} );
             for each (var aPrefName in prefNames) {
                 if (xThunderPref.pref.prefHasUserValue(aPrefName))
