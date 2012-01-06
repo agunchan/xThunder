@@ -59,9 +59,7 @@ window.addEventListener("load", function() {
             referrer = "";
         }
 
-        xThunder.init(referrer, 1, $("xThunderAgentList").value);
-        xThunder.addTask(url);
-        xThunder.callAgent();
+        xThunder.apiDownSingleUrl(referrer, url, $("xThunderAgentList").value);
         de.removeAttribute("ondialogaccept");
         de.removeAttribute("onblur");
         de.removeAttribute("onfocus");
