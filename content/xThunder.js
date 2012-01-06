@@ -10,8 +10,15 @@ var xThunder = {
     totalTask : 0,
     offLine : false,
     filerExtStr : "",
+    
+    // agentName[optional], offLine[optional]
+    apiDownSingleUrl : function(referrer, url, agentName, offLine) {
+        this.init(referrer, 1, agentName, offLine);
+        this.addTask(url);
+        this.callAgent();
+    },
 
-    init : function(referrer, totalTask, agentName, offLine){
+    init : function(referrer, totalTask, agentName, offLine) {
         this.referrer = referrer;
         this.urls = [];
         this.cookies = [];
@@ -29,7 +36,8 @@ var xThunder = {
         this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
                             ? xThunderPref.getValue("supportExt") : "";
     },
-    addTask : function(url, des){
+    
+    addTask : function(url, des) {
         if (url == "" || xThunderPref.invalidReg.test(url)) {
             //invalid url
             url = this.referrer;
@@ -54,8 +62,9 @@ var xThunder = {
         }
         this.descs.push(des);
         this.cids.push(this.getCid(url));
-	},
-    callAgent : function(delay){
+    },
+    
+    callAgent : function() {
         if (this.urls.length != this.totalTask || this.totalTask <= 0) {
             return false;
         }
@@ -72,11 +81,38 @@ var xThunder = {
                                                    ? this.urls[0] : offUrls[i] + params[i] + this.urls[0]);
             } else {
                 //Normal download
-                if (delay) {
-                    window.setTimeout(this.externDownload, delay, this);
-                } else {
-                    this.externDownload(this);
+                var result,exePath,args;
+                if (this.xthunderComponent == null) {
+                    this.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
                 }
+
+                args = [];
+                if (this.agentName == "DTA") {
+                    exePath = null;
+                    args.push(xThunderPref.getValue("dtaOneClick"));
+                } else if (this.agentName.indexOf("custom") != -1) {
+                    exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
+                    args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
+                } else {
+                    exePath = null;
+                    args.push("-s", xThunderPref.getValue("sleepSecond"));
+                }
+
+                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
+                switch(result) {
+                    case this.xthunderComponent.COM_NOT_FOUND:
+                        alert("xThunder.exe missing, please check if xThunder was properly installed!");
+                        break;
+                    case this.xthunderComponent.DTA_NOT_FOUND:
+                        alert("DTA called error, please check if DTA was properly installed!");
+                        break;
+                    case this.xthunderComponent.EXE_NOT_FOUND:
+                        alert(exePath + " missing, please check if it was properly installed!");
+                        break;
+                }
+
+                //clear array to free memory
+                this.urls.length = this.cookies.length = this.descs.length = this.cids.length = this.totalTask = 0;
             }
         } catch(ex) {
             alert(ex);
@@ -85,40 +121,7 @@ var xThunder = {
         
         return true;
 	},
-    externDownload : function(that) {
-        var result,exePath,args;
-        if (that.xthunderComponent == null) {
-            that.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
-        }
-                
-        args = [];
-        if (that.agentName == "DTA") {
-            exePath = null;
-            args.push(xThunderPref.getValue("dtaOneClick"));
-        } else if (that.agentName.indexOf("custom") != -1) {
-            exePath = xThunderPref.getUnicodeValue("agent." + that.agentName + ".exe");
-            args.push(xThunderPref.getUnicodeValue("agent." + that.agentName + ".args"));
-        } else {
-            exePath = null;
-            args.push("-s", xThunderPref.getValue("sleepSecond"));
-        }
-                
-        result = that.xthunderComponent.callAgent(that.agentName, that.totalTask, that.referrer, that.urls, that.cookies, that.descs, that.cids, exePath, args);       
-        switch(result) {
-            case that.xthunderComponent.COM_NOT_FOUND:
-                alert("xThunder.exe missing, please check if xThunder was properly installed!");
-                break;
-            case that.xthunderComponent.DTA_NOT_FOUND:
-                alert("DTA called error, please check if DTA was properly installed!");
-                break;
-            case that.xthunderComponent.EXE_NOT_FOUND:
-                alert(exePath + " missing, please check if it was properly installed!");
-                break;
-        }
-        
-        //clear array to free memory
-        that.urls.length = that.cookies.length = that.descs.length = that.cids.length = that.totalTask = 0;
-    },
+    
     getGBrowser : function() {
         if (typeof gBrowser != "undefined") {
             return gBrowser;
@@ -129,6 +132,7 @@ var xThunder = {
             return mainWindow ? mainWindow.gBrowser : null;
         }
     },
+    
 	getCookie : function(href){
         var strCookie;
 
@@ -146,6 +150,7 @@ var xThunder = {
 		}
 		return strCookie;
 	},
+    
     getFileName : function(href) {
         var fileName = "index.html";
         try {
@@ -162,6 +167,7 @@ var xThunder = {
 
         return fileName;
     },
+    
     getCid : function(href) {
         var cid = this.ARG_DEF_STR;
         if (this.agentName == "QQDownload") {

@@ -106,17 +106,12 @@ var xThunderMain = {
             var supstr = xThunderPref.getValue("supportClick");
             download = supstr != "" && xThunderDecode.isProSupNode(link, url, supstr.split(","));
             if(download) {
-                xThunder.init(link.ownerDocument.URL, 1);
                 url = xThunderDecode.getDecodedNode(link);
             }
-        } else {
-            xThunder.init(link.ownerDocument.URL, 1);
-        }
+        } 
 
-        //download url by thunder
         if (download) {
-            xThunder.addTask(url);
-            xThunder.callAgent();
+            xThunder.apiDownSingleUrl(link.ownerDocument.URL, url);
             ev.preventDefault();
             ev.stopPropagation();
             return false;
@@ -164,8 +159,18 @@ var xThunderMain = {
         downloadAllItem.setAttribute("hidden", downAllHidden);
         sepItem.setAttribute("hidden", downHidden && downAllHidden);
     },
+        
+    _closeCtxMenu : function(event) {
+        // Firefox may not close context menu
+        // and trigger wrong item,eg. Inspect element of Firebug
+        this.ctxMenu.hidePopup();
+        if (event && event.button == 2) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    },
 
-    getDownloadAgent : function(event, addOffLine) {
+    _getDownloadAgent : function(event, addOffLine) {
         if(event && event.button != 0) {
             var agentList = xThunderPref.getEnabledAgentList(addOffLine);
             if (event.button == 1 && agentList.length >= 3) {
@@ -181,17 +186,12 @@ var xThunderMain = {
         return xThunderPref.getValue("agentName");
     },
 
-    endMenuClick : function(event) {
-        // Firefox may not close context menu
-        // and trigger wrong item,eg. Inspect element of Firebug
-        this.ctxMenu.hidePopup();
-        if (event && event.button == 2) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+    _delayCallAgent : function(event) {
+        this._closeCtxMenu(event);
+        window.setTimeout(function() {xThunder.callAgent();}, xThunderPref.getValue("delayMilliSec"));
     },
 
-    pasteUrlFromClipborad : function() {
+    _getUrlFromClipborad : function() {
         var pastetext;
         try {
             var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
@@ -217,7 +217,7 @@ var xThunderMain = {
     OnThunderDownload : function(event, agentName, offLine) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
-        var agent = agentName || this.getDownloadAgent(event, xThunderPref.getValue("downOffLineSubMenu"));
+        var agent = agentName || this._getDownloadAgent(event, xThunderPref.getValue("downOffLineSubMenu"));
         xThunder.init(htmlDocument.URL, 1, agent, offLine);
         
         if (gContextMenu.onLink) {
@@ -231,14 +231,13 @@ var xThunderMain = {
             // Get selected url
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
             if (url == "") {
-                url = this.pasteUrlFromClipborad();
+                url = this._getUrlFromClipborad();
             }
             url = xThunderDecode.getDecodedUrl(url);
         }
 
         xThunder.addTask(url);
-        this.endMenuClick(event);
-        xThunder.callAgent(xThunderPref.getValue("delayMilliSec"));
+        this._delayCallAgent(event);
     },
 
     OnThunderDownloadBy : function(agentName) {
@@ -246,7 +245,7 @@ var xThunderMain = {
     },
 
     OnThunderDownloadOffLine : function(event) {
-        var agent = this.getDownloadAgent(event);
+        var agent = this._getDownloadAgent(event);
         if (agent != "Thunder" && agent != "QQDownload") {
             agent = event && event.button == 2 && xThunderPref.getValue("qqOffLineWeb") ? "QQDownload" : "Thunder";
         }
@@ -269,9 +268,9 @@ var xThunderMain = {
         }
 
         var taskCount = linkCount + imageCount;
-        var agent = this.getDownloadAgent(event);
+        var agent = this._getDownloadAgent(event);
         if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
-            this.endMenuClick(event);
+            this._closeCtxMenu(event);
             alert(agent + " does not support batch downloading!");
             return false;
         }
@@ -288,8 +287,7 @@ var xThunderMain = {
             xThunder.addTask(url, images[j].getAttribute("alt") || images[j].title);
         }
 
-        this.endMenuClick(event);
-        xThunder.callAgent(xThunderPref.getValue("delayMilliSec"));
+        this._delayCallAgent(event);
         return true;
     },
 
