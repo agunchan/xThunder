@@ -259,17 +259,19 @@ var xThunderMain = {
 
         // Get all links and all image count
         var links = htmlDocument.links;
-        var linkCount = links.length;
+        var linkCount = links ? links.length : 0;
         var images = null;
         var imageCount = 0;
         if (xThunderPref.getValue("includeImages")) {
             images = htmlDocument.images;
-            imageCount = images.length;
+            imageCount = images ? images.length : 0;
         }
 
         var taskCount = linkCount + imageCount;
         var agent = this._getDownloadAgent(event);
-        if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
+        if (taskCount == 0) {
+            return true;
+        } else if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
             this._closeCtxMenu(event);
             alert(agent + " does not support batch downloading!");
             return false;

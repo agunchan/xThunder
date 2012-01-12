@@ -50,7 +50,7 @@ var xThunderDecode = {
         var htmlDocument = link.ownerDocument;
         var referrer = htmlDocument.URL;
 
-        //In special
+        // In special
         var matches;
         if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
             // thunder url in arguments of href
@@ -104,11 +104,11 @@ var xThunderDecode = {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
-            // download url in subling nodes
+            // download url in sibling nodes
             url = this.getUDownUrl(link, referrer);
         } 
 
-        //In gernal
+        // In general
         if (!url) {
             while (link && typeof link.href == "undefined" && !xThunderPref.proSupReg.test(link.name)) {
                 link = link.parentNode;
@@ -134,10 +134,8 @@ var xThunderDecode = {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ""))
                         .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
                 if (/^flashget:\/\//i.test(oriUrl)) {
-                    if (/http:\/\/.*\/Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*/.test(url))
-                        url = oriUrl; // use oriUrl when it is actually flashgetx://|mhts|
-                    else
-                        url = this.getDecodedUrl(url);  // decode twice
+                    // use oriUrl when it is actually flashgetx://|mhts|, or decode once more
+                    url = /http:\/\/.*\/Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*/.test(url) ? oriUrl : this.getDecodedUrl(url);
                 } else if(/^ftp:\/\//i.test(url)) {
                     // decode username,dir when url is like ftp://%E7%BA%A2%E6%97@wt4.hltm.cc:3101/E5%BD%B1%E5.rmvb
                     url = decodeURIComponent(url);
@@ -153,9 +151,9 @@ var xThunderDecode = {
         return url;
     },
 
-    // Decode thunder,flashget,qqdownload and rayfile link -- Base64 Decode
+    // Base64 decode under utf8 or gbk
     decode64 : function(input) {
-        input = window.atob(input);                     //base64 decode
+        input = window.atob(input);
         try {
             input = decodeURIComponent(escape(input));  //utf8 decode
         } catch (e) {
@@ -167,11 +165,11 @@ var xThunderDecode = {
         return input;
     },
 
-    // Get download link of 115u file
+    // Get url of udown link
     getUDownUrl : function (link, referrer) {
         var downUrls = [];
-        var index = xThunderPref.getValue("udown");  //tel,cnc
-        var downBox = link.parentNode.childNodes; //the id of link is udown
+        var index = xThunderPref.getValue("udown"); // tel,cnc,auto
+        var downBox = link.parentNode.childNodes;   // assert the id of link is udown
         for (var j=0; j<downBox.length; j++) {
             if (downBox[j].getAttribute && downBox[j].getAttribute("class") == "btn-wrap") {
                 downBox = downBox[j].childNodes;
@@ -190,10 +188,7 @@ var xThunderDecode = {
     
         if (downUrls.length == 0) {
             return referrer;
-        } 
-        
-        if (downUrls.length == 1) {
-            // only one url
+        } else if (downUrls.length == 1) {
             index = 0;  
         } else if (index == 2) {
             // auto choose the url having nearer ip
