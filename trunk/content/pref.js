@@ -9,7 +9,7 @@ var xThunderPref = {
                     "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
                     "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"]},
 
-    //show only available agents in list
+    // Only show available agents in popup menu
     appendAgentList : function(menupop, idpre, func, isradio, addOffLine){
         var ownDoc = menupop.ownerDocument;
         while(menupop.firstChild) {
@@ -48,17 +48,24 @@ var xThunderPref = {
         }
     },
     
+    // Get enabled agents, eg. [Thunder, DTA, ThunderOffLine]
     getEnabledAgentList : function(addOffLine) {
         var agentList = this.getFixedAgentList();
         var enableAgentList = [];
         for (var i=0; i<agentList.length; ++i) {
             var agentItem = agentList[i].split("|");
             var agent = agentItem[0];
-            if (addOffLine && (agent == "Thunder" || agent == "QQDownload") && 
-                (!this.getValue("downOffLineAutoHide") || agentItem.length == 1)) {
-                //add Thunder and QQDownload anyway
-                agentList.push(agent + "OffLine");
+            if (addOffLine && (!this.getValue("downOffLineAutoHide") || agentItem.length == 1)) {
+                if (agent == "Thunder") {
+                    agentList.push(agent + "OffLine");
+                    if (this.getValue("vodOffLine")) {
+                        agentList.push(agent + "VODOffLine");
+                    }
+                } else if (agent == "QQDownload") {
+                    agentList.push(agent + "OffLine");
+                }
             }
+            
             if (agentItem.length == 1) {
                 enableAgentList.push(agent);
             }
@@ -66,6 +73,7 @@ var xThunderPref = {
         return enableAgentList;
     },
     
+    // Get all agents, eg. [Thunder, DTA, QQDownload|0, FlashGet3|0, ...]
     getFixedAgentList : function() {
         var showAgents = this.getValue("showAgents");
         var defAgent = this.getValue("agentName");
@@ -77,7 +85,7 @@ var xThunderPref = {
         if (agentLen < this.agents.length + cusAgentList.length) {
             // for v1.0.2 before user config
             for (var i=0; i<this.agents.length; ++i) {
-                if (!this.inArray(this.agents[i], agentList) && !this.inArray(this.agents[i]+"|0", agentList)) {
+                if (agentList.indexOf(this.agents[i]) == -1 && agentList.indexOf(this.agents[i]+"|0") == -1) {
                     showAgents = showAgents + this.agents[i] + "|0,";
                 }
             }
@@ -86,7 +94,7 @@ var xThunderPref = {
         } else if(agentLen > this.agents.length  + cusAgentList.length) {
             // for v1.1.1 after user config
             for (var j=0; j<agentLen; ++j) {
-                if (!this.inArray(agentList[j].split("|")[0], this.agents)) {
+                if (this.agents.indexOf(agentList[j].split("|")[0]) == -1) {
                     showAgents = showAgents.replace(agentList[j] + ",", "");
                 }
             }
@@ -103,13 +111,6 @@ var xThunderPref = {
         
         agentList.pop();    //last element is an empty string
         return agentList;
-    },
-
-    inArray : function(agentName, agentsArray) {
-        for (var i = 0; i < agentsArray.length; ++i)
-            if (agentName == agentsArray[i])
-                return true;
-        return false;
     },
 
     getAgentsNonsupURL : function(trimmedUrl) {

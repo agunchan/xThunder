@@ -36,6 +36,7 @@
 <!ENTITY	downOffLineSubMenu      "离线下载项在右键下载的二级菜单">
 <!ENTITY	downOffLineInSaveFile   "离线下载项在保存对话框下拉列表">
 <!ENTITY	downOffLineSep          "显示离线下载项前的分隔线">
+<!ENTITY	vodOffLine              "显示迅雷云点播当启用离线下载">
 <!ENTITY	qqOffLineWeb     		"使用网页版QQ旋风离线下载">
 <!ENTITY	moveUpButton    "上移">
 <!ENTITY	moveDownButton  "下移">
