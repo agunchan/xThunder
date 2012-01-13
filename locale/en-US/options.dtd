@@ -36,6 +36,7 @@
 <!ENTITY	downOffLineSubMenu      "OffLine items in downloader submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
 <!ENTITY	downOffLineSep          "Show separator before offLine items">
+<!ENTITY	vodOffLine              "Show Thunder vod when using offLine">
 <!ENTITY	qqOffLineWeb            "Use web version of QQDownload offLine">
 <!ENTITY	moveUpButton    "Move Up">
 <!ENTITY	moveDownButton  "Move Down">

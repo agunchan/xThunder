@@ -41,6 +41,7 @@
             <preference id="pref_downOffLineInSaveFile" name="extensions.xthunder.downOffLineInSaveFile" type="bool"/>
             <preference id="pref_downOffLineSep" name="extensions.xthunder.downOffLineSep" type="bool"/>
             <preference id="pref_qqOffLineWeb" name="extensions.xthunder.qqOffLineWeb" type="bool"/>
+            <preference id="pref_vodOffLine" name="extensions.xthunder.vodOffLine" type="bool"/>
         </preferences>
 
         <tabbox class="text">
@@ -122,6 +123,7 @@
                         <checkbox id="downOffLineSubMenu" label="&downOffLineSubMenu;" preference="pref_downOffLineSubMenu"/>
                         <checkbox id="downOffLineInSaveFile" label="&downOffLineInSaveFile;" preference="pref_downOffLineInSaveFile"/>
                         <checkbox id="downOffLineSep" label="&downOffLineSep;" preference="pref_downOffLineSep"/>
+                        <checkbox id="vodOffLine" label="&vodOffLine;" preference="pref_vodOffLine"/>
                         <checkbox id="qqOffLineWeb" label="&qqOffLineWeb;" preference="pref_qqOffLineWeb"/>
                     </groupbox>
                 </tabpanel>

@@ -45,7 +45,7 @@ var xThunder = {
         
         //nonsupport or filtered url
         var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
-        if (xThunderPref.inArray(this.agentName, agentsNonsup)
+        if (agentsNonsup.indexOf(this.agentName) != -1
             || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
             --this.totalTask;
             return;
@@ -71,14 +71,15 @@ var xThunder = {
 
         try {
             var browser;
-            if ((this.agentName == "Thunder" || this.agentName=="QQDownload" && xThunderPref.getValue("qqOffLineWeb")) 
+            var offLineAgents = ["QQDownload", "Thunder", "ThunderVOD"];
+            var offIdx = offLineAgents.indexOf(this.agentName);
+            if ( (offIdx == 0 && xThunderPref.getValue("qqOffLineWeb") || offIdx > 0) 
                  && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
                 //OffLine download in web page
-                var offUrls = ["http://lixian.vip.xunlei.com/", "http://lixian.qq.com/"];
-                var params = ["lixian_login.html?furl=", "main.html?url="];
-                var i = this.agentName == "Thunder" ? 0 : 1;
-                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[i]) != -1 
-                                                   ? this.urls[0] : offUrls[i] + params[i] + this.urls[0]);
+                var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://vod.lixian.xunlei.com/"];
+                var params = ["main.html?url=", "lixian_login.html?furl=", "play.html?url="];
+                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
+                                                   ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);
             } else {
                 //Normal download
                 var result,exePath,args;
