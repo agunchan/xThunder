@@ -1,8 +1,8 @@
 <!ENTITY	options         "xThunder 配置">
 <!ENTITY	restoreDefault	"恢复默认配置">
-<!ENTITY	tab.general     "常规">
-<!ENTITY	tab.interface   "界面">
-<!ENTITY	tab.downloader  "下载器">
+<!ENTITY	tab.general     "常规设置">
+<!ENTITY	tab.interface   "界面菜单">
+<!ENTITY	tab.downloader  "下载工具">
 <!ENTITY	tab.advanced  	"高级">
 <!ENTITY	lbl.supClick    "左键直接下载">
 <!ENTITY	pro.thunder     "迅雷 (thunder://)">
