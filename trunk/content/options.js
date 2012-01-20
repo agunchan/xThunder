@@ -189,7 +189,7 @@ var xThunderOptions = {
         }
     },
 
-    moveCurAgent : function(offset) {
+    moveSelAgent : function(offset) {
         var selIndex = this.agentListBox.selectedIndex;
         if (selIndex < 0)
             return;
