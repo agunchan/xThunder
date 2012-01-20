@@ -134,8 +134,8 @@
                             <listbox id="agentListBox" rows="13" onselect="xThunderOptions.agentListSelect()" flex="1"/>
                         </vbox>
                         <vbox>
-                            <button id="moveUpButton" label="&moveUpButton;" oncommand="xThunderOptions.moveCurAgent(-1);"/>
-                            <button id="moveDownButton" label="&moveDownButton;" oncommand="xThunderOptions.moveCurAgent(1);"/>
+                            <button id="moveUpButton" label="&moveUpButton;" oncommand="xThunderOptions.moveSelAgent(-1);"/>
+                            <button id="moveDownButton" label="&moveDownButton;" oncommand="xThunderOptions.moveSelAgent(1);"/>
                             <spacer flex="1"/>
                             <button id="editButton" label="&editButton;" oncommand="xThunderOptions.editCustAgent();"/>
                             <button id="removeButton" label="&removeButton;" oncommand="xThunderOptions.removeCustAgent();"/>

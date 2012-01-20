@@ -101,7 +101,7 @@ var xThunderMain = {
             download = xThunderPref.isExtSupURL(url);
         }
 
-        //click support for protocals
+        //click support for protocols
         if (!download) {
             var supstr = xThunderPref.getValue("supportClick");
             download = supstr != "" && xThunderDecode.isProSupNode(link, url, supstr.split(","));
@@ -174,15 +174,15 @@ var xThunderMain = {
         if(event && event.button != 0) {
             var agentList = xThunderPref.getEnabledAgentList(addOffLine);
             if (event.button == 1 && agentList.length >= 3) {
-                // middle click to use third agent
+                // Middle click to use third agent
                 return agentList[2];
             } else if (event.button == 2 && agentList.length >= 2) {
-                // right click to use second agent
+                // Right click to use second agent
                 return agentList[1];
             }
         }
 
-        //use default agent
+        // Use default agent otherwise
         return xThunderPref.getValue("agentName");
     },
 
@@ -245,15 +245,37 @@ var xThunderMain = {
     },
 
     OnThunderDownloadOffLine : function(event) {
-        var agent = this._getDownloadAgent(event);
-        if (agent != "Thunder" && agent != "QQDownload") {
-            agent = event && event.button == 2 && xThunderPref.getValue("qqOffLineWeb") ? "QQDownload" : "Thunder";
+        var agent = "ThunderOffLine";
+        if (event) {
+            if (event.button == 1) {
+                // Middle click to use thunder vod offline
+                agent = "ThunderVODOffLine";
+            } else {
+                // Left click to use first agent offline
+                // Right click to use second agent offline
+                var agentList = xThunderPref.getEnabledAgentList(true);
+                var firstAgent = "ThunderOffLine";
+                var secondAgent = "QQDownloadOffLine";
+                var thunderIndex = agentList.indexOf(firstAgent);
+                if (thunderIndex == -1)
+                    thunderIndex = agentList.length;
+                var qqdownloadIndex = agentList.indexOf(secondAgent);
+                if (qqdownloadIndex == -1)
+                    qqdownloadIndex = agentList.length + 1;
+                // Swap agent if user set QQDownload before Thunder
+                if (thunderIndex > qqdownloadIndex) {
+                    var temp = firstAgent;
+                    firstAgent = secondAgent;
+                    secondAgent = temp;
+                }
+                agent = (event.button == 0 ? firstAgent : secondAgent);
+            }
         }
+
         this.OnThunderDownload(null, agent, true);
     },
 
     OnThunderDownloadAll : function(event) {
-        // Get current page URL
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
 
@@ -295,7 +317,7 @@ var xThunderMain = {
 
     OnThunderDownloadPopup : function(target) {
         xThunderPref.appendAgentList(target, "xThunderBy", "xThunderMain.OnThunderDownloadBy", true, xThunderPref.getValue("downOffLineSubMenu"));
-        //set className of nonsupport agents item to agentNonsup
+        // Set className of nonsupport agents item to agentNonsup
         var url;
         if (gContextMenu.onLink)
             url = gContextMenu.target.getAttribute("fg") || gContextMenu.linkURL;
