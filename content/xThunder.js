@@ -76,8 +76,8 @@ var xThunder = {
             if ( (offIdx == 0 && xThunderPref.getValue("qqOffLineWeb") || offIdx > 0) 
                  && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
                 //OffLine download in web page
-                var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://vod.lixian.xunlei.com/"];
-                var params = ["main.html?url=", "lixian_login.html?furl=", "play.html?url="];
+                var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
+                var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
                 browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
                                                    ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);
             } else {
