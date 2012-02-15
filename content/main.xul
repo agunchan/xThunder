@@ -19,11 +19,11 @@
 
     <popup id="contentAreaContextMenu">
         <menuseparator id="xThunderDownloadUp"/>
-        <menu id="xThunderDownload" label="&download;" accesskey="x" onclick="if(event.target == this) xThunderMain.OnThunderDownload(event);">
+        <menu id="xThunderDownload" label="&download;" onclick="if(event.target == this) xThunderMain.OnThunderDownload(event);">
             <menupopup id="xThunderDownloadPopup" onpopupshowing="xThunderMain.OnThunderDownloadPopup(this);"/>
         </menu>
-        <menuitem id="xThunderDownloadLink" label="&download;" accesskey="x" onclick="xThunderMain.OnThunderDownload(event);"/>
-        <menuitem id="xThunderDownloadOffLine" label="&downloadOffLine;" accesskey="o" onclick="xThunderMain.OnThunderDownloadOffLine(event);"/>
+        <menuitem id="xThunderDownloadLink" label="&download;" onclick="xThunderMain.OnThunderDownload(event);"/>
+        <menuitem id="xThunderDownloadOffLine" label="&downloadOffLine;" onclick="xThunderMain.OnThunderDownloadOffLine(event);"/>
         <menuitem id="xThunderDownloadAll" label="&downloadAll;" onclick="xThunderMain.OnThunderDownloadAll(event);"/>
     </popup>
 
