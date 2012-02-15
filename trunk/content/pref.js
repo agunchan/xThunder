@@ -112,6 +112,22 @@ var xThunderPref = {
         agentList.pop();    //last element is an empty string
         return agentList;
     },
+	
+	getAgentByClick : function(event, addOffLine) {
+        if(event && event.button != 0) {
+            var agentList = this.getEnabledAgentList(addOffLine);
+            if (event.button == 1 && agentList.length >= 3) {
+                // Middle click to use third agent
+                return agentList[2];
+            } else if (event.button == 2 && agentList.length >= 2) {
+                // Right click to use second agent
+                return agentList[1];
+            }
+        }
+
+        // Use default agent otherwise
+        return this.getValue("agentName");
+    },
 
     getAgentsNonsupURL : function(trimmedUrl) {
         if(!trimmedUrl) {

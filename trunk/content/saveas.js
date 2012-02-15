@@ -46,7 +46,7 @@ window.addEventListener("load", function() {
         }
     }
 
-    function download() {
+    function download(agentName) {
         var de = document.documentElement;
         var url = dialog.mLauncher.source.spec;
         var referrer;
@@ -59,7 +59,7 @@ window.addEventListener("load", function() {
             referrer = "";
         }
 
-        xThunder.apiDownSingleUrl(referrer, url, $("xThunderAgentList").value);
+        xThunder.apiDownSingleUrl(referrer, url, agentName || $("xThunderAgentList").value);
         de.removeAttribute("ondialogaccept");
         de.removeAttribute("onblur");
         de.removeAttribute("onfocus");
@@ -90,7 +90,7 @@ window.addEventListener("load", function() {
 
     var mode = $("mode");
 
-    //same width as open radio
+    // same width as open radio
     var openRadio = $("open");
     if(openRadio) {
         var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
@@ -100,7 +100,22 @@ window.addEventListener("load", function() {
     if (extExists) {
         mode.selectedItem = xThunderRadio;
     } 
+	
+	// mouse middle click and right click on accept button
+	var acceptBtn = document.documentElement.getButton("accept");
+	if (acceptBtn) {
+		acceptBtn.addEventListener("click", function(event) {
+			if (mode.selectedItem == xThunderRadio && event.button != 0) {
+				if (!extExists) {
+					xThunderPref.setValue("supportExt", ext + supportExt);
+				}
+				
+				download(xThunderPref.getAgentByClick(event, xThunderPref.getValue("downOffLineInSaveFile")));
+			}
+		});
+	}
 
+	// mouse left click on accept button
 	addEventListener("dialogaccept", function() {
 		if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {

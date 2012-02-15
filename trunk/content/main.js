@@ -170,22 +170,6 @@ var xThunderMain = {
         }
     },
 
-    _getDownloadAgent : function(event, addOffLine) {
-        if(event && event.button != 0) {
-            var agentList = xThunderPref.getEnabledAgentList(addOffLine);
-            if (event.button == 1 && agentList.length >= 3) {
-                // Middle click to use third agent
-                return agentList[2];
-            } else if (event.button == 2 && agentList.length >= 2) {
-                // Right click to use second agent
-                return agentList[1];
-            }
-        }
-
-        // Use default agent otherwise
-        return xThunderPref.getValue("agentName");
-    },
-
     _delayCallAgent : function(event) {
         this._closeCtxMenu(event);
         window.setTimeout(function() {xThunder.callAgent();}, xThunderPref.getValue("delayMilliSec"));
@@ -217,7 +201,7 @@ var xThunderMain = {
     OnThunderDownload : function(event, agentName, offLine) {
         var htmlDocument = document.commandDispatcher.focusedWindow.document;
         var url;
-        var agent = agentName || this._getDownloadAgent(event, xThunderPref.getValue("downOffLineSubMenu"));
+        var agent = agentName || xThunderPref.getAgentByClick(event, xThunderPref.getValue("downOffLineSubMenu"));
         xThunder.init(htmlDocument.URL, 1, agent, offLine);
         
         if (gContextMenu.onLink) {
@@ -290,7 +274,7 @@ var xThunderMain = {
         }
 
         var taskCount = linkCount + imageCount;
-        var agent = this._getDownloadAgent(event);
+        var agent = xThunderPref.getAgentByClick(event, false);
         if (taskCount == 0) {
             return true;
         } else if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
