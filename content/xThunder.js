@@ -102,10 +102,10 @@ var xThunder = {
                 result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
                 switch(result) {
                     case this.xthunderComponent.COM_NOT_FOUND:
-                        alert("xThunder.exe missing, please check if xThunder was properly installed!");
+                        alert("xThunder.exe missing, please check if xThunder was unpacked!");
                         break;
                     case this.xthunderComponent.DTA_NOT_FOUND:
-                        alert("DTA called error, please check if DTA was properly installed!");
+                        alert("Call DTA error, please check if DTA was properly installed!");
                         break;
                     case this.xthunderComponent.EXE_NOT_FOUND:
                         alert(exePath + " missing, please check if it was properly installed!");

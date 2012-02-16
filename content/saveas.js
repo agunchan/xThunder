@@ -112,7 +112,7 @@ window.addEventListener("load", function() {
 				
 				download(xThunderPref.getAgentByClick(event, xThunderPref.getValue("downOffLineInSaveFile")));
 			}
-		});
+		}, false);
 	}
 
 	// mouse left click on accept button
