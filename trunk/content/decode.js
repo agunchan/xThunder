@@ -15,12 +15,14 @@ var xThunderDecode = {
         for (var i=0; i<protocols.length; ++i) {
             if (protocols[i] == "thunder" && 
                     ( url.indexOf("thunder:") == 0 ||
-                      /^http:\/\/goxiazai\.com\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
                       link.getAttribute("thunderhref") || 
                       link.getAttribute("downloadurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
-                      (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1
-                    )    
+                      (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
+                      /^http:\/\/goxiazai\.com\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
+                      /^http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*&flag=1/.test(url) ||
+                      link.id == "union_download_thunder" && link.className == "btn_r"
+                    )
                 || protocols[i] == "flashget" &&
                     ( url.indexOf("flashget:") == 0 ||
                       link.getAttribute("fg") ||
@@ -52,7 +54,15 @@ var xThunderDecode = {
 
         // In special
         var matches;
-        if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
+        if (link.id == "union_download_thunder" && link.className == "btn_r") {
+            // thunder url in hidden element
+            if (matches = htmlDocument.querySelector("a[thunderhref]")) {
+                url = matches.getAttribute("thunderhref");
+            }
+        } else if (link.href && (matches = link.href.match(/^(http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*)&flag=1/))) {
+            // thunder url getting rid of flag
+            url = matches[1];
+        } else if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
             // thunder url in arguments of href
             cid = matches[1];
             url = this.getDecodedUrl(decodeURIComponent(matches[2]));
