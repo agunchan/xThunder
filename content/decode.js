@@ -126,8 +126,9 @@ var xThunderDecode = {
             if (!link) {
                 url = "";
             } else {
-                url = link.getAttribute("thunderhref") || link.getAttribute("downloadurl")
+                url = link.getAttribute("thunderhref") 
                     || link.getAttribute("fg") || link.getAttribute("qhref") || link.getAttribute("ed2k")
+                    || link.getAttribute("downloadurl") || link.getAttribute("url") 
                     || link.href || link.name;
             }
         }
@@ -184,10 +185,10 @@ var xThunderDecode = {
             if (downBox[j].getAttribute && downBox[j].getAttribute("class") == "btn-wrap") {
                 downBox = downBox[j].childNodes;
                 for (var i=0; i<downBox.length; i++) {
-                    if (downBox[i].href) {
+                    if (downBox[i].nodeName.toUpperCase() == "A") {
                         if (index == 0 && downBox[i].textContent.indexOf("电信") != -1
                         || index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
-                            return downBox[i].href;
+                            return downBox[i].getAttribute("url") || downBox[i].href;
                         }
 
                         downUrls.push(downBox[i].href);
@@ -195,7 +196,7 @@ var xThunderDecode = {
                 }
             }
         }
-    
+          
         if (downUrls.length == 0) {
             return referrer;
         } else if (downUrls.length == 1) {
