@@ -28,3 +28,4 @@ pref("extensions.xthunder.dtaOneClick", false);
 pref("extensions.xthunder.qqOffLineWeb", false);
 pref("extensions.xthunder.agent.custom", "");
 pref("extensions.xthunder.vodOffLine", true);
+pref("extensions.xthunder.vodMember", true);
