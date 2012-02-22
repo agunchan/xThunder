@@ -78,8 +78,11 @@ var xThunder = {
                 //OffLine download in web page
                 var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
                 var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
-                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
-                                                   ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);
+                if (offIdx == 2 && !xThunderPref.getValue("vodMember"))
+                    browser.loadOneTab("http://vod.oabt.org/index.php?xunlei", null, "utf-8", this.getVodPostData(this.urls[0]), false); 
+                else
+                    browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
+                                                   ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
             } else {
                 //Normal download
                 var result,exePath,args;
@@ -134,32 +137,35 @@ var xThunder = {
         }
     },
     
-	getCookie : function(href){
+    getCookie : function(href){
         var strCookie;
-
+        
         try {
             if (/^https?:\/\//i.test(href)) {
                 var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
                 uri.spec = href;
                 strCookie = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService)
-                        .getCookieString(uri, null);
+                                .getCookieString(uri, null);
             }
         } catch(ex) {}
 		
-		if (!strCookie) {
-			strCookie = this.ARG_DEF_STR;
-		}
-		return strCookie;
-	},
+        if (!strCookie) {
+            strCookie = this.ARG_DEF_STR;
+        }
+        return strCookie;
+    },
     
     getFileName : function(href) {
         var fileName = "index.html";
         try {
+            var matches;
             if (xThunderPref.uriSupReg.test(href)) {
                 var names = href.split("?")[0].split("#")[0].split("/");
                 fileName = names[names.length-1];
                 if (fileName != "") 
                     fileName = decodeURIComponent(fileName);
+            } else if(matches = href.match(/^ed2k:\/\/\|file\|(.*?)\|\d/)) {
+                fileName = decodeURIComponent(matches[1]);
             } else {
                 fileName = href.split(":")[0];
             }
@@ -183,5 +189,19 @@ var xThunder = {
         }
 
         return cid;
+    },
+    
+    getVodPostData : function(href) {
+        var dataString = "url=" + encodeURIComponent(href) 
+            + "&title=" + encodeURIComponent(this.getFileName(href));
+        var stringStream = Components.classes["@mozilla.org/io/string-input-stream;1"]
+                            .createInstance(Components.interfaces.nsIStringInputStream);
+        stringStream.data = dataString;
+        var postData = Components.classes["@mozilla.org/network/mime-input-stream;1"]
+                        .createInstance(Components.interfaces.nsIMIMEInputStream);
+        postData.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        postData.addContentLength = true;
+        postData.setData(stringStream);
+        return postData;
     }
 };
