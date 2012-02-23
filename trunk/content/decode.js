@@ -186,12 +186,13 @@ var xThunderDecode = {
                 downBox = downBox[j].childNodes;
                 for (var i=0; i<downBox.length; i++) {
                     if (downBox[i].nodeName.toUpperCase() == "A") {
+                        var url = downBox[i].getAttribute("url") || downBox[i].href;
                         if (index == 0 && downBox[i].textContent.indexOf("电信") != -1
                         || index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
-                            return downBox[i].getAttribute("url") || downBox[i].href;
+                            return url;
+                        } else {
+                            downUrls.push(url);
                         }
-
-                        downUrls.push(downBox[i].href);
                     }
                 }
             }
