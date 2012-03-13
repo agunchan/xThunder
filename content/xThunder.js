@@ -102,7 +102,7 @@ var xThunder = {
                     args.push("-s", xThunderPref.getValue("sleepSecond"));
                 }
 
-                result = this.xthunderComponent.callAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
+                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
                 switch(result) {
                     case this.xthunderComponent.COM_NOT_FOUND:
                         alert("xThunder.exe missing, please check if xThunder was unpacked!");

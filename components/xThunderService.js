@@ -19,7 +19,7 @@ xThunderComponent.prototype = {
     EXE_NOT_FOUND:      -4,
 
 
-    callAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
+    CallAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result;
         if (!args) {
             args = [];
@@ -46,7 +46,17 @@ xThunderComponent.prototype = {
         return ph.getFileFromURLSpec(url);
     },
     
-    createJobFile : function(totalTask, referrer, urls, cookies, descs, cids) {
+    getJobString : function(totalTask, referrer, urls, cookies, descs, cids) {
+        var jobLines = [];
+        for (var j = 0; j < totalTask; ++j) {
+            jobLines.push(urls[j], descs[j], cookies[j], cids[j]);
+        }
+        var job = jobLines.join("\n");
+        
+        return totalTask + "\n" + referrer + "\n" + job + "\n"; 
+    },
+    
+    createTempFile : function(data) {
         var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
                 .get("TmpD", Ci.nsIFile);
         file.append("xThunder");
@@ -56,13 +66,6 @@ xThunderComponent.prototype = {
         file.append("xThunder" + Date.now() + ".xtd");
         file.createUnique(Ci.nsIFile.NORMAL_FILE_TYPE, 0700);
         
-        var jobLines = [];
-        for (var j = 0; j < totalTask; ++j) {
-            jobLines.push(urls[j], descs[j], cookies[j], cids[j]);
-        }
-        var job = jobLines.join("\n");
-        
-        var data = totalTask + "\n" + referrer + "\n" + job + "\n"; 
         var foStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
         var converter = Cc["@mozilla.org/intl/converter-output-stream;1"].createInstance(Ci.nsIConverterOutputStream);
@@ -77,15 +80,27 @@ xThunderComponent.prototype = {
         var exeFile = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
         exeFile.initWithPath(exePath);
         if (exeFile.exists()) {
-            if (args[args.length-1].match(/\[CBURL\]/i)) {
+            //args array only contains one string argument in fact
+            var arg = args[args.length-1];
+            
+            if (arg.match(/\[CBURL\]/i)) {
+                // url from clipboard
                 var gClipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
                 gClipboardHelper.copyString(urls[0]);
-                args[args.length-1] = args[args.length-1].replace(/\[CBURL\]/ig, "");
+                arg = arg.replace(/\[CBURL\]/ig, "");
+            } 
+            
+            if (arg.match(/\[UFILE\]/i)) {
+                // url from files
+                arg = arg.replace(/\[UFILE\]/ig, this.createTempFile(urls.join("\n")));
             }
-            args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, urls[0])
-                                    .replace(/\[REFERER\]/ig, referrer || urls[0])
-                                    .replace(/\[COOKIE\]/ig, cookies[0] || 0)
-                                    .replace(/\[COMMENT\]/ig, descs[0] || 0);
+            
+            arg = arg.replace(/\[URL\]/ig, urls[0])
+                    .replace(/\[REFERER\]/ig, referrer || urls[0])
+                    .replace(/\[COOKIE\]/ig, cookies[0] || 0)
+                    .replace(/\[COMMENT\]/ig, descs[0] || 0);
+            
+            args[args.length-1] = arg;
             //var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
             //cs.logStringMessage(args[args.length-1]);
             var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
@@ -118,7 +133,7 @@ xThunderComponent.prototype = {
             args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] || " ");
         } else {
             //before Firefox 4 wstring can only be passed by file
-            args.push("-f", this.createJobFile(totalTask, referrer, urls, cookies, descs, cids));
+            args.push("-f", this.createTempFile(this.getJobString(totalTask, referrer, urls, cookies, descs, cids)));
         }
         return proc[hasRunW ? "runw" : "run"](false, args, args.length);
     },
