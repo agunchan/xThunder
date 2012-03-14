@@ -96,6 +96,7 @@ var xThunder = {
                     args.push(xThunderPref.getValue("dtaOneClick"));
                 } else if (this.agentName.indexOf("custom") != -1) {
                     exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
+                    args.push(xThunderPref.getValue("downloadDir") || this.getDownDir());
                     args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
                 } else {
                     exePath = null;
@@ -124,7 +125,27 @@ var xThunder = {
         } 
         
         return true;
-	},
+    },
+    
+    getDownDir : function() {
+        var downloadDir;
+        var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(Components.interfaces.nsIFilePicker);
+        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+        var mainWindow = wm.getMostRecentWindow(null);
+        fp.init(mainWindow, "xThunder - Select download directory", Components.interfaces.nsIFilePicker.modeGetFolder);
+
+        if (fp.show() == Components.interfaces.nsIFilePicker.returnOK) {
+            downloadDir = fp.file.path;
+        } else {
+            var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties)
+                .get("Home", Ci.nsIFile);
+            file.append("Downloads");
+            downloadDir = file.path;
+        }
+        
+        xThunderPref.setValue("downloadDir", downloadDir);
+        return downloadDir;
+    },
     
     getGBrowser : function() {
         if (typeof gBrowser != "undefined") {
