@@ -1,6 +1,6 @@
 var xThunder = {
     ARG_DEF_STR : "",
-    xthunderComponent: null,
+    xThunderComponent: null,
     agentName : "",
     referrer : "",
     urls : [],
@@ -86,8 +86,8 @@ var xThunder = {
             } else {
                 //Normal download
                 var result,exePath,args;
-                if (this.xthunderComponent == null) {
-                    this.xthunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
+                if (this.xThunderComponent == null) {
+                    this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
                 }
 
                 args = [];
@@ -104,15 +104,15 @@ var xThunder = {
                     args.push("-s", xThunderPref.getValue("sleepSecond"));
                 }
 
-                result = this.xthunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
+                result = this.xThunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
                 switch(result) {
-                    case this.xthunderComponent.COM_NOT_FOUND:
+                    case this.xThunderComponent.COM_NOT_FOUND:
                         alert("xThunder.exe missing, please check if xThunder was unpacked!");
                         break;
-                    case this.xthunderComponent.DTA_NOT_FOUND:
+                    case this.xThunderComponent.DTA_NOT_FOUND:
                         alert("Call DTA error, please check if DTA was properly installed!");
                         break;
-                    case this.xthunderComponent.EXE_NOT_FOUND:
+                    case this.xThunderComponent.EXE_NOT_FOUND:
                         alert(exePath + " missing, please check if it was properly installed!");
                         break;
                 }
