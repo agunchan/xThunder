@@ -111,7 +111,7 @@ xThunderComponent.prototype = {
         return file.path;
     },
         
-    replaceHolder : function(arg, referrer, urls, cookies, descs) {  
+    replaceHolder : function(arg, referrer, urls, cookies, descs, escape) {  
         if (arg.match(/\[CBURL\]/i)) {
             // url from clipboard
             var gClipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
@@ -121,39 +121,42 @@ xThunderComponent.prototype = {
 
         if (arg.match(/\[UFILE\]/i)) {
             // url from files
-            arg = arg.replace(/\[UFILE\]/ig, this.createTempFile(urls.join("\n")));
+            var urlFilePath = this.createTempFile(urls.join("\n"));
+            arg = arg.replace(/\[UFILE\]/ig, escape ? this.escapePath(urlFilePath) : urlFilePath);
         }
+        
+        var url = urls[0];
+        var ref = referrer || urls[0];
+        var cook = cookies[0] || 0;
+        var desc = descs[0] || 0;
 
-        arg = arg.replace(/\[URL\]/ig, urls[0])
-                .replace(/\[REFERER\]/ig, referrer || urls[0])
-                .replace(/\[COOKIE\]/ig, cookies[0] || 0)
-                .replace(/\[COMMENT\]/ig, descs[0] || 0);
+        arg = arg.replace(/\[URL\]/ig, escape ? this.escapePath(url) : url)
+                .replace(/\[REFERER\]/ig, escape ? this.escapePath(ref) : ref)
+                .replace(/\[COOKIE\]/ig, escape ? this.escapePath(cook) : cook)
+                .replace(/\[COMMENT\]/ig, escape ? this.escapePath(desc) : desc);
                    
         return arg;
     },
     
     escapePath : function (path) {
         return path ? ( this.detectOS() == "WINNT" ? "\"" + path + "\"" : path.replace(/([\\\*\?\[\]\$&<>\|\(\)\{\};"'`])/g,"\\$1").replace(/\s/g,"\\ ") )
-                    : null;
+                    : path;
     },
     
     runScript : function(totalTask, referrer, urls, cookies, descs, exePath, args) {
         var downDir = this.escapePath(args[0]);
-        var batEncoding = args[1];
-        var programArgs = args[args.length - 1].split(" ");
-        for (var key in programArgs) {
-            // TODO:only placehoder to escape
-            programArgs[key] = this.escapePath(this.replaceHolder(programArgs[key], referrer, urls, cookies, descs));
-        }
+        var programArg = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs, true);
         if (this.detectOS() == "WINNT") {
+            var batEncoding = args[1];
             var batText = "@echo off\r\n" + 
                 "title xThunder\r\n" + 
                 "if not exist " + downDir + " md " + downDir + "\r\n" + 
                 "cd /d " + downDir + "\r\n" + 
-                this.escapePath(exePath) + " " + programArgs.join(" ") + "\r\n";
+                this.escapePath(exePath) + " " + programArg + "\r\n";
             
             this.runNative(this.createTempFile(batText, ".bat", batEncoding), []);
         } else if (this.detectOS() == "LINUX") {
+            var shellEncoding = "UTF-8";
             var shellText = '#!/bin/sh\n' + 
                 'if [ "$1" = "" ]; then\n' +
                 '  if [ "$COLORTERM" = "gnome-terminal" ] && which gnome-terminal >/dev/null 2>&1; then\n' +
@@ -167,9 +170,9 @@ xThunderComponent.prototype = {
                 '  mkdir -p ' + downDir + '\n' + 
                 'fi\n' +
                 'cd ' + downDir + '\n' + 
-                this.escapePath(exePath) + " " + programArgs.join(" ") + "\n";
+                this.escapePath(exePath) + " " + programArg + "\n";
                 
-            this.runNative(this.createTempFile(shellText, ".sh", "UTF-8"), []);
+            this.runNative(this.createTempFile(shellText, ".sh", shellEncoding), []);
         }
     },
     

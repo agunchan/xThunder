@@ -7,9 +7,24 @@ window.addEventListener("load", function(){
     xThunderMain.addClickSupport();
 }, false);
 
+window.addEventListener("unload", function(){
+    xThunderMain.deleteTempFiles();
+}, false);
+
 var xThunderMain = {
     ctxMenu : null,
     clickVntAdded : false,
+    
+    deleteTempFiles : function() {
+       try {
+           var file = Components.classes["@mozilla.org/file/directory_service;1"]
+                .getService(Components.interfaces.nsIProperties)
+                .get("TmpD", Ci.nsIFile);
+           file.append("xThunder");
+           if (file.exists())
+               file.remove(true);
+       } catch(ex) {}
+    },
 
     setIconVisible : function(visible) {
         document.getElementById("xThunderStatusBtn").setAttribute("hidden", !visible);
