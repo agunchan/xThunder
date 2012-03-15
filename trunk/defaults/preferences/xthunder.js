@@ -30,3 +30,4 @@ pref("extensions.xthunder.agent.custom", "");
 pref("extensions.xthunder.vodOffLine", true);
 pref("extensions.xthunder.vodMember", true);
 pref("extensions.xthunder.downloadDir", "");
+pref("extensions.xthunder.batEncoding", "GBK");

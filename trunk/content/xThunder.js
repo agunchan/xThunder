@@ -96,7 +96,8 @@ var xThunder = {
                     args.push(xThunderPref.getValue("dtaOneClick"));
                 } else if (this.agentName.indexOf("custom") != -1) {
                     exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
-                    args.push(xThunderPref.getValue("downloadDir") || this.getDownDir());
+                    args.push(xThunderPref.getUnicodeValue("downloadDir") || this.getDownDir());
+                    args.push(xThunderPref.getValue("batEncoding"));
                     args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
                 } else {
                     exePath = null;
@@ -143,7 +144,7 @@ var xThunder = {
             downloadDir = file.path;
         }
         
-        xThunderPref.setValue("downloadDir", downloadDir);
+        xThunderPref.setUnicodeValue("downloadDir", downloadDir);
         return downloadDir;
     },
     

@@ -25,18 +25,16 @@ xThunderComponent.prototype = {
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
         } else if(agentName.indexOf("custom") != -1) {
-            if (args.length >= 1) {
-                var programArg = args[args.length - 1];
-                if (totalTask > 1 && /wget(\.exe)?$/i.test(exePath)) {
-                    //be smart to use input file
-                    programArg = programArg.replace(/\[URL\]/ig, "--input-file=[UFILE]");
-                }
-                programArg = this.replaceHolder(programArg, referrer, urls, cookies, descs);
-                args[args.length - 1] = programArg;
-            }
             if (/curl(\.exe)?$|wget(\.exe)?$|aria2c$/i.test(exePath)) {
+                if (/wget/i.test(exePath) && totalTask > 1) {
+                    //be smart to use input file
+                    args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, "--input-file=[UFILE]");
+                }
                 result = this.runScript(totalTask, referrer, urls, cookies, descs, exePath, args);
             } else {
+                if (args.length >= 1) {
+                    args[args.length-1] = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs);
+                }
                 result = this.runNative(exePath, args);
             }
         } else if (this.detectOS() == "LINUX" && agentName == "Thunder" && this.getWinePath()) {
@@ -93,7 +91,7 @@ xThunderComponent.prototype = {
         return totalTask + "\n" + referrer + "\n" + job + "\n"; 
     },
     
-    createTempFile : function(data, ext) {
+    createTempFile : function(data, ext, charset) {
         var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
                 .get("TmpD", Ci.nsIFile);
         file.append("xThunder");
@@ -106,14 +104,14 @@ xThunderComponent.prototype = {
         var foStream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
         foStream.init(file, 0x02 | 0x08 | 0x20, 0700, 0);
         var converter = Cc["@mozilla.org/intl/converter-output-stream;1"].createInstance(Ci.nsIConverterOutputStream);
-        converter.init(foStream, "UTF-8", 0, 0);
+        converter.init(foStream, charset || "UTF-8", 0, "?".charCodeAt(0));
         converter.writeString(data);
         converter.close();
         
         return file.path;
     },
         
-    replaceHolder : function(arg, referrer, urls, cookies, descs) {
+    replaceHolder : function(arg, referrer, urls, cookies, descs) {  
         if (arg.match(/\[CBURL\]/i)) {
             // url from clipboard
             var gClipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
@@ -130,25 +128,31 @@ xThunderComponent.prototype = {
                 .replace(/\[REFERER\]/ig, referrer || urls[0])
                 .replace(/\[COOKIE\]/ig, cookies[0] || 0)
                 .replace(/\[COMMENT\]/ig, descs[0] || 0);
-        
+                   
         return arg;
     },
     
     escapePath : function (path) {
-        return this.detectOS() == "WINNT" ? "\"" + path + "\"" : path.replace(/ /g, "\\ ");;
+        return path ? ( this.detectOS() == "WINNT" ? "\"" + path + "\"" : path.replace(/([\\\*\?\[\]\$&<>\|\(\)\{\};"'`])/g,"\\$1").replace(/\s/g,"\\ ") )
+                    : null;
     },
     
     runScript : function(totalTask, referrer, urls, cookies, descs, exePath, args) {
         var downDir = this.escapePath(args[0]);
-        var programArg = args[args.length - 1];
+        var batEncoding = args[1];
+        var programArgs = args[args.length - 1].split(" ");
+        for (var key in programArgs) {
+            // TODO:only placehoder to escape
+            programArgs[key] = this.escapePath(this.replaceHolder(programArgs[key], referrer, urls, cookies, descs));
+        }
         if (this.detectOS() == "WINNT") {
-            var batText = "@echo off\n" + 
-                "title xThunder\n" + 
-                "if not exist " + downDir + " md " + downDir + "\n" + 
-                "cd /d " + downDir + "\n" + 
-                this.escapePath(exePath) + " " + this.replaceHolder(programArg, totalTask, referrer, urls, cookies, descs) + "\n";
+            var batText = "@echo off\r\n" + 
+                "title xThunder\r\n" + 
+                "if not exist " + downDir + " md " + downDir + "\r\n" + 
+                "cd /d " + downDir + "\r\n" + 
+                this.escapePath(exePath) + " " + programArgs.join(" ") + "\r\n";
             
-            this.runNative(this.createTempFile(batText, ".bat"), []);
+            this.runNative(this.createTempFile(batText, ".bat", batEncoding), []);
         } else if (this.detectOS() == "LINUX") {
             var shellText = '#!/bin/sh\n' + 
                 'if [ "$1" = "" ]; then\n' +
@@ -163,9 +167,9 @@ xThunderComponent.prototype = {
                 '  mkdir -p ' + downDir + '\n' + 
                 'fi\n' +
                 'cd ' + downDir + '\n' + 
-                this.escapePath(exePath) + " " + this.replaceHolder(programArg, totalTask, referrer, urls, cookies, descs) + "\n";
+                this.escapePath(exePath) + " " + programArgs.join(" ") + "\n";
                 
-            this.runNative(this.createTempFile(shellText, ".sh"), []);
+            this.runNative(this.createTempFile(shellText, ".sh", "UTF-8"), []);
         }
     },
     
