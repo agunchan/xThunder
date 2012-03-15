@@ -79,9 +79,9 @@ var xThunderOptions = {
                 return;
             }
             var prefNames = xThunderPref.getBranch().getChildList( "", {} );
-            for each (var aPrefName in prefNames) {
-                if (xThunderPref.pref.prefHasUserValue(aPrefName))
-                    xThunderPref.pref.clearUserPref(aPrefName);
+            for (var key in prefNames) {
+                if (xThunderPref.pref.prefHasUserValue(prefNames[key]))
+                    xThunderPref.pref.clearUserPref(prefNames[key]);
             }
 
             this.loadPrefs();
