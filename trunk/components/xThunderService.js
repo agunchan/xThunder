@@ -19,11 +19,15 @@ xThunderComponent.prototype = {
 
     CallAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result = 0;
+        var nativeArgs = [];
         if (!args) {
             args = [];
         }
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
+        } else if (agentName == "Thunder" && (this.detectOS() == "LINUX" || this.detectOS() == "DARWIN") && this.getThunderPath()) {
+            nativeArgs[0] = urls[0];
+            result = this.runNative(this.getThunderPath(), nativeArgs);
         } else if(agentName.indexOf("custom") != -1) {
             if (/curl(\.exe)?$|wget(\.exe)?$|aria2c$/i.test(exePath)) {
                 if (/wget/i.test(exePath) && totalTask > 1) {
@@ -33,14 +37,10 @@ xThunderComponent.prototype = {
                 result = this.runScript(totalTask, referrer, urls, cookies, descs, exePath, args);
             } else {
                 if (args.length >= 1) {
-                    args[args.length-1] = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs);
+                    nativeArgs[0] = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs);
                 }
-                result = this.runNative(exePath, args);
+                result = this.runNative(exePath, nativeArgs);
             }
-        } else if (this.detectOS() == "LINUX" && agentName == "Thunder" && this.getWinePath()) {
-            args = [];
-            args[0] = this.replaceHolder("[URL]", referrer, urls, cookies, descs);
-            result = this.runNative(this.getWinePath(), args);
         } else if (this.detectOS() == "WINNT") {
             result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args) 
         }
@@ -56,17 +56,19 @@ xThunderComponent.prototype = {
         return this.osString;
     },
     
-    getWinePath : function() {
-        if (!this.winePath) {
-            var wine = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
-            var path = "/usr/bin/wine-thunder";
-            wine.initWithPath(path);
-            if (wine.exists()) {
-                this.winePath = path;
+    getThunderPath : function() {
+        if (!this.thunderPath) {
+            var file,path;
+            file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+            path = this.detectOS() == "LINUX" ? "/usr/bin/wine-thunder" 
+                                              : "/Applications/Thunder.app/Contents/MacOS/Thunder";
+            file.initWithPath(path);
+            if (file.exists()) {
+                this.thunderPath = path;
             }
         }
-        
-        return this.winePath || "";
+
+        return this.thunderPath || "";
     },
     
     getChromeFile : function (chromePath) {
