@@ -27,7 +27,6 @@ pref("extensions.xthunder.delayMilliSec", 15);
 pref("extensions.xthunder.dtaOneClick", false);
 pref("extensions.xthunder.qqOffLineWeb", false);
 pref("extensions.xthunder.agent.custom", "");
-pref("extensions.xthunder.vodOffLine", true);
-pref("extensions.xthunder.vodMember", true);
+pref("extensions.xthunder.vodOffLine", false);
 pref("extensions.xthunder.downloadDir", "");
 pref("extensions.xthunder.batEncoding", "GBK");
