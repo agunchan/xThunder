@@ -141,6 +141,11 @@ var xThunderPref = {
         }
         return [];
     },
+    
+    isSupURL : function(url) {
+        url = url.replace(/^\s+/g, "");
+        return this.uriSupReg.test(url) || this.proSupReg.test(url);
+    },
 
     isExtSupURL : function(trimmedUrl, supExt) {
         if (supExt == "") {
