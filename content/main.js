@@ -126,7 +126,7 @@ var xThunderMain = {
         } 
 
         if (download) {
-            xThunder.apiDownSingleUrl(link.ownerDocument.URL, url);
+            xThunder.apiDownUrl(link.ownerDocument.URL, url);
             ev.preventDefault();
             ev.stopPropagation();
             return false;
@@ -152,8 +152,7 @@ var xThunderMain = {
                 downHidden = false;
             } else {
                 var selText = document.commandDispatcher.focusedWindow.getSelection().toString();
-                selText = selText.replace(/^\s+/g, "");
-                downHidden = !(xThunderPref.uriSupReg.test(selText) || xThunderPref.proSupReg.test(selText));
+                downHidden = !xThunderPref.isSupURL(selText);
             }
         }
         if (!downOffLineHidden) {
@@ -190,8 +189,8 @@ var xThunderMain = {
         window.setTimeout(function() {xThunder.callAgent();}, xThunderPref.getValue("delayMilliSec"));
     },
 
-    _getUrlFromClipborad : function() {
-        var pastetext;
+    _getUrlsFromClipboard : function() {
+        var pasteText = "";
         try {
             var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
             var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
@@ -202,15 +201,11 @@ var xThunderMain = {
             trans.getTransferData("text/unicode", str, strLength);
             if (str) {
                 str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
-                pastetext = str.data.substring(0, strLength.value / 2);
+                pasteText = str.data.substring(0, strLength.value / 2);
             }
         } catch (ex) { }
         
-        if(pastetext && (xThunderPref.uriSupReg.test(pastetext) || xThunderPref.proSupReg.test(pastetext))) {
-            return pastetext;
-        } else {
-            return "http://";
-        }
+        return pasteText.split("\n");
     },
 
     OnThunderDownload : function(event, agentName, offLine) {
@@ -229,8 +224,11 @@ var xThunderMain = {
         } else {
             // Get selected url
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
-            if (url == "") {
-                url = this._getUrlFromClipborad();
+            if (!url || !xThunderPref.isSupURL(url)) {
+                url = this._getUrlsFromClipboard()[0];
+            }
+            if (!url || !xThunderPref.isSupURL(url)) {
+                url = "http://";
             }
             url = xThunderDecode.getDecodedUrl(url);
         }
@@ -291,8 +289,21 @@ var xThunderMain = {
         var taskCount = linkCount + imageCount;
         var agent = xThunderPref.getAgentByClick(event, false);
         if (taskCount == 0) {
+            // Download all urls from clipboard if there are no links in page 
+            var urlTexts = this._getUrlsFromClipboard();
+            var urls = [];
+            for (var line in urlTexts) {
+                if (xThunderPref.isSupURL(urlTexts[line])) {
+                    urls.push(xThunderDecode.getDecodedUrl(urlTexts[line]));
+                }
+            }
+            if (urls.length > 0) {
+                xThunder.apiDownUrl(htmlDocument.URL, urls, agent);
+            }
             return true;
-        } else if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
+        }
+        
+        if (taskCount > 1 && (agent == "ToolbarThunder" || agent == "FlashGetMini")) {
             this._closeCtxMenu(event);
             alert(agent + " does not support batch downloading!");
             return false;

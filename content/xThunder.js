@@ -11,10 +11,21 @@ var xThunder = {
     offLine : false,
     filerExtStr : "",
     
-    // agentName[optional], offLine[optional]
-    apiDownSingleUrl : function(referrer, url, agentName, offLine) {
-        this.init(referrer, 1, agentName, offLine);
-        this.addTask(url);
+    // referrer : referrer page[required]
+    // url : array of url or single url[required]
+    // agentName[optional]
+    // offLine[optional]
+    apiDownUrl : function(referrer, url, agentName, offLine) {
+        var isUrlArray = Object.prototype.toString.call(url) === '[object Array]';
+        var totalTask = isUrlArray ? url.length : 1;
+        this.init(referrer, totalTask, agentName, offLine);
+        if (isUrlArray) {
+            for (var i in url) {
+                this.addTask(url[i]);
+            }
+        } else {
+            this.addTask(url);
+        }
         this.callAgent();
     },
 

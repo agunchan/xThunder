@@ -255,7 +255,7 @@ xThunderComponent.prototype = {
         } else if(totalTask > 1 && DTA.saveLinkArray) {
             var anchors = [], images = [];
             var wrapURL = function(url, cs) {return new DTA.URL(DTA.IOService.newURI(url, cs, null));}
-            for (var j=0; j<totalTask; ++j) {
+            for (var j = 0; j < totalTask; ++j) {
                 anchors.push({
                     url: wrapURL(urls[j], "UTF-8"),
                     description: descs[j],
