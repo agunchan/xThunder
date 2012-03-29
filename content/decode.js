@@ -206,7 +206,7 @@ var xThunderDecode = {
             // auto choose the url having nearer ip
             var urlOne = downUrls[0];
             var urlTwo = downUrls[1];
-            var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+@/;
+            var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+/;
             var matchesOne, matchesTwo;
             if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg))
                 && matchesOne[2] == matchesTwo[2]) {
