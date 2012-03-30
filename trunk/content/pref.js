@@ -23,8 +23,8 @@ var xThunderPref = {
             var agent = agentList[i];
             var mi = createMenuitem({
                 id : idpre + agent,
-                label : agent.indexOf("custom") != -1 
-                        ? cusAgentList[agent.split("custom")[1]] : stringBundle.getString(agent),
+                label : agent.indexOf("custom") != -1 ? cusAgentList[agent.split("custom")[1]] 
+                                                      : stringBundle.getString(agent),
                 value : agent,
                 oncommand : func ? (func + "('" + agent + "')") : ""
             });
@@ -180,8 +180,7 @@ var xThunderPref = {
     getBranch : function() {
         if (this.pref == null) {
             this.pref = Components.classes["@mozilla.org/preferences-service;1"].
-                            getService(Components.interfaces.nsIPrefService).
-                            getBranch("extensions.xthunder.");
+                getService(Components.interfaces.nsIPrefService).getBranch("extensions.xthunder.");
         }
         return this.pref;
     },
@@ -213,8 +212,7 @@ var xThunderPref = {
         case "number":
             if (value % 1 != 0) {
                 throw new Error("Cannot set preference to non integer");
-            }
-            else {
+            } else {
                 this.pref.setIntPref(prefName, Math.floor(value));
             }
             break;

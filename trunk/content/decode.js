@@ -126,10 +126,10 @@ var xThunderDecode = {
             if (!link) {
                 url = "";
             } else {
-                url = link.getAttribute("thunderhref") 
-                    || link.getAttribute("fg") || link.getAttribute("qhref") || link.getAttribute("ed2k")
-                    || link.getAttribute("downloadurl") || link.getAttribute("url") 
-                    || link.href || link.name;
+                url = link.getAttribute("thunderhref") || 
+                    link.getAttribute("fg") || link.getAttribute("qhref") || link.getAttribute("ed2k") || 
+                    link.getAttribute("downloadurl") || link.getAttribute("url") || 
+                    link.href || link.name;
             }
         }
 
@@ -142,8 +142,8 @@ var xThunderDecode = {
             url = url.replace(/ /g, "");
             var oriUrl = url;
             if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url)) {
-                url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, ""))
-                        .replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
+                url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, "")).
+                    replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
                 if (/^flashget:\/\//i.test(oriUrl)) {
                     // use oriUrl when it is actually flashgetx://|mhts|, or decode once more
                     url = /http:\/\/.*\/Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*/.test(url) ? oriUrl : this.getDecodedUrl(url);
@@ -168,8 +168,8 @@ var xThunderDecode = {
         try {
             input = decodeURIComponent(escape(input));  //utf8 decode
         } catch (e) {
-            var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-                .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+            var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
+                createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
             converter.charset = "GBK";                  //gbk decode
             input = converter.ConvertToUnicode(input);
         }
@@ -187,8 +187,8 @@ var xThunderDecode = {
                 for (var i=0; i<downBox.length; i++) {
                     if (downBox[i].nodeName.toUpperCase() == "A") {
                         var url = downBox[i].getAttribute("url") || downBox[i].href;
-                        if (index == 0 && downBox[i].textContent.indexOf("电信") != -1
-                        || index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
+                        if (index == 0 && downBox[i].textContent.indexOf("电信") != -1 || 
+                            index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
                             return url;
                         } else {
                             downUrls.push(url);
@@ -208,8 +208,8 @@ var xThunderDecode = {
             var urlTwo = downUrls[1];
             var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+/;
             var matchesOne, matchesTwo;
-            if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg))
-                && matchesOne[2] == matchesTwo[2]) {
+            if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg)) && 
+                matchesOne[2] == matchesTwo[2]) {
                 //compare ipv4 Leading address
                 index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2])
                         ? 0 : 1;
