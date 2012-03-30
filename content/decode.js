@@ -211,8 +211,7 @@ var xThunderDecode = {
             if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg)) && 
                 matchesOne[2] == matchesTwo[2]) {
                 //compare ipv4 Leading address
-                index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2])
-                        ? 0 : 1;
+                index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2]) ? 0 : 1;
             } else {
                 index = downUrls.length - 1;
             }
