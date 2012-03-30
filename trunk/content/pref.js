@@ -113,7 +113,7 @@ var xThunderPref = {
         return agentList;
     },
 	
-	getAgentByClick : function(event, addOffLine) {
+    getAgentByClick : function(event, addOffLine) {
         if(event && event.button != 0) {
             var agentList = this.getEnabledAgentList(addOffLine);
             if (event.button == 1 && agentList.length >= 3) {
