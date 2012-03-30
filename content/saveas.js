@@ -104,18 +104,18 @@ window.addEventListener("load", function() {
     } 
 	
 	// mouse middle click and right click on accept button
-	var acceptBtn = document.documentElement.getButton("accept");
-	if (acceptBtn) {
-		acceptBtn.addEventListener("click", function(event) {
-			if (mode.selectedItem == xThunderRadio && event.button != 0) {
-				if (!extExists) {
-					xThunderPref.setValue("supportExt", ext + supportExt);
-				}
-				
-				download(xThunderPref.getAgentByClick(event, xThunderPref.getValue("downOffLineInSaveFile")));
-			}
-		}, false);
-	}
+    var acceptBtn = document.documentElement.getButton("accept");
+    if (acceptBtn) {
+        acceptBtn.addEventListener("click", function(event) {
+            if (mode.selectedItem == xThunderRadio && event.button != 0) {
+                if (!extExists) {
+                    xThunderPref.setValue("supportExt", ext + supportExt);
+                }
+
+                download(xThunderPref.getAgentByClick(event, xThunderPref.getValue("downOffLineInSaveFile")));
+            }
+        }, false);
+    }
 
     // mouse left click on accept button
     addEventListener("dialogaccept", function() {

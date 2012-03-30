@@ -6,7 +6,7 @@
     <script type="application/javascript" src="chrome://xthunder/content/pref.js" />
     <script type="application/javascript" src="chrome://xthunder/content/saveas.js"/>
 
-	<radiogroup id="mode">
+    <radiogroup id="mode">
         <stringbundleset id="stringbundleset">
             <stringbundle id="xThunderAgentStrings" src="chrome://xthunder/locale/agent.properties"/>
         </stringbundleset>
