@@ -17,9 +17,9 @@ var xThunderMain = {
     
     deleteTempFiles : function() {
        try {
-           var file = Components.classes["@mozilla.org/file/directory_service;1"]
-                .getService(Components.interfaces.nsIProperties)
-                .get("TmpD", Ci.nsIFile);
+           var file = Components.classes["@mozilla.org/file/directory_service;1"].
+               getService(Components.interfaces.nsIProperties).
+               get("TmpD", Ci.nsIFile);
            file.append("xThunder");
            if (file.exists())
                file.remove(true);
@@ -51,8 +51,9 @@ var xThunderMain = {
     addContextMenuListener : function() {
         this.ctxMenu = document.getElementById("contentAreaContextMenu");
         this.ctxMenu.addEventListener("popupshowing", function(event){
-            if (event.target == this)
+            if (event.target == this) {
                 xThunderMain.OnContextMenu();
+            }
         }, false);
     },
     
@@ -79,8 +80,8 @@ var xThunderMain = {
                         //Copy decode url to clipboard 
                         decodedUrl = xThunderDecode.getDecodedNode(link);
                         link.setAttribute("href", decodedUrl);
-                        var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"]
-                                            .getService(Components.interfaces.nsIClipboardHelper);
+                        var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+                            getService(Components.interfaces.nsIClipboardHelper);
                         gClipboardHelper.copyString(decodedUrl);
                     } else {
                         //do Firefox default behavior
@@ -194,8 +195,8 @@ var xThunderMain = {
         try {
             var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
             var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
-            var str       = new Object();
-            var strLength = new Object();
+            var str       = {};
+            var strLength = {};
             trans.addDataFlavor("text/unicode");
             clip.getData(trans, clip.kGlobalClipboard);
             trans.getTransferData("text/unicode", str, strLength);
@@ -254,11 +255,13 @@ var xThunderMain = {
                 var firstAgent = "ThunderOffLine";
                 var secondAgent = "QQDownloadOffLine";
                 var thunderIndex = agentList.indexOf(firstAgent);
-                if (thunderIndex == -1)
+                if (thunderIndex == -1) {
                     thunderIndex = agentList.length;
+                }
                 var qqdownloadIndex = agentList.indexOf(secondAgent);
-                if (qqdownloadIndex == -1)
+                if (qqdownloadIndex == -1) {
                     qqdownloadIndex = agentList.length + 1;
+                }
                 // Swap agent if user set QQDownload before Thunder
                 if (thunderIndex > qqdownloadIndex) {
                     var temp = firstAgent;
@@ -329,13 +332,13 @@ var xThunderMain = {
         xThunderPref.appendAgentList(target, "xThunderBy", "xThunderMain.OnThunderDownloadBy", true, xThunderPref.getValue("downOffLineSubMenu"));
         // Set className of nonsupport agents item to agentNonsup
         var url;
-        if (gContextMenu.onLink)
+        if (gContextMenu.onLink) {
             url = gContextMenu.target.getAttribute("fg") || gContextMenu.linkURL;
-        else if (gContextMenu.onImage)
+        } else if (gContextMenu.onImage) {
             url = gContextMenu.target.src;
-        else
+        } else {
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
-
+        }
         url = xThunderDecode.getPreDecodedUrl(url);
         var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
         for (var i=0; i<agentsNonsup.length; ++i) {

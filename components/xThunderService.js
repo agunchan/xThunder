@@ -50,8 +50,9 @@ xThunderComponent.prototype = {
     detectOS : function() {
         // Returns "WINNT" on Windows Vista, XP, 2000, and NT systems;  
         // "Linux" on GNU/Linux; and "Darwin" on Mac OS X.  
-        if (!this.osString) 
+        if (!this.osString) {
             this.osString = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS.toUpperCase();
+        }
         
         return this.osString;
     },
@@ -77,8 +78,9 @@ xThunderComponent.prototype = {
         var uri = ios.newURI(chromePath, "UTF-8", null);
         var cr = Cc["@mozilla.org/chrome/chrome-registry;1"].getService(Ci["nsIChromeRegistry"]);
         url = cr.convertChromeURL(uri).spec;
-        if (!/^file:/.test(url))
-            url = "file://"+url;
+        if (!/^file:/.test(url)) {
+            url = "file://" + url;
+        }
         var ph = Cc["@mozilla.org/network/protocol;1?name=file"].createInstance(Ci.nsIFileProtocolHandler);
         return ph.getFileFromURLSpec(url);
     },
@@ -94,8 +96,8 @@ xThunderComponent.prototype = {
     },
     
     createTempFile : function(data, ext, charset) {
-        var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties)
-                .get("TmpD", Ci.nsIFile);
+        var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).
+            get("TmpD", Ci.nsIFile);
         file.append("xThunder");
         if (!file.exists()) {
             file.create(Ci.nsIFile.DIRECTORY_TYPE, 0700);
@@ -132,10 +134,10 @@ xThunderComponent.prototype = {
         var cook = cookies[0] || 0;
         var desc = descs[0] || 0;
 
-        arg = arg.replace(/\[URL\]/ig, escape ? this.escapePath(url) : url)
-                .replace(/\[REFERER\]/ig, escape ? this.escapePath(ref) : ref)
-                .replace(/\[COOKIE\]/ig, escape ? this.escapePath(cook) : cook)
-                .replace(/\[COMMENT\]/ig, escape ? this.escapePath(desc) : desc);
+        arg = arg.replace(/\[URL\]/ig, escape ? this.escapePath(url) : url).
+                replace(/\[REFERER\]/ig, escape ? this.escapePath(ref) : ref).
+                replace(/\[COOKIE\]/ig, escape ? this.escapePath(cook) : cook).
+                replace(/\[COMMENT\]/ig, escape ? this.escapePath(desc) : desc);
                    
         return arg;
     },
@@ -208,8 +210,8 @@ xThunderComponent.prototype = {
         proc.init(this.COMExeFile);
 
         args.push("-a", agentName);
-        if (totalTask == 1 && hasRunW && this.COMExeFile.path.length + urls[0].length + referrer.length
-            + descs[0].length + cookies[0].length + cids[0].length < this.CMD_MAX_LENTH) {
+        if (totalTask == 1 && hasRunW && this.COMExeFile.path.length + urls[0].length + referrer.length + 
+            descs[0].length + cookies[0].length + cids[0].length < this.CMD_MAX_LENTH) {
             //empty string arguments ignored, command-line string limitation of Win2000 is 2047(XP 8191)
             args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] || " ");
         } else {

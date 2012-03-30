@@ -51,8 +51,8 @@ window.addEventListener("load", function() {
         var url = dialog.mLauncher.source.spec;
         var referrer;
         try {
-            var openerDocument = dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                                            .getInterface(Components.interfaces.nsIDOMWindow).document;   
+            var openerDocument = dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor).
+                getInterface(Components.interfaces.nsIDOMWindow).document;   
             referrer = openerDocument && openerDocument.URL                            
         } catch(ex) {}
         if (!referrer || referrer == "about:blank") {
@@ -92,9 +92,11 @@ window.addEventListener("load", function() {
 
     // same width as open radio
     var openRadio = $("open");
-    if(openRadio) {
+    if (openRadio) {
         var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
-        if(maxWidth > 0) openRadio.width = xThunderRadio.width = maxWidth;
+        if (maxWidth > 0) {
+            openRadio.width = xThunderRadio.width = maxWidth;
+        }
     }
 
     if (extExists) {
@@ -115,19 +117,19 @@ window.addEventListener("load", function() {
 		}, false);
 	}
 
-	// mouse left click on accept button
-	addEventListener("dialogaccept", function() {
-		if (mode.selectedItem == xThunderRadio) {
+    // mouse left click on accept button
+    addEventListener("dialogaccept", function() {
+        if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {
                 xThunderPref.setValue("supportExt", ext + supportExt);
             }
 
             download();
-		} else {
+        } else {
             if (extExists) {
                 xThunderPref.setValue("supportExt", supportExt.replace(ext, ""));
             }
         }
-	}, false); // dialogaccept
+    }, false); // dialogaccept
     
 }, false); // load

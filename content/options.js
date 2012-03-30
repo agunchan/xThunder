@@ -72,8 +72,8 @@ var xThunderOptions = {
     
     restoreDefPrefs : function() {   
         try {
-            var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-                              .getService(Components.interfaces.nsIPromptService);
+            var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].
+                getService(Components.interfaces.nsIPromptService);
             var message = document.getElementById("xThunderAgentStrings").getString("ConfirmRestore");                    
             if (!promptService.confirm(window, "xThunder", message)) {
                 return;
@@ -103,8 +103,8 @@ var xThunderOptions = {
             var agentItem = agentList[i].split("|");
             var agent = agentItem[0];
             createListItem({
-                label : agent.indexOf("custom") != -1 
-                        ? cusAgentList[agent.split("custom")[1]] : stringBundle.getString(agent),
+                label : agent.indexOf("custom") != -1 ? cusAgentList[agent.split("custom")[1]] 
+                                                      : stringBundle.getString(agent),
                 value : agent,
                 type  : "checkbox",
                 checked : agentItem.length == 1
@@ -142,8 +142,9 @@ var xThunderOptions = {
                 return;
             }
             if (listitems[i].checked) {
-                if (!defAgent)
+                if (!defAgent) {
                     defAgent = agentValue;
+                }
                 enableAgents += agentValue + ",";
             } else {
                 disableAgents += agentValue + "|0,";
@@ -172,10 +173,10 @@ var xThunderOptions = {
             editButton.setAttribute("hidden", "true");
             removeButton.setAttribute("hidden", "true");
         } else {
-            if(this.agentListBox.selectedIndex == 0) {
+            if (this.agentListBox.selectedIndex == 0) {
                 moveUpButton.setAttribute("disabled", "true");
                 moveDownButton.setAttribute("disabled", "false");
-            } else if(this.agentListBox.selectedIndex == this.agentListBox.itemCount-1) {
+            } else if (this.agentListBox.selectedIndex == this.agentListBox.itemCount-1) {
                 moveUpButton.setAttribute("disabled", "false");
                 moveDownButton.setAttribute("disabled", "true");
             } else {

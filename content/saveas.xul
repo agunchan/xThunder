@@ -16,5 +16,5 @@
                 <menupopup id="xThunderAgentPopup" />
             </menulist>
         </hbox>
-	</radiogroup>
+    </radiogroup>
 </overlay>

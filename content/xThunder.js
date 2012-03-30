@@ -56,8 +56,8 @@ var xThunder = {
         
         //nonsupport or filtered url
         var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
-        if (agentsNonsup.indexOf(this.agentName) != -1
-            || agentsNonsup.length==0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
+        if (agentsNonsup.indexOf(this.agentName) != -1 || 
+            agentsNonsup.length == 0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
             --this.totalTask;
             return;
         }
@@ -84,13 +84,13 @@ var xThunder = {
             var browser;
             var offLineAgents = ["QQDownload", "Thunder", "ThunderVOD"];
             var offIdx = offLineAgents.indexOf(this.agentName);
-            if ( (offIdx == 0 && xThunderPref.getValue("qqOffLineWeb") || offIdx > 0) 
-                 && this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
+            if ( (offIdx == 0 && xThunderPref.getValue("qqOffLineWeb") || offIdx > 0) && 
+                this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
                 //OffLine download in web page
                 var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
                 var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&from=vlist&go=check&location=list&furl="];
-                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
-                                                   ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
+                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 ? this.urls[0] 
+                                                                                                 : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
             } else {
                 //Normal download
                 var result,exePath,args;
@@ -146,8 +146,8 @@ var xThunder = {
         if (fp.show() == Components.interfaces.nsIFilePicker.returnOK) {
             downloadDir = fp.file.path;
         } else {
-            var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties)
-                .get("Home", Ci.nsIFile);
+            var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).
+                get("Home", Ci.nsIFile);
             file.append("Downloads");
             downloadDir = file.path;
         }
@@ -160,8 +160,8 @@ var xThunder = {
         if (typeof gBrowser != "undefined") {
             return gBrowser;
         } else {
-            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
-                            .getService(Components.interfaces.nsIWindowMediator);
+            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                getService(Components.interfaces.nsIWindowMediator);
             var mainWindow = wm.getMostRecentWindow("navigator:browser");
             return mainWindow ? mainWindow.gBrowser : null;
         }
@@ -174,8 +174,8 @@ var xThunder = {
             if (/^https?:\/\//i.test(href)) {
                 var uri = Components.classes["@mozilla.org/network/standard-url;1"].createInstance(Components.interfaces.nsIURI);
                 uri.spec = href;
-                strCookie = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService)
-                                .getCookieString(uri, null);
+                strCookie = Components.classes["@mozilla.org/cookieService;1"].getService(Components.interfaces.nsICookieService).
+                    getCookieString(uri, null);
             }
         } catch(ex) {}
 		
@@ -192,8 +192,9 @@ var xThunder = {
             if (xThunderPref.uriSupReg.test(href)) {
                 var names = href.split("?")[0].split("#")[0].split("/");
                 fileName = names[names.length-1];
-                if (fileName != "") 
+                if (fileName != "") {
                     fileName = decodeURIComponent(fileName);
+                }
             } else if(matches = href.match(/^ed2k:\/\/\|file\|(.*?)\|\d/)) {
                 fileName = decodeURIComponent(matches[1]);
             } else {
@@ -222,13 +223,13 @@ var xThunder = {
     },
     
     getVodPostData : function(href) {
-        var dataString = "url=" + encodeURIComponent(href) 
-            + "&title=" + encodeURIComponent(this.getFileName(href));
-        var stringStream = Components.classes["@mozilla.org/io/string-input-stream;1"]
-                            .createInstance(Components.interfaces.nsIStringInputStream);
+        var dataString = "url=" + encodeURIComponent(href) + 
+            "&title=" + encodeURIComponent(this.getFileName(href));
+        var stringStream = Components.classes["@mozilla.org/io/string-input-stream;1"].
+            createInstance(Components.interfaces.nsIStringInputStream);
         stringStream.data = dataString;
-        var postData = Components.classes["@mozilla.org/network/mime-input-stream;1"]
-                        .createInstance(Components.interfaces.nsIMIMEInputStream);
+        var postData = Components.classes["@mozilla.org/network/mime-input-stream;1"].
+            createInstance(Components.interfaces.nsIMIMEInputStream);
         postData.addHeader("Content-Type", "application/x-www-form-urlencoded");
         postData.addContentLength = true;
         postData.setData(stringStream);
