@@ -44,8 +44,8 @@ var xThunder = {
             this.agentName = xThunderPref.getValue("agentName");
             this.offLine = false;
         }
-        this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt"))
-                            ? xThunderPref.getValue("supportExt") : "";
+        this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt")) 
+            ? xThunderPref.getValue("supportExt") : "";
     },
     
     addTask : function(url, des) {
@@ -88,9 +88,13 @@ var xThunder = {
                 this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
                 //OffLine download in web page
                 var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
-                var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&from=vlist&go=check&location=list&furl="];
-                browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 ? this.urls[0] 
-                                                                                                 : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
+                var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
+                if (offIdx == 2 && !xThunderPref.getValue("vodMember")) {
+                    browser.loadOneTab("http://vod.oabt.org/index.php?xunlei", null, "utf-8", this.getVodPostData(this.urls[0]), false); 
+                } else {
+                    browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
+                        ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
+                }  
             } else {
                 //Normal download
                 var result,exePath,args;
@@ -220,5 +224,19 @@ var xThunder = {
         }
 
         return cid;
+    },
+    
+    getVodPostData : function(href) {
+        var dataString = "url=" + encodeURIComponent(href) + 
+            "&title=" + encodeURIComponent(this.getFileName(href));
+        var stringStream = Components.classes["@mozilla.org/io/string-input-stream;1"].
+            createInstance(Components.interfaces.nsIStringInputStream);
+        stringStream.data = dataString;
+        var postData = Components.classes["@mozilla.org/network/mime-input-stream;1"].
+            createInstance(Components.interfaces.nsIMIMEInputStream);
+        postData.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        postData.addContentLength = true;
+        postData.setData(stringStream);
+        return postData;
     }
 };
