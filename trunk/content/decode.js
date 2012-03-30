@@ -178,22 +178,38 @@ var xThunderDecode = {
 
     // Get url of udown link
     getUDownUrl : function (link, referrer) {
+        if (link.id != "udown") {
+            return referrer;
+        } 
+        
         var downUrls = [];
         var index = xThunderPref.getValue("udown"); // tel,cnc,auto
-        var downBox = link.parentNode.childNodes;   // assert the id of link is udown
-        for (var j=0; j<downBox.length; j++) {
-            if (downBox[j].getAttribute && downBox[j].getAttribute("class") == "btn-wrap") {
-                downBox = downBox[j].childNodes;
-                for (var i=0; i<downBox.length; i++) {
-                    if (downBox[i].nodeName.toUpperCase() == "A") {
-                        var url = downBox[i].getAttribute("url") || downBox[i].href;
-                        if (index == 0 && downBox[i].textContent.indexOf("电信") != -1 || 
-                            index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
-                            return url;
-                        } else {
-                            downUrls.push(url);
+        var div,downBox;
+        if (link.parentNode.className == "fl") {
+            div = link.parentNode.nextSibling;
+            while(div && div.nodeType != 1){
+                div = div.nextSibling;
+            }
+            div = div.childNodes;
+        } else {
+            div = link.parentNode.childNodes;
+        }
+        if (div && div.length) {
+            for (var j=0; j<div.length; j++) {
+                if (div[j].className == "btn-wrap") {
+                    downBox = div[j].childNodes;
+                    for (var i=0; i<downBox.length; i++) {
+                        if (downBox[i].nodeName.toUpperCase() == "A") {
+                            var url = downBox[i].getAttribute("url") || downBox[i].href;
+                            if (index == 0 && downBox[i].textContent.indexOf("电信") != -1 || 
+                                index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
+                                return url;
+                            } else {
+                                downUrls.push(url);
+                            }
                         }
                     }
+                    break;
                 }
             }
         }
