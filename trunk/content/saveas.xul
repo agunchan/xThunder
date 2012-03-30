@@ -2,7 +2,7 @@
 
 <!DOCTYPE overlay SYSTEM "chrome://xthunder/locale/xthunder.dtd" >
 <overlay id="xThunder-saveas" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/javascript" src="chrome://xthunder/content/xThunder.js" />
+    <script type="application/javascript" src="chrome://xthunder/content/xThunder.js" />
     <script type="application/javascript" src="chrome://xthunder/content/pref.js" />
     <script type="application/javascript" src="chrome://xthunder/content/saveas.js"/>
 

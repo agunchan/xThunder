@@ -103,7 +103,7 @@ window.addEventListener("load", function() {
         mode.selectedItem = xThunderRadio;
     } 
 	
-	// mouse middle click and right click on accept button
+    // mouse middle click and right click on accept button
     var acceptBtn = document.documentElement.getButton("accept");
     if (acceptBtn) {
         acceptBtn.addEventListener("click", function(event) {

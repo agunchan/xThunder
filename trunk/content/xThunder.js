@@ -220,19 +220,5 @@ var xThunder = {
         }
 
         return cid;
-    },
-    
-    getVodPostData : function(href) {
-        var dataString = "url=" + encodeURIComponent(href) + 
-            "&title=" + encodeURIComponent(this.getFileName(href));
-        var stringStream = Components.classes["@mozilla.org/io/string-input-stream;1"].
-            createInstance(Components.interfaces.nsIStringInputStream);
-        stringStream.data = dataString;
-        var postData = Components.classes["@mozilla.org/network/mime-input-stream;1"].
-            createInstance(Components.interfaces.nsIMIMEInputStream);
-        postData.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        postData.addContentLength = true;
-        postData.setData(stringStream);
-        return postData;
     }
 };
