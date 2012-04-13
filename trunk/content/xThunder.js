@@ -30,7 +30,7 @@ var xThunder = {
     },
 
     init : function(referrer, totalTask, agentName, offLine) {
-        this.referrer = referrer;
+        this.referrer = referrer || this.ARG_DEF_STR;
         this.urls = [];
         this.cookies = [];
         this.descs = [];

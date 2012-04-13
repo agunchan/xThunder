@@ -11,8 +11,8 @@
 <!ENTITY	pro.fs2you      "rayfile (fs2you://)">
 <!ENTITY	pro.ed2k        "emule (ed2k://)">
 <!ENTITY	pro.magnet      "magnet (magnet:?)">
+<!ENTITY	pro.udown       "udown (udown://)">
 <!ENTITY	pro.115         "115 (115.com/file)">
-<!ENTITY	pro.udown       "udown (addTask)">
 <!ENTITY	remember        "Associated common file type">
 <!ENTITY	filterext       "Filter files by above extension first">
 <!ENTITY	lbl.udown       "UDown Url">
@@ -24,16 +24,16 @@
 <!ENTITY	lbl.showMenu            "Show Menu">
 <!ENTITY	showStatusIcon          "Show icon in status bar">
 <!ENTITY	showMenuIcons           "Show context menu icons">
+<!ENTITY	compactMenu             "Compact context menu">
 <!ENTITY	downInCxtMenu           "xThunder Link in context menu">
-<!ENTITY	downSubMenu             "Show sub menu of xThunder Link">
+<!ENTITY	downSubMenu             "Show download tools in submenu">
 <!ENTITY	downAllInCxtMenu        "xThunder All in context menu">
-<!ENTITY	downAllHotKey           "Show hot key(Alt+F1) of xThunder All">
 <!ENTITY	downInSaveFile          "xThunder Radio in save as dialog">
 <!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
 <!ENTITY	lbl.offLine             "OffLine Download">
 <!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
 <!ENTITY	downOffLineAnyway       "Show xThunder OffLine always">
-<!ENTITY	downOffLineSubMenu      "OffLine items in downloader submenu">
+<!ENTITY	downOffLineSubMenu      "OffLine items in submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
 <!ENTITY	downOffLineSep          "Show separator before offLine items">
 <!ENTITY	vodOffLine              "Show Thunder vod after offLine items">
