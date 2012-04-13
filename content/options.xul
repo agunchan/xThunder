@@ -27,12 +27,12 @@
             <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
             <preference id="pref_ctrlAltDecode" name="extensions.xthunder.ctrlAltDecode" type="bool"/>
-            <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
             <preference id="pref_showStatusIcon" name="extensions.xthunder.showStatusIcon" type="bool"/>
+            <preference id="pref_showMenuIcons" name="extensions.xthunder.showMenuIcons" type="bool"/>
+            <preference id="pref_compactMenu" name="extensions.xthunder.compactMenu" type="bool"/>
             <preference id="pref_downInCxtMenu" name="extensions.xthunder.downInCxtMenu" type="bool"/>
             <preference id="pref_downSubMenu" name="extensions.xthunder.downSubMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
-            <preference id="pref_downAllHotKey" name="extensions.xthunder.downAllHotKey" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
             <preference id="pref_downListInSaveFile" name="extensions.xthunder.downListInSaveFile" type="bool"/>
             <preference id="pref_downOffLineInCxtMenu" name="extensions.xthunder.downOffLineInCxtMenu" type="bool"/>
@@ -108,12 +108,12 @@
                         <caption label="&lbl.showMenu;"/>
                         <checkbox id="showStatusIcon" label="&showStatusIcon;" preference="pref_showStatusIcon"/>
                         <checkbox id="showMenuIcons" label="&showMenuIcons;" preference="pref_showMenuIcons"/>
+                        <checkbox id="compactMenu" label="&compactMenu;" preference="pref_compactMenu"/>
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu" oncommand="document.getElementById('downSubMenu').disabled = !this.checked;"/>
                         <checkbox id="downSubMenu" label="&downSubMenu;" style="margin-left:22px;"  preference="pref_downSubMenu"/>
                         <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu" oncommand="document.getElementById('downOffLineAnyway').disabled = !this.checked;"/>
                         <checkbox id="downOffLineAnyway" label="&downOffLineAnyway;" style="margin-left:22px;" preference="pref_downOffLineAnyway"/>
-                        <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu" oncommand="document.getElementById('downAllHotKey').disabled = !this.checked;"/>
-                        <checkbox id="downAllHotKey" label="&downAllHotKey;" style="margin-left:22px;" preference="pref_downAllHotKey"/>
+                        <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
                         <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile" oncommand="document.getElementById('downListInSaveFile').disabled = !this.checked;"/>
                         <checkbox id="downListInSaveFile" label="&downListInSaveFile;" style="margin-left:22px;" preference="pref_downListInSaveFile"/>
                     </groupbox>

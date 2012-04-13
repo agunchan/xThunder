@@ -142,10 +142,13 @@ var xThunderMain = {
         var downloadOffLineItem = document.getElementById("xThunderDownloadOffLine");
         var downloadAllItem = document.getElementById("xThunderDownloadAll");
         var sepItem = document.getElementById("xThunderDownloadUp");
+        var downCompactMenu = document.getElementById("xThunderCompact");
+        var downCompactPopup = document.getElementById("xThunderCompactPopup");
         var downHidden = !xThunderPref.getValue("downInCxtMenu");
         var downOffLineHidden = !xThunderPref.getValue("downOffLineInCxtMenu");
         var downAllHidden = !xThunderPref.getValue("downAllInCxtMenu");
         var downSubMenuShown = xThunderPref.getValue("downSubMenu");
+        var compact = xThunderPref.getValue("compactMenu");
 
         if (!downHidden) {
             //Show xThunder link in context menu if needed
@@ -162,17 +165,26 @@ var xThunderMain = {
         }
 
         var showMenuIcons = xThunderPref.getValue("showMenuIcons");
-        var showAllHotKey = xThunderPref.getValue("downAllHotKey");
-        downloadMenu.className = showMenuIcons ? "menu-iconic" : "";
-        downloadLinkItem.className = downloadOffLineItem.className = downloadAllItem.className = showMenuIcons ? "menuitem-iconic" : "";
-        downloadLinkItem.setAttribute("hidden", downHidden || downSubMenuShown);
-        downloadMenu.setAttribute("hidden", downHidden || !downSubMenuShown);
-        downloadOffLineItem.setAttribute("hidden", downOffLineHidden);
-        //work around BUG 630830 before Firefox5 - "key" attribute changes to menuitems are not handled
-        downloadAllItem.setAttribute("acceltext", showAllHotKey ? "Alt+F1" : "");
-        downloadAllItem.setAttribute("key", showAllHotKey ? "xThunderAllKey" : "");
-        downloadAllItem.setAttribute("hidden", downAllHidden);
-        sepItem.setAttribute("hidden", downHidden && downAllHidden);
+        var items = [downloadLinkItem, downloadOffLineItem, downloadAllItem];
+        var itemHiddens = [downHidden, downOffLineHidden, downAllHidden];
+        var itemVisibleCount = 0;
+        for (var i=0; i<items.length; i++) {
+            //compact all items to sub menu
+            if (downCompactPopup.childNodes.length < items.length) {
+                var cloneSubItem = items[i].cloneNode(true);
+                cloneSubItem.id += "Sub";
+                downCompactPopup.appendChild(cloneSubItem);
+            }
+            downCompactPopup.childNodes[i].hidden = itemHiddens[i];
+            itemVisibleCount += (itemHiddens[i] ? 0 : 1);
+            items[i].className = showMenuIcons ? "menuitem-iconic" : "";
+            items[i].hidden = compact || itemHiddens[i];
+        }
+        downCompactMenu.className = downloadMenu.className = showMenuIcons ? "menu-iconic" : "";
+        downCompactMenu.hidden = !compact || (itemVisibleCount == 0); 
+        downloadMenu.hidden = compact || (downHidden || !downSubMenuShown);
+        downloadLinkItem.hidden = compact || (downHidden || downSubMenuShown);
+        sepItem.hidden = (itemVisibleCount == 0);
     },
         
     _closeCtxMenu : function(event) {

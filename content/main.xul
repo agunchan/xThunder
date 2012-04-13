@@ -19,6 +19,9 @@
 
     <popup id="contentAreaContextMenu">
         <menuseparator id="xThunderDownloadUp"/>
+        <menu id="xThunderCompact" label="xThunder" onclick="if(event.target == this) xThunderMain.OnThunderDownload(event);">
+            <menupopup id="xThunderCompactPopup"/>
+        </menu>
         <menu id="xThunderDownload" label="&download;" onclick="if(event.target == this) xThunderMain.OnThunderDownload(event);">
             <menupopup id="xThunderDownloadPopup" onpopupshowing="xThunderMain.OnThunderDownloadPopup(this);"/>
         </menu>
