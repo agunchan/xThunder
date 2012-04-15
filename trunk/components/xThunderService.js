@@ -29,7 +29,7 @@ xThunderComponent.prototype = {
             nativeArgs[0] = urls[0];
             result = this.runNative(this.getThunderPath(), nativeArgs);
         } else if(agentName.indexOf("custom") != -1) {
-            if (/curl(\.exe)?$|wget(\.exe)?$|aria2c$/i.test(exePath)) {
+            if (/(wget|curl|aria2c)(\.exe)$/i.test(exePath)) {
                 if (/wget/i.test(exePath) && totalTask > 1) {
                     //be smart to use input file
                     args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, "--input-file=[UFILE]");
