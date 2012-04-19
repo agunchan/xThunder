@@ -178,57 +178,20 @@ var xThunderDecode = {
 
     // Get url of udown link
     getUDownUrl : function (link, referrer) {
-        if (link.id != "udown") {
-            return referrer;
-        } 
-        
-        var downUrls = [];
-        var index = xThunderPref.getValue("udown"); // tel,cnc,auto
-        var div,downBox;
-        div = link.parentNode.nextSibling;
-        while(div && div.nodeType != 1){
-            div = div.nextSibling;
-        }
-        div = div.childNodes || [];
-        for (var j=0; j<div.length; j++) {
-            if (div[j].className == "btn-wrap") {
-                downBox = div[j].childNodes;
-                for (var i=0; i<downBox.length; i++) {
-                    if (downBox[i].nodeName.toUpperCase() == "A") {
-                        var url = downBox[i].href;
-                        if (index == 0 && downBox[i].textContent.indexOf("电信") != -1 || 
-                            index == 1 && downBox[i].textContent.indexOf("联通") != -1) {
-                            return url;
-                        } else {
-                            downUrls.push(url);
-                        }
-                    }
+        if (link.id == "udown") {
+            var div;
+            div = link.parentNode.nextSibling;
+            while(div && div.nodeType != 1){
+                div = div.nextSibling;
+            }
+            div = div.childNodes || [];
+            for (var j=0; j<div.length; j++) {
+                if(div[j].className == "button btn-green" && div[j].href) {
+                    return div[j].href;
                 }
-                break;
-            } else if(div[j].className == "button btn-green" && div[j].href) {
-                return div[j].href;
             }
         }
-          
-        if (downUrls.length == 0) {
-            return referrer;
-        } else if (downUrls.length == 1) {
-            index = 0;  
-        } else if (index == 2) {
-            // auto choose the url having nearer ip
-            var urlOne = downUrls[0];
-            var urlTwo = downUrls[1];
-            var urlReg = /http:\/\/(\d+)\.\d+\.\d+\.\d+\/.*&u=(\d+)\.\d+\.\d+\.\d+/;
-            var matchesOne, matchesTwo;
-            if ((matchesOne = urlOne.match(urlReg)) && (matchesTwo = urlTwo.match(urlReg)) && 
-                matchesOne[2] == matchesTwo[2]) {
-                //compare ipv4 Leading address
-                index = Math.abs(matchesOne[1] - matchesOne[2]) < Math.abs(matchesTwo[1] - matchesTwo[2]) ? 0 : 1;
-            } else {
-                index = downUrls.length - 1;
-            }
-        } 
-
-        return downUrls[index];
+        
+        return referrer;
     }
 }

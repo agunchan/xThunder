@@ -1,5 +1,4 @@
 pref("extensions.xthunder.remember", 0);
-pref("extensions.xthunder.udown", 2);
 pref("extensions.xthunder.supportClick", "thunder,");
 pref("extensions.xthunder.supportExt", ".exe;.msi;.torrent;.rar;.tar;.zip;.iso;.jar;.mdf;.mp3;.asf;.avi;.mpeg;.mpg;.mpga;.ra;.rm;.rmvb;.mp4;.mkv;.3gp;.wma;.wmp;.wmv;.mov;.chm;");
 pref("extensions.xthunder.filterExt", false);

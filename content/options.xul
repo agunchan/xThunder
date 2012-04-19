@@ -24,7 +24,6 @@
             <preference id="pref_supportExt" name="extensions.xthunder.supportExt" type="string"/>
             <preference id="pref_filterExt" name="extensions.xthunder.filterExt" type="bool"/>
             <preference id="pref_includeImages" name="extensions.xthunder.includeImages" type="bool"/>
-            <preference id="pref_udown" name="extensions.xthunder.udown" type="int"/>
             <preference id="pref_ctrlNoMonitor" name="extensions.xthunder.ctrlNoMonitor" type="bool"/>
             <preference id="pref_ctrlAltDecode" name="extensions.xthunder.ctrlAltDecode" type="bool"/>
             <preference id="pref_showStatusIcon" name="extensions.xthunder.showStatusIcon" type="bool"/>
@@ -92,15 +91,6 @@
                         <checkbox id="ctrlNoMonitor" label="&ctrlNoMonitor;" preference="pref_ctrlNoMonitor"/>
                         <checkbox id="ctrlAltDecode" label="&ctrlAltDecode;" preference="pref_ctrlAltDecode"/>
                     </groupbox>
-                    
-                    <groupbox>
-                        <caption label="&lbl.udown;"/>
-                        <radiogroup id="udownradiogroup" preference="pref_udown" orient="horizontal">
-                            <radio id="tel" label="&udown.tel;" value="0"/>
-                            <radio id="cnc" label="&udown.cnc;" value="1"/>
-                            <radio id="auto" label="&udown.auto;" value="2"/>
-                        </radiogroup>
-                     </groupbox>
                 </tabpanel>
 
                 <tabpanel orient="vertical" flex="1">

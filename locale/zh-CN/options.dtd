@@ -15,10 +15,6 @@
 <!ENTITY	pro.115         "115 (115.com/file)">
 <!ENTITY	remember        "关联普通文件类型">
 <!ENTITY	filterext       "预先以上述扩展名过滤文件">
-<!ENTITY	lbl.udown       "优蛋默认下载">
-<!ENTITY	udown.tel       "电信">
-<!ENTITY	udown.cnc       "联通">
-<!ENTITY	udown.auto      "自动">
 <!ENTITY	lbl.downloadAll "下载全部链接">
 <!ENTITY	includeImages   "包含当前页面中的图片源地址">
 <!ENTITY	lbl.showMenu            "显示菜单">
