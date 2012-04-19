@@ -362,17 +362,12 @@ var xThunderMain = {
 
     OnThunderOptsPopup : function() {
         xThunderPref.appendAgentList(document.getElementById("xThunderOptsDefAgentPopup"), "xThunderOptsAgent", "xThunderMain.OnChangeAgent", true);
-        document.getElementById("xThunderOptsUdown" + xThunderPref.getValue("udown")).setAttribute("checked", true);
         document.getElementById("xThunderOptsFilterExt").setAttribute("checked", xThunderPref.getValue("filterExt"));
         document.getElementById("xThunderOptsIncludeImages").setAttribute("checked", xThunderPref.getValue("includeImages"));
     },
 
     OnChangeAgent : function(newAgentName) {
         xThunderPref.setValue("agentName", newAgentName);
-    },
-
-    OnChangeUdown : function(udownIndex) {
-        xThunderPref.setValue("udown", udownIndex);
     },
 
     OnToogleFilterExt : function() {

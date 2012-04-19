@@ -15,10 +15,6 @@
 <!ENTITY	pro.115         "115 (115.com/file)">
 <!ENTITY	remember        "Associated common file type">
 <!ENTITY	filterext       "Filter files by above extension first">
-<!ENTITY	lbl.udown       "UDown Url">
-<!ENTITY	udown.tel       "TEL">
-<!ENTITY	udown.cnc       "CNC">
-<!ENTITY	udown.auto      "AUTO">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
 <!ENTITY	lbl.showMenu            "Show Menu">
