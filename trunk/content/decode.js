@@ -16,7 +16,7 @@ var xThunderDecode = {
             if (protocols[i] == "thunder" && 
                     ( url.indexOf("thunder:") == 0 ||
                       link.getAttribute("thunderhref") || 
-                      link.getAttribute("downloadurl") ||
+                      link.getAttribute("nspurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
                       /^http:\/\/goxiazai\.com\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
@@ -116,7 +116,19 @@ var xThunderDecode = {
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
             // download url in sibling nodes
             url = this.getUDownUrl(link, referrer);
-        } 
+        } else if (link.getAttribute("nspurl")) {
+            if (!(url = link.getAttribute("downloadurl"))) {
+                if (matches = htmlDocument.defaultView.wrappedJSObject.globallinkdata) {
+                    matches = matches.data.resource.files;
+                    for (var j=0; j<matches.length; j++) {
+                        if (matches[j].id == link.id) {
+                            url = matches[j].downloadurl;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         // In general
         if (!url) {
@@ -128,7 +140,6 @@ var xThunderDecode = {
             } else {
                 url = link.getAttribute("thunderhref") || 
                     link.getAttribute("fg") || link.getAttribute("qhref") || link.getAttribute("ed2k") || 
-                    link.getAttribute("downloadurl") || 
                     link.href || link.name;
             }
         }
