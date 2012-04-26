@@ -19,7 +19,7 @@ var xThunderDecode = {
                       link.getAttribute("nspurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
-                      /^http:\/\/goxiazai\.com\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
+                      /^http:\/\/goxiazai\.(com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
                       /^http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*&flag=1/.test(url) ||
                       link.id == "union_download_thunder" && link.className == "btn_r"
                     )
@@ -62,7 +62,7 @@ var xThunderDecode = {
         } else if (link.href && (matches = link.href.match(/^(http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*)&flag=1/))) {
             // thunder url getting rid of flag
             url = matches[1];
-        } else if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.com\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
+        } else if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
             // thunder url in arguments of href
             cid = matches[1];
             url = this.getDecodedUrl(decodeURIComponent(matches[2]));
@@ -92,12 +92,12 @@ var xThunderDecode = {
                 }
                 
                 if (!url) {
-                    if (/^http:\/\/www\.ffdy\.cc\//i.test(referrer)) {
+                    if (/^http:\/\/www\.ffdy\.cc\/|^http:\/\/www\.kankanba\.com\//i.test(referrer)) {
                         url = "http://thunder.ffdy.cc/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
                     } else if (/^http:\/\/(?:www\.)?7369\.cc\//i.test(referrer)) {
                         url = "http://www.7369.com/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
-                    } else if (/^http:\/\/(?:www\.)?xunbo\.cc\//i.test(referrer)) {
-                        url = "http://bt.xunbo.cc/" + cid + "/" + mc;
+                    } else if (/^http:\/\/www\.2tu\.cc\//i.test(referrer)) {
+                        url = "http://bt.2tu.cc/" + cid + "/" + mc;
                     } 
                 }
             }     

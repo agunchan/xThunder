@@ -14,7 +14,7 @@
 <!ENTITY	pro.udown       "优蛋 (udown://)">
 <!ENTITY	pro.115         "115 (115.com/file)">
 <!ENTITY	remember        "关联普通文件类型">
-<!ENTITY	filterext       "预先以上述扩展名过滤文件">
+<!ENTITY	filterext       "预先以上述扩展名过滤链接">
 <!ENTITY	lbl.downloadAll "下载全部链接">
 <!ENTITY	includeImages   "包含当前页面中的图片源地址">
 <!ENTITY	lbl.showMenu            "显示菜单">
