@@ -229,7 +229,11 @@ var xThunderMain = {
         
         if (gContextMenu.onLink) {
             // Get current link URL
-            url = xThunderDecode.getDecodedNode(gContextMenu.target);
+            var linkNode = gContextMenu.target;
+            if (typeof linkNode.href == "undefined" ) {
+                linkNode = linkNode.parentNode;
+            }
+            url = xThunderDecode.getDecodedNode(linkNode);
         }
         else if (gContextMenu.onImage) {
             // Get current image url
@@ -345,7 +349,11 @@ var xThunderMain = {
         // Set className of nonsupport agents item to agentNonsup
         var url;
         if (gContextMenu.onLink) {
-            url = gContextMenu.target.getAttribute("fg") || gContextMenu.linkURL;
+            var linkNode = gContextMenu.target;
+            if (typeof linkNode.href == "undefined" ) {
+                linkNode = linkNode.parentNode;
+            }
+            url = linkNode.getAttribute("fg") || gContextMenu.linkURL;
         } else if (gContextMenu.onImage) {
             url = gContextMenu.target.src;
         } else {
