@@ -38,7 +38,7 @@ window.addEventListener("load", function() {
             basicBox.collapsed = true;
             normalBox.collapsed = false;
 
-            // Workaround for bug 371508
+            // Work around BUG 371508
             try {
                 window.sizeToContent();
             }
@@ -64,7 +64,7 @@ window.addEventListener("load", function() {
         de.removeAttribute("onblur");
         de.removeAttribute("onfocus");
         de.cancelDialog();
-    } // end download function
+    } // End function
 
     if (!xThunderPref.getValue("downInSaveFile")) {
         $("xThunderDown").setAttribute("hidden", true);
@@ -90,7 +90,7 @@ window.addEventListener("load", function() {
 
     var mode = $("mode");
 
-    // same width as open radio
+    // Same width as open radio
     var openRadio = $("open");
     if (openRadio) {
         var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
@@ -103,7 +103,7 @@ window.addEventListener("load", function() {
         mode.selectedItem = xThunderRadio;
     } 
 	
-    // mouse middle click and right click on accept button
+    // Mouse middle click and right click on accept button
     var acceptBtn = document.documentElement.getButton("accept");
     if (acceptBtn) {
         acceptBtn.addEventListener("click", function(event) {
@@ -117,7 +117,7 @@ window.addEventListener("load", function() {
         }, false);
     }
 
-    // mouse left click on accept button
+    // Mouse left click on accept button
     addEventListener("dialogaccept", function() {
         if (mode.selectedItem == xThunderRadio) {
             if (!extExists) {
@@ -130,6 +130,6 @@ window.addEventListener("load", function() {
                 xThunderPref.setValue("supportExt", supportExt.replace(ext, ""));
             }
         }
-    }, false); // dialogaccept
+    }, false); // Dialogaccept
     
-}, false); // load
+}, false); // End load function

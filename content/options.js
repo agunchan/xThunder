@@ -5,7 +5,7 @@ var xThunderOptions = {
     
 
     loadPrefs : function() {
-        //Get supported protocals and file extensions
+        // Get supported protocals and file extensions
         var rem = xThunderPref.getValue("remember");
         document.getElementById("remember").checked = rem;
         for (var i=0; i<xThunderPref.pros.length; ++i) {
@@ -17,12 +17,12 @@ var xThunderOptions = {
             document.getElementById(supPros[j]).checked = true;
         }
 
-        //Get interface
+        // Get interface
         document.getElementById("downSubMenu").disabled = !xThunderPref.getValue("downInCxtMenu");
         document.getElementById("downOffLineAnyway").disabled = !xThunderPref.getValue("downOffLineInCxtMenu");
         document.getElementById("downListInSaveFile").disabled = !xThunderPref.getValue("downInSaveFile");
         
-        //Get agents, click added and status icon
+        // Get agents, click added and status icon
         this.getAgents();
         this.oriStatusIcon = xThunderPref.getValue("showStatusIcon");
         this.oriClickAdded = (supstr != "" || rem && xThunderPref.getValue("supportExt") != "");
@@ -30,10 +30,10 @@ var xThunderOptions = {
 
     savePrefs : function() {
         try {
-            //Writes all changes in pre pane to preferences
+            // Writes all changes in pre pane to preferences
             document.getElementById("prepaneMain").writePreferences();
 
-            //Set supported protocals and file extensions
+            // Set supported protocals and file extensions
             var supstr = "";
             for (var i=0; i<xThunderPref.pros.length; ++i) {
                 if (document.getElementById(xThunderPref.pros[i]).checked) {
@@ -44,7 +44,7 @@ var xThunderOptions = {
             var rem = document.getElementById("remember").checked ? 1 : 0;
             xThunderPref.setValue("remember", rem);
 
-            //Set agents, click added and status icon
+            // Set agents, click added and status icon
             this.setAgents();
             var clickAdd = (supstr != "" || rem && xThunderPref.getValue("supportExt") != "");
             var statusIcon = xThunderPref.getValue("showStatusIcon");
@@ -65,7 +65,7 @@ var xThunderOptions = {
                 }
             }
         } catch(ex) {
-            // no op
+            //  No operation
         }
     },
     
@@ -85,12 +85,12 @@ var xThunderOptions = {
 
             this.loadPrefs();
         } catch (ex) {
-            // no op
+            //  No operation
         }
     },
 
     getAgents : function() {   
-        //create agent list
+        // Create agent list
         var agentListBox = this.agentListBox = document.getElementById("agentListBox");
         while(agentListBox.lastChild) {
             agentListBox.removeChild(agentListBox.lastChild);
@@ -110,7 +110,7 @@ var xThunderOptions = {
             });
         }        
         if (cusAgentList.length > 1) {
-            //work around BUG 250123 - listitem.value == undefined if listitem never visible
+            // Work around BUG 250123 - listitem.value == undefined if listitem never visible
             var visibleIndex = this.agentListBox.itemCount - 1;
             var visibleRows = this.agentListBox.getNumberOfVisibleRows();
             while(visibleIndex >= visibleRows) {
@@ -150,7 +150,7 @@ var xThunderOptions = {
             }
         }
         if (!defAgent) {
-            //select first agent when all agents are disabled
+            // Select first agent when all agents are disabled
             defAgent = listitems[0].value;
             enableAgents = defAgent + ",";
             disableAgents = disableAgents.replace(defAgent + "|0,", "");
@@ -223,7 +223,7 @@ var xThunderOptions = {
         var selIndex = this.agentListBox.selectedIndex;
         var selAgentItem = this.agentListBox.removeItemAt(selIndex);
         var nextItem = this.agentListBox.getItemAtIndex(selIndex == this.agentListBox.itemCount ? selIndex-1 : selIndex);
-        this.agentListBox.ensureElementIsVisible(nextItem); //work around BUG 250123 
+        this.agentListBox.ensureElementIsVisible(nextItem); // Work around BUG 250123 
         this.agentListBox.selectedItem = nextItem;
         this.agentListBox.focus();
         var cusAgentStr = xThunderPref.getUnicodeValue("agent.custom");
@@ -231,7 +231,7 @@ var xThunderOptions = {
         var cusAgentIdx = selAgentItem.getAttribute("value").split("custom")[1];
         var lastAgentIdx = cusAgentList.length - 2;
         
-        //swap with last agent
+        // Swap with last agent
         if (cusAgentIdx != lastAgentIdx) {
             cusAgentList[cusAgentIdx] = cusAgentList[lastAgentIdx];
             xThunderPref.setUnicodeValue("agent.custom"+cusAgentIdx+".exe", xThunderPref.getUnicodeValue("agent.custom"+lastAgentIdx+".exe"));
@@ -244,7 +244,7 @@ var xThunderOptions = {
                 }
             }
         }
-        //remove last agent
+        // Remove last agent
         cusAgentList.splice(lastAgentIdx, 1);
         xThunderPref.setUnicodeValue("agent.custom", cusAgentList.join(","));
         xThunderPref.pref.clearUserPref("agent.custom"+lastAgentIdx+".exe");
@@ -269,10 +269,10 @@ var xThunderOptions = {
         var cusAgentIdx = 0;
         if (this.editingAgentItem) {
             cusAgentIdx = this.editingAgentItem.value.split("custom")[1];
-            //set agentListItem
+            // Set agentListItem
             this.editingAgentItem.label = txtAgentName.value;
             this.agentListBox.focus();
-            //set pref
+            // Set pref
             var cusAgentList = cusAgentStr.split(",");
             cusAgentList[cusAgentIdx] = txtAgentName.value;
             xThunderPref.setUnicodeValue("agent.custom", cusAgentList.join(","));
@@ -280,7 +280,7 @@ var xThunderOptions = {
             xThunderPref.setUnicodeValue("agent.custom" + cusAgentIdx + ".args", txtAgentArgs.value);
         } else {
             cusAgentIdx = cusAgentStr.split(",").length - 1;
-            //add to agentListBox
+            // Add to agentListBox
             var listitems = this.agentListBox.childNodes;
             var i;
             for (i=listitems.length-1; i>=0; --i) {
@@ -291,10 +291,10 @@ var xThunderOptions = {
             var newItem = this.agentListBox.insertItemAt(i+1, txtAgentName.value, "custom"+cusAgentIdx);
             newItem.setAttribute("type", "checkbox");
             newItem.setAttribute("checked", true);
-            this.agentListBox.ensureElementIsVisible(newItem); //work around BUG 250123 
+            this.agentListBox.ensureElementIsVisible(newItem); // Work around BUG 250123 
             this.agentListBox.selectedItem = newItem;
             this.agentListBox.focus();
-            //add pref
+            // Add pref
             xThunderPref.setUnicodeValue("agent.custom", cusAgentStr + txtAgentName.value + ",");
             xThunderPref.setUnicodeValue("agent.custom" + cusAgentIdx + ".exe", txtAgentExe.value);
             xThunderPref.setUnicodeValue("agent.custom" + cusAgentIdx + ".args", txtAgentArgs.value);

@@ -80,10 +80,10 @@ var xThunderPref = {
         var agentList = showAgents.split(",");
         var agentLen = agentList.length-1;
         var cusAgentList = this.getValue("agent.custom").split(",");
-        cusAgentList.pop();  //last element is an empty string
+        cusAgentList.pop();  // Last element is an empty string
 
         if (agentLen < this.agents.length + cusAgentList.length) {
-            // for v1.0.2 before user config
+            // For v1.0.2 before user config
             for (var i=0; i<this.agents.length; ++i) {
                 if (agentList.indexOf(this.agents[i]) == -1 && agentList.indexOf(this.agents[i]+"|0") == -1) {
                     showAgents = showAgents + this.agents[i] + "|0,";
@@ -92,7 +92,7 @@ var xThunderPref = {
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
         } else if(agentLen > this.agents.length  + cusAgentList.length) {
-            // for v1.1.1 after user config
+            // For v1.1.1 after user config
             for (var j=0; j<agentLen; ++j) {
                 if (this.agents.indexOf(agentList[j].split("|")[0]) == -1) {
                     showAgents = showAgents.replace(agentList[j] + ",", "");
@@ -103,13 +103,13 @@ var xThunderPref = {
         }
         
         if (defAgent != agentList[0]) {
-            // default agent must be first
+            // Default agent must be first
             showAgents = defAgent + "," + showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
         }
         
-        agentList.pop();    //last element is an empty string
+        agentList.pop();    // Last element is an empty string
         return agentList;
     },
 	
@@ -162,7 +162,7 @@ var xThunderPref = {
             if (matches && supExt.indexOf(matches[1] + ";") != -1) {
                 download = true;
             } else if (subUrls.length > 1 && matches && /\.(?:jsp|php)/i.test(matches[1])) {
-                //the parameter of jsp|php url may contain supporting ext
+                // The parameter of jsp|php url may contain supporting ext
                 var subParams = subUrls[1].split("&");
                 for (var j=0; j<subParams.length; ++j) {
                     matches = subParams[j].match(/(\.\w+)$/i);
