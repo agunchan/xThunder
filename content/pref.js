@@ -4,10 +4,11 @@ var xThunderPref = {
     proSupReg : /^(?:thunder|flashget|qqdl|fs2you|ed2k|magnet):/i,
     invalidReg : /^(?:javascript|data|mailto):/i,
     pros : ["thunder", "flashget", "qqdl", "fs2you", "ed2k", "magnet", "udown", "115"],
-    agents: ["Thunder", "ToolbarThunder", "QQDownload", "FlashGet3", "BitComet", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"],
-    agentsNonsup : {"ed2k"   : ["BitComet", "IDM", "DTA", "FlashGetMini", "Orbit", "FDM", "UDown"],
-                    "magnet" : ["ToolbarThunder", "IDM", "DTA", "FlashGetMini", "ThunderLite", "Orbit", "FDM", "UDown"],
-                    "flashget" : ["Thunder", "ToolbarThunder", "QQDownload", "BitComet", "IDM", "DTA", "ThunderLite", "Orbit", "FDM", "UDown", "NetTransport"]},
+    agents: ["Thunder", "QQDownload", "DTA", "IDM", "ThunderLite", "ToolbarThunder", "FlashGet3", "FlashGetMini", "BitComet", "FDM", "NetTransport", "Orbit", "UDown"],
+    agentsNonsup : {"ed2k"   : ["DTA", "IDM", "FlashGetMini", "BitComet", "FDM", "Orbit", "UDown"],
+                    "magnet" : ["DTA", "IDM", "ThunderLite", "ToolbarThunder", "FlashGetMini", "FDM", "Orbit", "UDown"],
+                    "flashget" : ["Thunder", "QQDownload", "DTA", "IDM", "ThunderLite", "ToolbarThunder", "BitComet", "FDM", "NetTransport", "Orbit", "UDown",
+                                    "ThunderVOD", "ThunderOffLine", "QQDownloadOffLine", "ThunderVODOffLine"]},
 
     // Only show available agents in popup menu
     appendAgentList : function(menupop, idpre, func, isradio, addOffLine){
@@ -48,7 +49,7 @@ var xThunderPref = {
         }
     },
     
-    // Get enabled agents, eg. [Thunder, DTA, ThunderOffLine]
+    // Get enabled agents, e.g. [Thunder, DTA, ThunderOffLine]
     getEnabledAgentList : function(addOffLine) {
         var agentList = this.getFixedAgentList();
         var enableAgentList = [];

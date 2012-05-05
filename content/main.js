@@ -188,7 +188,7 @@ var xThunderMain = {
     },
     
     // Firefox may not close context menu and trigger wrong item
-    // ie. Inspect element of Firebug
+    // e.g. Inspect element of Firebug
     _closeCtxMenu : function(event) {
         this.ctxMenu.hidePopup();
         if (event && event.button == 2) {
@@ -216,7 +216,7 @@ var xThunderMain = {
                 str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
                 pasteText = str.data.substring(0, strLength.value / 2);
             }
-        } catch (ex) { }
+        } catch (ex) {}
         
         return pasteText.split("\n");
     },
