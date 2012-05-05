@@ -71,33 +71,33 @@ var xThunderMain = {
         var url = link.href || link.name;
         var download = false;
 
-        //Ctrl + Click and Ctrl + Alt + Click
+        // Ctrl + Click and Ctrl + Alt + Click
         if (ev.ctrlKey) {            
             try {
                 var decodedUrl;
                 if (ev.altKey) {
                     if (xThunderPref.getValue("ctrlAltDecode")) {
-                        //Copy decode url to clipboard 
+                        // Copy decode url to clipboard 
                         decodedUrl = xThunderDecode.getDecodedNode(link);
                         link.setAttribute("href", decodedUrl);
                         var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
                             getService(Components.interfaces.nsIClipboardHelper);
                         gClipboardHelper.copyString(decodedUrl);
                     } else {
-                        //do Firefox default behavior
+                        // Do Firefox default behavior
                         return true;
                     }
                 } else {
                     if (remExt == 1) {
-                        //0:never down, 1: auto down, -1: no down this time
+                        // 0:never down, 1: auto down, -1: no down this time
                         xThunderPref.setValue("remember", -1); 
                     }
                         
                     if (xThunderPref.getValue("ctrlNoMonitor") && (decodedUrl = xThunderDecode.getDecodedNode(link)) && decodedUrl != url) {
-                        //open decoded link in current tab
+                        // Open decoded link in current tab
                         document.commandDispatcher.focusedWindow.location.href = decodedUrl;
                     } else {
-                        //open in backgrond new tab - Firefox default behavior
+                        // Open in backgrond new tab - Firefox default behavior
                         return true;
                     }
                 }
@@ -112,12 +112,12 @@ var xThunderMain = {
             }
         }
 
-        //click support for associated file
+        // Click support for associated file
         if (remExt) {
             download = xThunderPref.isExtSupURL(url);
         }
 
-        //click support for protocols
+        // Click support for protocols
         if (!download) {
             var supstr = xThunderPref.getValue("supportClick");
             download = supstr != "" && xThunderDecode.isProSupNode(link, url, supstr.split(","));
@@ -151,7 +151,7 @@ var xThunderMain = {
         var compact = xThunderPref.getValue("compactMenu");
 
         if (!downHidden) {
-            //Show xThunder link in context menu if needed
+            // Show xThunder link in context menu if needed
             if (gContextMenu.onLink || gContextMenu.onImage) {
                 downHidden = false;
             } else {
@@ -160,7 +160,7 @@ var xThunderMain = {
             }
         }
         if (!downOffLineHidden) {
-            //Show xThunder offLine anyway or if needed
+            // Show xThunder offLine anyway or if needed
             downOffLineHidden = !xThunderPref.getValue("downOffLineAnyway") && downHidden;
         }
 
@@ -169,7 +169,7 @@ var xThunderMain = {
         var itemHiddens = [downHidden, downOffLineHidden, downAllHidden];
         var itemVisibleCount = 0;
         for (var i=0; i<items.length; i++) {
-            //compact all items to sub menu
+            // Compact all items to sub menu
             if (downCompactPopup.childNodes.length < items.length) {
                 var cloneSubItem = items[i].cloneNode(true);
                 cloneSubItem.id += "Sub";
@@ -186,10 +186,10 @@ var xThunderMain = {
         downloadLinkItem.hidden = compact || (downHidden || downSubMenuShown);
         sepItem.hidden = (itemVisibleCount == 0);
     },
-        
+    
+    // Firefox may not close context menu and trigger wrong item
+    // ie. Inspect element of Firebug
     _closeCtxMenu : function(event) {
-        // Firefox may not close context menu
-        // and trigger wrong item,eg. Inspect element of Firebug
         this.ctxMenu.hidePopup();
         if (event && event.button == 2) {
             event.preventDefault();

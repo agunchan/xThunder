@@ -25,13 +25,13 @@ xThunderComponent.prototype = {
         }
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
-        } else if (agentName == "Thunder" && (this.detectOS() == "LINUX" || this.detectOS() == "DARWIN") && this.getThunderPath()) {
+        } else if (agentName == "Thunder" && this.getUnixThunderPath()) {
             nativeArgs[0] = urls[0];
-            result = this.runNative(this.getThunderPath(), nativeArgs);
+            result = this.runNative(this.getUnixThunderPath(), nativeArgs);
         } else if(agentName.indexOf("custom") != -1) {
             if (/(wget|curl|aria2c)(\.exe)$/i.test(exePath)) {
                 if (/wget/i.test(exePath) && totalTask > 1) {
-                    //be smart to use input file
+                    // Be smart to use input file
                     args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, "--input-file=[UFILE]");
                 }
                 result = this.runScript(totalTask, referrer, urls, cookies, descs, exePath, args);
@@ -57,12 +57,17 @@ xThunderComponent.prototype = {
         return this.osString;
     },
     
-    getThunderPath : function() {
+    getUnixThunderPath : function() {
+        if (this.detectOS() == "WINNT") {
+            // Use COM instead of this command line program
+            return "";
+        }
+        
         if (!this.thunderPath) {
             var file,path;
             file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
-            path = this.detectOS() == "LINUX" ? "/usr/bin/wine-thunder" 
-                                              : "/Applications/Thunder.app/Contents/MacOS/Thunder";
+            path = this.detectOS() == "DARWIN" ? "/Applications/Thunder.app/Contents/MacOS/Thunder"
+                                              : "/usr/bin/wine-thunder";
             file.initWithPath(path);
             if (file.exists()) {
                 this.thunderPath = path;
@@ -117,14 +122,14 @@ xThunderComponent.prototype = {
         
     replaceHolder : function(arg, referrer, urls, cookies, descs, escape) {  
         if (arg.match(/\[CBURL\]/i)) {
-            // url from clipboard
+            // URL from clipboard
             var gClipboardHelper = Cc["@mozilla.org/widget/clipboardhelper;1"].getService(Ci.nsIClipboardHelper);
             gClipboardHelper.copyString(urls[0]);
             arg = arg.replace(/\[CBURL\]/ig, "");
         } 
 
         if (arg.match(/\[UFILE\]/i)) {
-            // url from files
+            // URL from files
             var urlFilePath = this.createTempFile(urls.join("\n"));
             arg = arg.replace(/\[UFILE\]/ig, escape ? this.escapePath(urlFilePath) : urlFilePath);
         }
@@ -196,7 +201,7 @@ xThunderComponent.prototype = {
     },
     
     COMDownload : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
-        //Common Object Model download in WINNT
+        // Common Object Model download in WINNT
         if (!this.COMExeFile) {
             this.COMExeFile = this.getChromeFile(this.COM_PATH);
         }
@@ -212,10 +217,10 @@ xThunderComponent.prototype = {
         args.push("-a", agentName);
         if (totalTask == 1 && hasRunW && this.COMExeFile.path.length + urls[0].length + referrer.length + 
             descs[0].length + cookies[0].length + cids[0].length < this.CMD_MAX_LENTH) {
-            //empty string arguments ignored, command-line string limitation of Win2000 is 2047(XP 8191)
+            // Empty string arguments ignored, command-line string limitation of Win2000 is 2047(XP 8191)
             args.push("-d", urls[0], referrer || " ", descs[0] || " ", cookies[0] || " ", cids[0] || " ");
         } else {
-            //before Firefox 4 wstring can only be passed by file
+            // Before Firefox 4 wstring can only be passed by file
             args.push("-f", this.createTempFile(this.getJobString(totalTask, referrer, urls, cookies, descs, cids)));
         }
         return proc[hasRunW ? "runw" : "run"](false, args, args.length);
@@ -226,10 +231,10 @@ xThunderComponent.prototype = {
         var mainWindow = wm.getMostRecentWindow("navigator:browser");
         if (!this.DTA) {
             if (mainWindow.DTA) {
-                //dta 2.0.x
+                // DTA 2.0.x
                 this.DTA = mainWindow.DTA;
             } else {
-                //dta 3.0+
+                // DTA 3.0+
                 try {
                     this.DTA = {};
                     Components.utils.import("resource://dta/api.jsm", this.DTA);
@@ -248,7 +253,7 @@ xThunderComponent.prototype = {
             try {
                 DTA.saveSingleLink(mainWindow, oneClick, urls[0], refer, descs[0]);
             } catch(e) {
-                //use dta dialog to set download directory if oneClick failed
+                // Use dta dialog to set download directory if oneClick failed
                 if (oneClick)
                     DTA.saveSingleLink(mainWindow, false, urls[0], refer, descs[0]);
                 else

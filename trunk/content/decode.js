@@ -19,7 +19,7 @@ var xThunderDecode = {
                       link.getAttribute("nspurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
-                      /^http:\/\/goxiazai\.(com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
+                      /^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
                       /^http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*&flag=1/.test(url) ||
                       link.id == "union_download_thunder" && link.className == "btn_r"
                     )
@@ -55,15 +55,15 @@ var xThunderDecode = {
         // In special
         var matches;
         if (link.id == "union_download_thunder" && link.className == "btn_r") {
-            // thunder url in hidden element
+            // Thunder url in hidden element
             if (matches = htmlDocument.querySelector("a[thunderhref]")) {
                 url = matches.getAttribute("thunderhref");
             }
         } else if (link.href && (matches = link.href.match(/^(http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*)&flag=1/))) {
-            // thunder url getting rid of flag
+            // Thunder url getting rid of flag
             url = matches[1];
         } else if (link.href && (matches = link.href.match(/^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=(.*)&f=(thunder.+)/i))) {
-            // thunder url in arguments of href
+            // Thunder url in arguments of href
             cid = matches[1];
             url = this.getDecodedUrl(decodeURIComponent(matches[2]));
             if (cid) {
@@ -75,7 +75,7 @@ var xThunderDecode = {
                 url = matches.href;
             }
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
-            // thunder url in oncontextmenu attribute
+            // Thunder url in oncontextmenu attribute
             var input = link.parentNode;
             var params,mc;
             if ((input = input.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) {    
@@ -102,19 +102,19 @@ var xThunderDecode = {
                 }
             }     
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("onclick")) && matches.indexOf("thunder://") != -1) {
-            // thunder url in onclick attribute
+            // Thunder url in onclick attribute
             if (matches = matches.match(/'(thunder:\/\/.*?)'/)) {
                 url = matches[1];
             }
         } else if (!link.getAttribute("fg") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("Flashget_SetHref") != -1) {
-            // flashget url in oncontextmenu attribute
+            // Flashget url in oncontextmenu attribute
             if (matches = matches.match(/Flashget_SetHref_js\(this,(?:'(.+)','.*')|(?:'(flashget:.*)')\)/)) {
                 url = matches[1] || matches[2];
             } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
                 url = matches;
             }
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
-            // download url in sibling nodes
+            // Download url in sibling nodes
             url = this.getUDownUrl(link, referrer);
         } else if (link.getAttribute("nspurl")) {
             if (!(url = link.getAttribute("downloadurl"))) {
@@ -156,18 +156,18 @@ var xThunderDecode = {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, "")).
                     replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
                 if (/^flashget:\/\//i.test(oriUrl)) {
-                    // use oriUrl when it is actually flashgetx://|mhts|, or decode once more
+                    // Use oriUrl when it is actually flashgetx://|mhts|, or decode once more
                     url = /http:\/\/.*\/Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*/.test(url) ? oriUrl : this.getDecodedUrl(url);
                 } else if(/^ftp:\/\//i.test(url)) {
-                    // decode username,dir when url is like ftp://%E7%BA%A2%E6%97@wt4.hltm.cc:3101/E5%BD%B1%E5.rmvb
+                    // Decode username,dir when url is like ftp://%E7%BA%A2%E6%97@wt4.hltm.cc:3101/E5%BD%B1%E5.rmvb
                     url = decodeURIComponent(url);
                 } else if (url.indexOf(".rayfile.com") != -1 && url.indexOf("http://") == -1) {
-                    // cachefile*.rayfile.com
+                    // Format of cachefile*.rayfile.com
                     url = "http://" + url;
                 }
             } 
         } catch (ex) {
-            //no operation
+            // No operation
         }
 
         return url;
@@ -177,11 +177,11 @@ var xThunderDecode = {
     decode64 : function(input) {
         input = window.atob(input);
         try {
-            input = decodeURIComponent(escape(input));  //utf8 decode
+            input = decodeURIComponent(escape(input));  // UTF8 decode
         } catch (e) {
             var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
                 createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-            converter.charset = "GBK";                  //gbk decode
+            converter.charset = "GBK";                  // GBK decode
             input = converter.ConvertToUnicode(input);
         }
         return input;

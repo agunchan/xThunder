@@ -50,11 +50,11 @@ var xThunder = {
     
     addTask : function(url, des) {
         if (url == "" || xThunderPref.invalidReg.test(url)) {
-            //invalid url
+            // Invalid url
             url = this.referrer;
         }
         
-        //nonsupport or filtered url
+        // Nonsupport or filtered url
         var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
         if (agentsNonsup.indexOf(this.agentName) != -1 || 
             agentsNonsup.length == 0 && this.filerExtStr && !xThunderPref.isExtSupURL(url, this.filerExtStr)) {
@@ -86,7 +86,7 @@ var xThunder = {
             var offIdx = offLineAgents.indexOf(this.agentName);
             if ( (offIdx == 0 && xThunderPref.getValue("qqOffLineWeb") || offIdx > 0) && 
                 this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
-                //OffLine download in web page
+                // OffLine download in web page
                 var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
                 var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
                 if (offIdx == 2 && !xThunderPref.getValue("vodMember")) {
@@ -96,7 +96,7 @@ var xThunder = {
                         ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
                 }  
             } else {
-                //Normal download
+                // Normal download
                 var result,exePath,args;
                 if (this.xThunderComponent == null) {
                     this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
@@ -129,7 +129,7 @@ var xThunder = {
                         break;
                 }
 
-                //clear array to free memory
+                // Clear array to free memory
                 this.urls.length = this.cookies.length = this.descs.length = this.cids.length = this.totalTask = 0;
             }
         } catch(ex) {
