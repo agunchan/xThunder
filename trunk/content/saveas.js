@@ -41,8 +41,7 @@ window.addEventListener("load", function() {
             // Work around BUG 371508
             try {
                 window.sizeToContent();
-            }
-            catch (ex) {}	
+            } catch (ex) {}	
         }
     }
 

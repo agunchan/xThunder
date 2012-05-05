@@ -166,9 +166,7 @@ var xThunderDecode = {
                     url = "http://" + url;
                 }
             } 
-        } catch (ex) {
-            // No operation
-        }
+        } catch (ex) {}
 
         return url;
     },
@@ -178,7 +176,7 @@ var xThunderDecode = {
         input = window.atob(input);
         try {
             input = decodeURIComponent(escape(input));  // UTF8 decode
-        } catch (e) {
+        } catch (ex) {
             var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
                 createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
             converter.charset = "GBK";                  // GBK decode

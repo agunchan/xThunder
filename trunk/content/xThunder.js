@@ -44,7 +44,7 @@ var xThunder = {
             this.agentName = xThunderPref.getValue("agentName");
             this.offLine = false;
         }
-        this.filerExtStr = (totalTask > 1 && xThunderPref.getValue("filterExt")) 
+        this.filerExtStr = (this.totalTask > 1 && xThunderPref.getValue("filterExt")) 
             ? xThunderPref.getValue("supportExt") : "";
     },
     
@@ -204,8 +204,7 @@ var xThunder = {
             } else {
                 fileName = href.split(":")[0];
             }
-        }
-        catch(ex) {}
+        } catch(ex) {}
 
         return fileName;
     },

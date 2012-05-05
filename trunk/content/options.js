@@ -64,9 +64,7 @@ var xThunderOptions = {
                     }
                 }
             }
-        } catch(ex) {
-            //  No operation
-        }
+        } catch(ex) {}
     },
     
     restoreDefPrefs : function() {   
@@ -84,9 +82,7 @@ var xThunderOptions = {
             }
 
             this.loadPrefs();
-        } catch (ex) {
-            //  No operation
-        }
+        } catch (ex) {}
     },
 
     getAgents : function() {   
