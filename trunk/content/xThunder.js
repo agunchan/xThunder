@@ -100,20 +100,8 @@ var xThunder = {
         
         if (this.urls.length == this.totalTask && this.totalTask > 0 ) {
             try {
-                var browser;
-                var offLineAgents = ["QQDownload", "Thunder", "ThunderVOD"];
-                var offIdx = offLineAgents.indexOf(this.agentName);
-                if ( (offIdx == 0 && xThunderPref.getValue("qqOffLineWeb") || offIdx > 0) && 
-                    this.offLine && this.totalTask == 1 && (browser = this.getGBrowser())) {
-                    // OffLine download in web page
-                    var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
-                    var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
-                    if (offIdx == 2 && !xThunderPref.getValue("vodMember")) {
-                        browser.loadOneTab("http://vod.oabt.org/index.php?xunlei", null, "utf-8", this.getVodPostData(this.urls[0]), false); 
-                    } else {
-                        browser.selectedTab = browser.addTab(this.urls[0].indexOf(offUrls[offIdx]) != -1 
-                            ? this.urls[0] : offUrls[offIdx] + params[offIdx] + this.urls[0]);  
-                    }  
+                if (this.offLine && (this.agentName != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) {
+                    result = this.callOffLine(this.agentName, this.urls[0]);
                 } else {
                     // Normal download
                     var exePath,args;
@@ -166,27 +154,54 @@ var xThunder = {
         return result == 0;
     },
     
-    callCandidate : function() {
+    callOffLine : function(agentName, url) {
         var result = 0;
-        if (this.xThunderComponent == null) {
-            this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
+        
+        var browser = this.getGBrowser();
+        var offLineAgents = ["QQDownload", "Thunder", "ThunderVOD"];
+        var offIdx = offLineAgents.indexOf(agentName);
+        if (browser) {
+            var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
+            var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
+            if (offIdx == 2 && !xThunderPref.getValue("vodMember")) {
+                browser.loadOneTab("http://vod.oabt.org/index.php?xunlei", null, "utf-8", this.getVodPostData(url), false); 
+            } else {
+                browser.selectedTab = browser.addTab(url.indexOf(offUrls[offIdx]) != -1 ? url : offUrls[offIdx] + params[offIdx] + url);  
+            }  
+        } else {
+            result = -1;
         }
         
+        return result;
+    },
+    
+    callCandidate : function() {
+        var result = 0;
+        
         for (var i in this.candidate.agents) {
+            var agent = this.candidate.agents[i].replace("OffLine", "");
             var canUrls = this.candidate.urlArrays[i];
             if (canUrls.length > 0) {
-                var canCookies = [];
-                var canDecs = [];
-                var canCids = [];
-                var args = [];
-                args.push("-silent");
-                for (var j in this.candidate.urlArrays[i]) {
-                    canCookies.push(this.ARG_DEF_STR);
-                    canDecs.push(this.getFileName(this.candidate.urlArrays[i][j]));
-                    canCids.push(this.ARG_DEF_STR);
+                if (agent != this.candidate.agents[i] && (agent != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) {
+                    result += this.callOffLine(agent, canUrls[0]);
+                } else {   
+                    if (this.xThunderComponent == null) {
+                        this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
+                    }
+                    var canCookies = [];
+                    var canDecs = [];
+                    var canCids = [];
+                    var args = [];
+                    args.push("-silent");
+                    for (var j in canUrls) {
+                        canCookies.push(this.ARG_DEF_STR);
+                        canDecs.push(this.getFileName(canUrls[j]));
+                        canCids.push(this.getCid(canUrls[j]));
+                    }
+                    result += this.xThunderComponent.CallAgent(agent, canUrls.length, 
+                        this.referrer, canUrls, canCookies, canDecs, canCids, null, args); 
                 }
-                result += this.xThunderComponent.CallAgent(this.candidate.agents[i], canUrls.length, 
-                    this.referrer, canUrls, canCookies, canDecs, canCids, null, args); 
+                
                 this.candidate.taskCount -= canUrls.length;
                 canUrls.length = 0;
             }

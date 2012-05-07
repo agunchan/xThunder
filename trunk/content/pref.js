@@ -132,17 +132,14 @@ var xThunderPref = {
     
     // Get sequenced support agents, e.g. [Thunder, DTA, QQDownload, FlashGet3, ...]
     getCandidateAgents : function(agentName) {
-        var showAgents = this.getValue("showAgents");
-        var agentList = showAgents.split(",");
-        var canAgents = [];
-        agentList.pop();    // Last element is an empty string
-        for (var i in agentList) {
-            if (agentList[i] != agentName && agentList[i].indexOf("|0") == -1 && agentList[i].indexOf("custom") == -1) {
-                canAgents.push(agentList[i]);
+        var agentList = this.getEnabledAgentList(true);
+        for (var i=agentList.length-1; i>=0; --i) {
+            if (agentList[i] == agentName || agentList[i].indexOf("custom") != -1) {
+                agentList.splice(i, 1);
             }
         }
         
-        return canAgents;
+        return agentList;
     },
     
     getAgentsNonsupURL : function(trimmedUrl) {
