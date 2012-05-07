@@ -55,3 +55,4 @@
 <!ENTITY	lbl.monitor     "Monitor Link">
 <!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background tab">
 <!ENTITY	ctrlAltDecode   "Ctrl+Alt+Click = Copy decoded link url to clipboard">
+<!ENTITY	useCandidate    "Try candidate downloaders when url is unsupported">

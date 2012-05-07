@@ -55,3 +55,4 @@
 <!ENTITY	lbl.monitor		"监视链接">
 <!ENTITY	ctrlNoMonitor	"Ctrl+左键 = 后台标签页打开解码的链接">
 <!ENTITY	ctrlAltDecode	"Ctrl+Alt+左键 = 复制解码后的链接地址到剪贴板">
+<!ENTITY	useCandidate    "当无法下载链接时尝试调用其它候选下载器">

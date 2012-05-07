@@ -8,7 +8,7 @@ var xThunderPref = {
     agentsNonsup : {"ed2k"   : ["DTA", "IDM", "FlashGetMini", "BitComet", "FDM", "Orbit", "UDown"],
                     "magnet" : ["DTA", "IDM", "ThunderLite", "ToolbarThunder", "FlashGetMini", "FDM", "Orbit", "UDown"],
                     "flashget" : ["Thunder", "QQDownload", "DTA", "IDM", "ThunderLite", "ToolbarThunder", "BitComet", "FDM", "NetTransport", "Orbit", "UDown",
-                                    "ThunderVOD", "ThunderOffLine", "QQDownloadOffLine", "ThunderVODOffLine"]},
+                                    "ThunderVOD", "ThunderOffLine", "QQDownloadOffLine", "ThunderVODOffLine"]},    
 
     // Only show available agents in popup menu
     appendAgentList : function(menupop, idpre, func, isradio, addOffLine){
@@ -73,8 +73,8 @@ var xThunderPref = {
         }
         return enableAgentList;
     },
-    
-    // Get all agents, eg. [Thunder, DTA, QQDownload|0, FlashGet3|0, ...]
+
+    // Get all agents, e.g. [Thunder, DTA, custom0, QQDownload|0, FlashGet3|0, ...]
     getFixedAgentList : function() {
         var showAgents = this.getValue("showAgents");
         var defAgent = this.getValue("agentName");
@@ -129,7 +129,22 @@ var xThunderPref = {
         // Use default agent otherwise
         return this.getValue("agentName");
     },
-
+    
+    // Get sequenced support agents, e.g. [Thunder, DTA, QQDownload, FlashGet3, ...]
+    getCandidateAgents : function(agentName) {
+        var showAgents = this.getValue("showAgents");
+        var agentList = showAgents.split(",");
+        var canAgents = [];
+        agentList.pop();    // Last element is an empty string
+        for (var i in agentList) {
+            if (agentList[i] != agentName && agentList[i].indexOf("|0") == -1 && agentList[i].indexOf("custom") == -1) {
+                canAgents.push(agentList[i]);
+            }
+        }
+        
+        return canAgents;
+    },
+    
     getAgentsNonsupURL : function(trimmedUrl) {
         if(!trimmedUrl) {
             return this.agents;

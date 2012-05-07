@@ -4,7 +4,8 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // Call external downloader by COM
-// Version : 1.2.0
+// Version : 1.3.0
+// Release : May 7, 2012
 // Creator : agunchan
 // License : MPL 1.1
 //
@@ -13,7 +14,7 @@
 #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 #endif
 
-enum callError { ARG_ERROR = -100, COM_ERROR, INVOKE_ERROR, JOB_ERROR};
+enum callError { ARG_ERROR = -100, COM_ERROR, INVOKE_ERROR, JOB_ERROR, DM_NONSUPPORT};
 #define MB_TITLE L"xThunder"
 #define BUF_SIZE 16384
 #define SPACE_ASCII 32
@@ -93,12 +94,13 @@ int main(int argc, char* argv[])
 		return ARG_ERROR;
 	}
 
+	int retVal = 0;
 	char * agentName = NULL;
 	char * jobFilePath = NULL;
 	int count = 1;
 	int sleepSec = 15;
 	DownloadInfo downInfo;
-	int retVal = 0;
+	bool silent = false;
 
 	int i = 1;
 	while(i<argc)
@@ -127,43 +129,54 @@ int main(int argc, char* argv[])
 			{
 				return ARG_ERROR;
 			} 
+		} 
+		else if (!strcmp("-silent", argv[i]))
+		{
+			silent = true;
 		}
 
 		++i;
 	}
 
-	DMSupportCOM * dmAgent = NULL;
-	try
+	DMSupportCOM * dmAgent = DMSupportCOMFactory::Instance().getDMAgent(agentName);
+	if (dmAgent == NULL)
 	{
-		dmAgent = DMSupportCOMFactory::Instance().getDMAgent(agentName);
-		if (dmAgent)
+		retVal = DM_NONSUPPORT;
+	}
+	else
+	{
+		try
 		{
 			retVal = dmAgent->dispatch(downInfo);
 		}
-#ifdef NDEBUG
-		if (jobFilePath != NULL)
+		catch (_com_error& e)
 		{
-			remove(jobFilePath);
+			if (!silent)
+			{
+				sprintf_s(g_buf, BUF_SIZE, "Call %s error, please check if it was properly installed!", agentName);
+				MultiByteToWideChar(CP_ACP,0,g_buf,-1,g_wbuf,BUF_SIZE);
+				MessageBox(NULL, g_wbuf, MB_TITLE, MB_OK);
+			}
+			retVal = COM_ERROR;
 		}
-#endif
-	}
-	catch (_com_error& e)
-	{
-		sprintf_s(g_buf, BUF_SIZE, "Call %s error, please check if it was properly installed!", agentName);
-		MultiByteToWideChar(CP_ACP,0,g_buf,-1,g_wbuf,BUF_SIZE);
-		MessageBox(NULL, g_wbuf, MB_TITLE, MB_OK);
-		retVal = COM_ERROR;
-	}
-	catch (...)
-	{
-		MessageBox(NULL, L"Invoke method failure.", MB_TITLE, MB_OK);
-		retVal = INVOKE_ERROR;
-	}
+		catch (...)
+		{
+			if (!silent)
+			{
+				MessageBox(NULL, L"Invoke method failure.", MB_TITLE, MB_OK);
+			}
+			retVal = INVOKE_ERROR;
+		}
 
-	if (dmAgent != NULL)
-	{
 		delete dmAgent;
 	}
+
+#ifdef NDEBUG
+	if (jobFilePath != NULL)
+	{
+		remove(jobFilePath);
+	}
+#endif
 
 	//Sleep for a while in case of downloader's cold start
 	//This process should not be blocked by external call
