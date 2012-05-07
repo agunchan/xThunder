@@ -180,6 +180,9 @@ int main(int argc, char* argv[])
 
 	//Sleep for a while in case of downloader's cold start
 	//This process should not be blocked by external call
-	Sleep(1000 * sleepSec);	
+	if (retVal == 0)
+	{
+		Sleep(1000 * sleepSec);	
+	}
 	return retVal;
 }
