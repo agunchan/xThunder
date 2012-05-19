@@ -127,7 +127,6 @@ var xThunderOptions = {
 
     setAgents : function() {
         var listitems = this.agentListBox.childNodes;
-        var defAgent;
         var enableAgents = "";
         var disableAgents = "";
         for (var i=0; i<listitems.length; ++i) {
@@ -137,23 +136,18 @@ var xThunderOptions = {
                 return;
             }
             if (listitems[i].checked) {
-                if (!defAgent) {
-                    defAgent = agentValue;
-                }
                 enableAgents += agentValue + ",";
             } else {
                 disableAgents += agentValue + "|0,";
             }
         }
-        if (!defAgent) {
+        if (!enableAgents) {
             // Select first agent when all agents are disabled
-            defAgent = listitems[0].value;
-            enableAgents = defAgent + ",";
-            disableAgents = disableAgents.replace(defAgent + "|0,", "");
+            enableAgents = listitems[0].value + ",";
+            disableAgents = disableAgents.replace(listitems[0].value + "|0,", "");
         }
 
-        xThunderPref.setValue("agentName", defAgent);
-        xThunderPref.setValue("showAgents", enableAgents + disableAgents);
+        xThunderPref.setAgentsListStr(enableAgents + disableAgents);
     },
 
     agentListSelect : function() {

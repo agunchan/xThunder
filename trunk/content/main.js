@@ -360,7 +360,7 @@ var xThunderMain = {
             url = document.commandDispatcher.focusedWindow.getSelection().toString();
         }
         url = xThunderDecode.getPreDecodedUrl(url);
-        var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
+        var agentsNonsup = xThunderPref.getUnsupAgents(url);
         for (var i=0; i<agentsNonsup.length; ++i) {
             var subItem = document.getElementById("xThunderBy" + agentsNonsup[i]);
             if (subItem)
@@ -375,7 +375,7 @@ var xThunderMain = {
     },
 
     OnChangeAgent : function(newAgentName) {
-        xThunderPref.setValue("agentName", newAgentName);
+        xThunderPref.setDefaultAgent(newAgentName);
     },
 
     OnToogleFilterExt : function() {

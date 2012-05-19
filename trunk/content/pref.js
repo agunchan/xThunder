@@ -76,24 +76,32 @@ var xThunderPref = {
 
     // Get all agents, e.g. [Thunder, DTA, custom0, QQDownload|0, FlashGet3|0, ...]
     getFixedAgentList : function() {
+        if (this.detectOS() != "WINNT") {
+            return getUnixAgentList();
+        }
+        
         var showAgents = this.getValue("showAgents");
-        var defAgent = this.getValue("agentName");
         var agentList = showAgents.split(",");
         var agentLen = agentList.length-1;
-        var cusAgentList = this.getValue("agent.custom").split(",");
-        cusAgentList.pop();  // Last element is an empty string
+        var cusAgentLen = this.getUnicodeValue("agent.custom").split(",").length - 1;
 
-        if (agentLen < this.agents.length + cusAgentList.length) {
-            // For v1.0.2 before user config
-            for (var i=0; i<this.agents.length; ++i) {
+        if (agentLen - cusAgentLen < this.agents.length) {
+            // For user config before v1.0.2
+            var i;
+            for (i=0; i<this.agents.length; ++i) {
                 if (agentList.indexOf(this.agents[i]) == -1 && agentList.indexOf(this.agents[i]+"|0") == -1) {
-                    showAgents = showAgents + this.agents[i] + "|0,";
+                    showAgents += (this.agents[i] + "|0,");
+                }
+            }
+            for (i=0; i<cusAgentLen; ++i) {
+                if (agentList.indexOf("custom"+i) == -1 && agentList.indexOf("custom"+i+"|0") == -1) {
+                    showAgents += ("custom"+i+"|0,");
                 }
             }
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
-        } else if(agentLen > this.agents.length  + cusAgentList.length) {
-            // For v1.1.1 after user config
+        } else if(agentLen - cusAgentLen > this.agents.length) {
+            // For user config after v1.1.1
             for (var j=0; j<agentLen; ++j) {
                 if (this.agents.indexOf(agentList[j].split("|")[0]) == -1) {
                     showAgents = showAgents.replace(agentList[j] + ",", "");
@@ -103,17 +111,56 @@ var xThunderPref = {
             agentList = showAgents.split(",");
         }
         
-        if (defAgent != agentList[0]) {
-            // Default agent must be first
-            showAgents = defAgent + "," + showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
-            this.setValue("showAgents", showAgents);
-            agentList = showAgents.split(",");
-        }
-        
         agentList.pop();    // Last element is an empty string
         return agentList;
     },
+    
+    // Set string of all agents, e.g. Thunder,DTA,wget|0,...
+    setAgentsListStr : function(showAgents) {
+        var showAgentsPref = "showAgents" + (this.detectOS() == "WINNT" ? "" : this.detectOS());
+        this.setValue(showAgentsPref, showAgents);
+    },
+    
+    getUnixAgentList : function() {
+        var showAgentsPref = "showAgents" + this.detectOS();
+        var unixAgents = this.getValue(showAgentsPref, "");
+        if (!unixAgents) {
+            // get agents from previous agent list
+            var agentList = this.getValue("showAgents").split(",").pop();
+            for (var i=0; i<agentList.length; ++i) {
+                var agent = agentList[i].split("|")[0];
+                if (agent == "Thunder" || agent == "DTA") {
+                    unixAgents += agentList[i];
+                } else if (agent.indexOf("custom") != -1) {
+                    var exePath = this.getUnicodeValue("agent." + this.agentName + ".exe");
+                    if (exePath.charAt(0) == "/") {
+                        unixAgents += agentList[i];
+                    }
+                }
+            }
+            
+            unixAgents += this.detectOS() == "Darwin" ? "curl|0," : "wget|0,";
+        }
+        
+        return unixAgents.split(",").pop();    
+    },
 	
+    getDefaultAgent : function() {
+        var showAgentsPref = "showAgents" + (this.detectOS() == "WINNT" ? "" : this.detectOS());
+        var showAgents = this.getValue(showAgentsPref);
+        return showAgents.split(",")[0];
+    },
+    
+    setDefaultAgent : function(defAgent) {
+        var showAgentsPref = "showAgents" + (this.detectOS() == "WINNT" ? "" : this.detectOS());
+        var showAgents = this.getValue(showAgentsPref);
+        if (defAgent != showAgents.split(",")[0]) {
+            // Default agent must be first
+            showAgents = defAgent + "," + showAgents.replace(","+defAgent+"|0,", ",").replace(","+defAgent+",", ",");
+            this.setValue(showAgentsPref, showAgents);
+        }    
+    },
+    
     getAgentByClick : function(event, addOffLine) {
         if(event && event.button != 0) {
             var agentList = this.getEnabledAgentList(addOffLine);
@@ -127,7 +174,7 @@ var xThunderPref = {
         }
 
         // Use default agent otherwise
-        return this.getValue("agentName");
+        return this.getDefaultAgent();
     },
     
     // Get sequenced support agents, e.g. [Thunder, DTA, QQDownload, FlashGet3, ...]
@@ -142,7 +189,11 @@ var xThunderPref = {
         return agentList;
     },
     
-    getAgentsNonsupURL : function(trimmedUrl) {
+    getUnsupAgents : function(trimmedUrl) {
+        if (this.detectOS() != "WINNT") {
+            return [];
+        }
+        
         if(!trimmedUrl) {
             return this.agents;
         } 
@@ -235,14 +286,21 @@ var xThunderPref = {
     },
         
     getUnicodeValue : function(prefName) {
-        this.getBranch();
-        return this.pref.getComplexValue(prefName, Components.interfaces.nsISupportsString).data;
+        return this.getBranch().getComplexValue(prefName, Components.interfaces.nsISupportsString).data;
     },
     
     setUnicodeValue : function(prefName, value) {
-        this.getBranch();
         var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
         str.data = value;
-        this.pref.setComplexValue(prefName, Components.interfaces.nsISupportsString, str);
+        this.getBranch().setComplexValue(prefName, Components.interfaces.nsISupportsString, str);
+    },
+    
+    detectOS : function() {
+        // "WINNT" on Windows Vista, XP, 2000, and NT systems; "Linux" on GNU/Linux; and "Darwin" on Mac OS X. 
+        if (!this.osString) {
+            this.osString = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULRuntime).OS;
+        }
+        
+        return this.osString;
     }
 }

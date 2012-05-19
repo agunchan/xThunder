@@ -25,10 +25,11 @@ xThunderComponent.prototype = {
         }
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
-        } else if (agentName == "Thunder" && this.getUnixThunderPath()) {
-            nativeArgs[0] = urls[0];
-            result = this.runNative(this.getUnixThunderPath(), nativeArgs);
-        } else if(agentName.indexOf("custom") != -1) {
+        } else if (this.detectOS() != "WINNT" || agentName.indexOf("custom") != -1) {
+            if (!exePath) {
+                exePath = this.getExecutablePath(agentName, args);
+            }
+            
             if (/(wget|curl|aria2c)(\.exe)$/i.test(exePath)) {
                 if (/wget/i.test(exePath) && totalTask > 1) {
                     // Be smart to use input file
@@ -48,8 +49,8 @@ xThunderComponent.prototype = {
     },
     
     detectOS : function() {
-        // Returns "WINNT" on Windows Vista, XP, 2000, and NT systems;  
-        // "Linux" on GNU/Linux; and "Darwin" on Mac OS X.  
+        // "WINNT" on Windows Vista, XP, 2000, and NT systems; "Linux" on GNU/Linux; and "Darwin" on Mac OS X. 
+        // Returns UpperCase string 
         if (!this.osString) {
             this.osString = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULRuntime).OS.toUpperCase();
         }
@@ -57,24 +58,21 @@ xThunderComponent.prototype = {
         return this.osString;
     },
     
-    getUnixThunderPath : function() {
-        if (this.detectOS() == "WINNT") {
-            // Use COM instead of this command line program
-            return "";
-        }
-        
-        if (!this.thunderPath) {
-            var file,path;
-            file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
+    getExecutablePath : function(agentName, args) {
+        var path;
+        if (agentName == "Thunder") {
             path = this.detectOS() == "DARWIN" ? "/Applications/Thunder.app/Contents/MacOS/Thunder"
-                                              : "/usr/bin/wine-thunder";
-            file.initWithPath(path);
-            if (file.exists()) {
-                this.thunderPath = path;
-            }
+                                               : "/usr/bin/wine-thunder";
+            args.push("[URL]");
+        } else if (agentName == "curl") {
+            path = "/usr/local/bin/curl";
+            args.push("-L -O -b [COOKIE] -e [REFERER] [URL]");
+        } else {
+            path = "usr/bin/" + agentName;
+            args.push("[URL]");
         }
 
-        return this.thunderPath || "";
+        return path;
     },
     
     getChromeFile : function (chromePath) {
