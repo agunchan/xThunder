@@ -72,7 +72,7 @@ window.addEventListener("load", function() {
 
     var xThunderRadio = $("xThunderRadio");
     xThunderPref.appendAgentList($("xThunderAgentPopup"), "xThunderAgent", null, false, xThunderPref.getValue("downOffLineInSaveFile"));
-    $("xThunderAgentList").value = xThunderPref.getValue("agentName");
+    $("xThunderAgentList").value = xThunderPref.getDefaultAgent();
     $("xThunderAgentList").setAttribute("hidden", !xThunderPref.getValue("downListInSaveFile"));
 
     var ext = dialog.mLauncher.suggestedFileName.split(".");

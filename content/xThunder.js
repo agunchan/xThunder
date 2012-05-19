@@ -42,7 +42,7 @@ var xThunder = {
             this.agentName = agent;
             this.offLine = (agent != agentName) || offLine || false;
         } else {
-            this.agentName = xThunderPref.getValue("agentName");
+            this.agentName = xThunderPref.getDefaultAgent();
             this.offLine = false;
         }
         this.filerExtStr = (this.totalTask > 1 && xThunderPref.getValue("filterExt")) 
@@ -66,7 +66,7 @@ var xThunder = {
             --this.totalTask;
             return;     
         }
-        var agentsNonsup = xThunderPref.getAgentsNonsupURL(url);
+        var agentsNonsup = xThunderPref.getUnsupAgents(url);
         if (agentsNonsup.indexOf(this.agentName) != -1) {
             // Use candidate agent to download
             if (this.candidate.agents.length > 0) {
