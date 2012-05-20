@@ -26,11 +26,7 @@ xThunderComponent.prototype = {
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
         } else if (this.detectOS() != "WINNT" || agentName.indexOf("custom") != -1) {
-            if (!exePath) {
-                exePath = this.getExecutablePath(agentName, args);
-            }
-            
-            if (/(wget|curl|aria2c)(\.exe)$/i.test(exePath)) {
+            if (/(wget|curl|aria2c)(\.exe)?$/i.test(exePath)) {
                 if (/wget/i.test(exePath) && totalTask > 1) {
                     // Be smart to use input file
                     args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, "--input-file=[UFILE]");
@@ -42,7 +38,7 @@ xThunderComponent.prototype = {
                 }
                 result = this.runNative(exePath, nativeArgs);
             }
-        } else if (this.detectOS() == "WINNT") {
+        } else {
             result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args) 
         }
         return result;
@@ -60,17 +56,26 @@ xThunderComponent.prototype = {
     
     getExecutablePath : function(agentName, args) {
         var path;
-        if (agentName == "Thunder") {
-            path = this.detectOS() == "DARWIN" ? "/Applications/Thunder.app/Contents/MacOS/Thunder"
-                                               : "/usr/bin/wine-thunder";
-            args.push("[URL]");
-        } else if (agentName == "curl") {
-            path = "/usr/local/bin/curl";
+		if (agentName == "curl") {
             args.push("-L -O -b [COOKIE] -e [REFERER] [URL]");
-        } else {
-            path = "usr/bin/" + agentName;
+			path = "/usr/bin/curl";
+		} else {
             args.push("[URL]");
-        }
+            switch (agentName) {
+                case "Thunder":
+                    path = this.detectOS() == "DARWIN" ? "/Applications/Thunder.app/Contents/MacOS/Thunder"
+                                                       : "/usr/bin/wine-thunder";
+                    break;
+                case "aria2":
+                    path = "/usr/bin/aria2c";
+                    break;
+                case "transmission":
+                    path = "/usr/bin/transmission-gtk";
+                    break;
+                default:
+                    path = "/usr/bin/" + agentName;
+            }
+		}
 
         return path;
     },
@@ -154,7 +159,7 @@ xThunderComponent.prototype = {
         var downDir = this.escapePath(args[0]);
         var programArg = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs, true);
         if (this.detectOS() == "WINNT") {
-            var batEncoding = args[1];
+            var batEncoding = args.length > 2 ? args[1] : "UTF-8";
             var batText = "@echo off\r\n" + 
                 "title xThunder\r\n" + 
                 "if not exist " + downDir + " md " + downDir + "\r\n" + 
@@ -162,7 +167,7 @@ xThunderComponent.prototype = {
                 this.escapePath(exePath) + " " + programArg + "\r\n";
             
             this.runNative(this.createTempFile(batText, ".bat", batEncoding), []);
-        } else if (this.detectOS() == "LINUX") {
+        } else {
             var shellEncoding = "UTF-8";
             var shellText = '#!/bin/sh\n' + 
                 'if [ "$1" = "" ]; then\n' +
