@@ -111,13 +111,17 @@ var xThunder = {
                     
                     args = [];
                     if (this.agentName == "DTA") {
-                        exePath = null;
                         args.push(xThunderPref.getValue("dtaOneClick"));
-                    } else if (this.agentName.indexOf("custom") != -1) {
-                        exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
+                        exePath = null;
+                    } else if (this.xThunderComponent.detectOS() != "WINNT" || this.agentName.indexOf("custom") != -1) {
                         args.push(xThunderPref.getUnicodeValue("downloadDir") || this.getDownDir());
                         args.push(xThunderPref.getValue("batEncoding"));
-                        args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
+                        if (this.agentName.indexOf("custom") == -1) {
+                            exePath = this.xThunderComponent.getExecutablePath(this.agentName, args);
+                        } else {
+                            args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
+                            exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
+                        }
                     } else {
                         exePath = null;
                         args.push("-s", xThunderPref.getValue("sleepSecond"));

@@ -77,7 +77,7 @@ var xThunderPref = {
     // Get all agents, e.g. [Thunder, DTA, custom0, QQDownload|0, FlashGet3|0, ...]
     getFixedAgentList : function() {
         if (this.detectOS() != "WINNT") {
-            return getUnixAgentList();
+            return this.getUnixAgentList();
         }
         
         var showAgents = this.getValue("showAgents");
@@ -123,26 +123,31 @@ var xThunderPref = {
     
     getUnixAgentList : function() {
         var showAgentsPref = "showAgents" + this.detectOS();
-        var unixAgents = this.getValue(showAgentsPref, "");
+        var unixAgents = this.getValue(showAgentsPref);
         if (!unixAgents) {
             // get agents from previous agent list
-            var agentList = this.getValue("showAgents").split(",").pop();
+            unixAgents = "";
+            var agentList = this.getValue("showAgents").split(",");
+            agentList.pop();
             for (var i=0; i<agentList.length; ++i) {
                 var agent = agentList[i].split("|")[0];
                 if (agent == "Thunder" || agent == "DTA") {
-                    unixAgents += agentList[i];
+                    unixAgents += (agentList[i] + ",");
                 } else if (agent.indexOf("custom") != -1) {
-                    var exePath = this.getUnicodeValue("agent." + this.agentName + ".exe");
+                    var exePath = this.getUnicodeValue("agent." + agent + ".exe");
                     if (exePath.charAt(0) == "/") {
-                        unixAgents += agentList[i];
+                        unixAgents += (agentList[i] + ",");
                     }
                 }
             }
             
-            unixAgents += this.detectOS() == "Darwin" ? "curl|0," : "wget|0,";
+            unixAgents += this.detectOS() == "Darwin" ? "curl|0,aria2|0," : "wget|0,transmission|0,curl|0,aria2|0,";
+            this.setValue(showAgentsPref, unixAgents);
         }
         
-        return unixAgents.split(",").pop();    
+        var unixAgentsList = unixAgents.split(",");
+        unixAgentsList.pop();
+        return unixAgentsList;
     },
 	
     getDefaultAgent : function() {
