@@ -26,13 +26,20 @@ xThunderComponent.prototype = {
         if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
         } else if (this.detectOS() != "WINNT" || agentName.indexOf("custom") != -1) {
-            if (/(wget|curl|aria2c)(\.exe)?$/i.test(exePath)) {
-                if (/wget/i.test(exePath) && totalTask > 1) {
+            var names = exePath.split("/");
+            var exeName = names[names.length-1];
+            if (/(wget|curl|aria2c)(\.exe)?$/i.test(exeName)) {
+                if (/wget/i.test(exeName) && totalTask > 1) {
                     // Be smart to use input file
                     args[args.length-1] = args[args.length-1].replace(/\[URL\]/ig, "--input-file=[UFILE]");
                 }
                 result = this.runScript(totalTask, referrer, urls, cookies, descs, exePath, args);
             } else {
+                var matches;
+                if ((matches = exeName.match(/(.*)\.app$/))) {
+                    // Be smart to use REAL program in .app
+                    exePath += ("/Contents/MacOS/" + matches[1]);
+                }
                 if (args.length >= 1) {
                     nativeArgs[0] = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs);
                 }
@@ -63,7 +70,7 @@ xThunderComponent.prototype = {
             args.push("[URL]");
             switch (agentName) {
                 case "Thunder":
-                    path = this.detectOS() == "DARWIN" ? "/Applications/Thunder.app/Contents/MacOS/Thunder"
+                    path = this.detectOS() == "DARWIN" ? "/Applications/Thunder.app"
                                                        : "/usr/bin/wine-thunder";
                     break;
                 case "aria2":
