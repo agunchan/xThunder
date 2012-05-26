@@ -50,9 +50,11 @@ window.addEventListener("load", function() {
         var url = dialog.mLauncher.source.spec;
         var referrer;
         try {
-            var openerDocument = dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor).
-                getInterface(Components.interfaces.nsIDOMWindow).document;   
-            referrer = openerDocument && openerDocument.URL                            
+            var openerDocument = top.opener && top.opener.content && top.opener.content.document || 
+                dialog.mContext.QueryInterface(Components.interfaces.nsIInterfaceRequestor).
+                    getInterface(Components.interfaces.nsIDOMWindow).document; 
+   
+            referrer = openerDocument.URL                            
         } catch(ex) {}
         if (!referrer || referrer == "about:blank") {
             referrer = "";
