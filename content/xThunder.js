@@ -14,8 +14,9 @@ var xThunder = {
     
     // referrer : referrer page[required]
     // url : array of url or single url[required]
-    // agentName[optional]
-    // offLine[optional]
+    // agentName : agent name[optional]
+    // offLine: whether use offline download[optional]
+    // RETURN - whether download successfully
     apiDownUrl : function(referrer, url, agentName, offLine) {
         var isUrlArray = Object.prototype.toString.call(url) === '[object Array]';
         var totalTask = isUrlArray ? url.length : 1;
@@ -27,7 +28,7 @@ var xThunder = {
         } else {
             this.addTask(url);
         }
-        this.callAgent();
+        return this.callAgent();
     },
 
     init : function(referrer, totalTask, agentName, offLine) {
@@ -123,11 +124,11 @@ var xThunder = {
                             exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
                         }
                     } else {
-                        exePath = null;
                         args.push("-s", xThunderPref.getValue("sleepSecond"));
+                        exePath = null;
                     }
 
-                    result = this.xThunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);       
+                    result = this.xThunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);
                     switch(result) {
                         case this.xThunderComponent.COM_NOT_FOUND:
                             alert("xThunder.exe missing, please check if xThunder was unpacked!");
@@ -147,14 +148,14 @@ var xThunder = {
                 alert(ex);
                 result = -1;
             } 
-        } else {
+        } else if (this.candidate.taskCount <= 0) {
             result = -1;
         }
 
         if (this.candidate.taskCount > 0) {
             result += this.callCandidate();
-        }
-        
+        } 
+
         return result == 0;
     },
     

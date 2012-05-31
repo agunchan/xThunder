@@ -179,20 +179,23 @@ var xThunderDecode = {
     // Get url of dbank link
     getDBankUrl : function (link, htmlDocument) {
         var url;
-        if (!(url = link.getAttribute("downloadurl"))) {
-            var wrappedJSObject = htmlDocument.defaultView.wrappedJSObject;
-            var globaldata;
-            var AesDecrypt;
-            if ((globaldata = wrappedJSObject.globallinkdata) && (AesDecrypt = wrappedJSObject.Aes.Ctr.decrypt)) {
-                var files = globaldata.data.resource.files;
-                for (var j=0; j<files.length; j++) {
-                    if (files[j].id == link.id) {
-                        url = AesDecrypt.call(htmlDocument.defaultView, files[j].downloadurl, globaldata.data.encryKey, 128);
-                        break;
+        try {
+            if (!(url = link.getAttribute("downloadurl"))) {
+                var wrappedJSObject = htmlDocument.defaultView.wrappedJSObject;
+                var globaldata;
+                var AesDecrypt;
+                if ((globaldata = wrappedJSObject.globallinkdata) && (AesDecrypt = wrappedJSObject.Aes.Ctr.decrypt)) {
+                    var files = globaldata.data.resource.files;
+                    for (var j=0; j<files.length; j++) {
+                        if (files[j].id == link.id) {
+                            url = AesDecrypt.call(htmlDocument.defaultView, files[j].downloadurl, globaldata.data.encryKey, 128);
+                            break;
+                        }
                     }
                 }
             }
-        }
+        } catch(ex) {}
+        
         return url;
     },
 
