@@ -46,7 +46,7 @@ xThunderComponent.prototype = {
                 result = this.runNative(exePath, nativeArgs);
             }
         } else {
-            result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args) 
+            result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args); 
         }
         return result;
     },
@@ -193,6 +193,7 @@ xThunderComponent.prototype = {
                 
             this.runNative(this.createTempFile(shellText, ".sh", shellEncoding), []);
         }
+        return 0;
     },
     
     runNative: function(exePath, args) {
@@ -204,7 +205,7 @@ xThunderComponent.prototype = {
 //            var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
 //            cs.logStringMessage("Running " + exePath + " " + args.join(" "));
             proc["runw" in proc ? "runw" : "run"](false, args, args.length);
-            return proc.exitValue;
+            return 0;
         } else {
             return this.EXE_NOT_FOUND;
         }
@@ -233,7 +234,8 @@ xThunderComponent.prototype = {
             // Before Firefox 4 wstring can only be passed by file
             args.push("-f", this.createTempFile(this.getJobString(totalTask, referrer, urls, cookies, descs, cids)));
         }
-        return proc[hasRunW ? "runw" : "run"](false, args, args.length);
+        proc[hasRunW ? "runw" : "run"](false, args, args.length);
+        return 0;
     },
 
     DTADownload : function(totalTask, refer, urls, descs, oneClick) {

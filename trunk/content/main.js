@@ -126,8 +126,9 @@ var xThunderMain = {
             }
         } 
 
-        if (download) {
-            xThunder.apiDownUrl(link.ownerDocument.URL, url);
+        // Async decode will return false when callAgent
+        // Currently there are no async decoding method though
+        if (download && xThunder.apiDownUrl(link.ownerDocument.URL, url)) {
             ev.preventDefault();
             ev.stopPropagation();
             return false;
