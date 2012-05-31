@@ -16,7 +16,6 @@ var xThunderDecode = {
             if (protocols[i] == "thunder" && 
                     ( url.indexOf("thunder:") == 0 ||
                       link.getAttribute("thunderhref") || 
-                      link.getAttribute("nspurl") ||
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
                       /^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
@@ -116,10 +115,7 @@ var xThunderDecode = {
         } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
             // Download url in sibling nodes
             url = this.getUDownUrl(link, referrer);
-        } else if (link.getAttribute("nspurl")) {
-            // Download url encrypted by AES
-            url = this.getDBankUrl(link, htmlDocument);
-        }
+        } 
 
         // In general
         if (!url) {
@@ -174,29 +170,6 @@ var xThunderDecode = {
             input = converter.ConvertToUnicode(input);
         }
         return input;
-    },
-    
-    // Get url of dbank link
-    getDBankUrl : function (link, htmlDocument) {
-        var url;
-        try {
-            if (!(url = link.getAttribute("downloadurl"))) {
-                var wrappedJSObject = htmlDocument.defaultView.wrappedJSObject;
-                var globaldata;
-                var AesDecrypt;
-                if ((globaldata = wrappedJSObject.globallinkdata) && (AesDecrypt = wrappedJSObject.Aes.Ctr.decrypt)) {
-                    var files = globaldata.data.resource.files;
-                    for (var j=0; j<files.length; j++) {
-                        if (files[j].id == link.id) {
-                            url = AesDecrypt.call(htmlDocument.defaultView, files[j].downloadurl, globaldata.data.encryKey, 128);
-                            break;
-                        }
-                    }
-                }
-            }
-        } catch(ex) {}
-        
-        return url;
     },
 
     // Get url of udown link
