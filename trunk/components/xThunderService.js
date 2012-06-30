@@ -19,7 +19,6 @@ xThunderComponent.prototype = {
 
     CallAgent: function(agentName, totalTask, referrer, urls, cookies, descs, cids, exePath, args) {
         var result = 0;
-        var nativeArgs = [];
         if (!args) {
             args = [];
         }
@@ -40,8 +39,11 @@ xThunderComponent.prototype = {
                     // Be smart to use REAL program in .app
                     exePath += ("/Contents/MacOS/" + matches[1]);
                 }
+                var nativeArgs;
                 if (args.length >= 1) {
-                    nativeArgs[0] = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs);
+                    nativeArgs = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs).split(/\s+/);
+                } else {
+                    nativeArgs = [];
                 }
                 result = this.runNative(exePath, nativeArgs);
             }
