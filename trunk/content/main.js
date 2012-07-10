@@ -61,14 +61,14 @@ var xThunderMain = {
         var remExt = xThunderPref.getValue("remember");
 
         var link = ev.target;
-        if (typeof link.href == "undefined" && !xThunderPref.proSupReg.test(link.name)) {
+        if (typeof link.href == "undefined"  && !link.getAttribute("href") && !xThunderPref.proSupReg.test(link.name)) {
             link = link.parentNode;
             if (!link || typeof link.href == "undefined") {
                 return true;
             }
         }
 
-        var url = link.href || link.name;
+        var url = link.href || link.getAttribute("href") || link.name;
         var download = false;
 
         // Ctrl + Click and Ctrl + Alt + Click

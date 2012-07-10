@@ -20,7 +20,7 @@ var xThunderDecode = {
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
                       /^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
                       /^http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*&flag=1/.test(url) ||
-                      link.id == "union_download_thunder" && link.className == "btn_r"
+                      link.id == "union_download_thunder" && link.getAttribute("onclick")
                     )
                 || protocols[i] == "flashget" &&
                     ( url.indexOf("flashget:") == 0 ||
@@ -53,7 +53,7 @@ var xThunderDecode = {
 
         // In special
         var matches;
-        if (link.id == "union_download_thunder" && link.className == "btn_r") {
+        if (link.id == "union_download_thunder" && link.getAttribute("onclick")) {
             // Thunder url in hidden element
             if (matches = htmlDocument.querySelector("a[thunderhref]")) {
                 url = matches.getAttribute("thunderhref");
