@@ -166,13 +166,17 @@ var xThunder = {
         var offLineAgents = ["QQDownload", "Thunder", "ThunderVOD"];
         var offIdx = offLineAgents.indexOf(agentName);
         if (browser) {
-            var offUrls = ["http://lixian.qq.com/", "http://lixian.vip.xunlei.com/", "http://dynamic.vod.lixian.xunlei.com/"];
-            var params = ["main.html?url=", "lixian_login.html?furl=", "play?action=http_sec&go=check&location=home&furl="];
-            if (offIdx == 2 && !xThunderPref.getValue("vodMember")) {
-                browser.loadOneTab("http://vod.oabt.org/index.php?xunlei", null, "utf-8", this.getVodPostData(url), false); 
+            var offUrls = ["http://lixian.qq.com/main.html?url=[URL]", "http://lixian.vip.xunlei.com/lixian_login.html?furl=[URL]", xThunderPref.getValue("vodTemplate")];
+            var matches;
+            if ((matches = offUrls[offIdx].match(/(?:https?:\/\/)?([^#?/]+)/))) {
+                if (url.indexOf(matches[1]) == -1) {
+                    url = offUrls[offIdx].replace(/\[URL\]/, url);
+                }
+                browser.selectedTab = browser.addTab(url);  
             } else {
-                browser.selectedTab = browser.addTab(url.indexOf(offUrls[offIdx]) != -1 ? url : offUrls[offIdx] + params[offIdx] + url);  
-            }  
+                alert("VOD Template is invalid!");
+                result = -1;
+            }
         } else {
             result = -1;
         }
@@ -298,19 +302,5 @@ var xThunder = {
         }
 
         return cid;
-    },
-    
-    getVodPostData : function(href) {
-        var dataString = "url=" + encodeURIComponent(href) + 
-            "&title=" + encodeURIComponent(this.getFileName(href));
-        var stringStream = Components.classes["@mozilla.org/io/string-input-stream;1"].
-            createInstance(Components.interfaces.nsIStringInputStream);
-        stringStream.data = dataString;
-        var postData = Components.classes["@mozilla.org/network/mime-input-stream;1"].
-            createInstance(Components.interfaces.nsIMIMEInputStream);
-        postData.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        postData.addContentLength = true;
-        postData.setData(stringStream);
-        return postData;
     }
 };

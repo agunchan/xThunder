@@ -26,7 +26,7 @@ pref("extensions.xthunder.dtaOneClick", false);
 pref("extensions.xthunder.qqOffLineWeb", false);
 pref("extensions.xthunder.agent.custom", "");
 pref("extensions.xthunder.vodOffLine", true);
-pref("extensions.xthunder.vodMember", true);
+pref("extensions.xthunder.vodTemplate", "http://dynamic.vod.lixian.xunlei.com/play?action=http_sec&go=check&location=home&furl=[URL]");
 pref("extensions.xthunder.downloadDir", "");
 pref("extensions.xthunder.batEncoding", "GBK");
 pref("extensions.xthunder.useCandidate", true);

@@ -41,7 +41,10 @@ xThunderComponent.prototype = {
                 }
                 var nativeArgs;
                 if (args.length >= 1) {
-                    nativeArgs = this.replaceHolder(args[args.length-1], referrer, urls, cookies, descs).split(/\s+/);
+                    nativeArgs = args[args.length-1].split(/\s+/);
+                    for (var key in nativeArgs) {
+                        nativeArgs[key] = this.replaceHolder(nativeArgs[key], referrer, urls, cookies, descs);
+                    }
                 } else {
                     nativeArgs = [];
                 }
@@ -91,9 +94,9 @@ xThunderComponent.prototype = {
     
     getChromeFile : function (chromePath) {
         var url;
-        var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci["nsIIOService"]);
+        var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
         var uri = ios.newURI(chromePath, "UTF-8", null);
-        var cr = Cc["@mozilla.org/chrome/chrome-registry;1"].getService(Ci["nsIChromeRegistry"]);
+        var cr = Cc["@mozilla.org/chrome/chrome-registry;1"].getService(Ci.nsIChromeRegistry);
         url = cr.convertChromeURL(uri).spec;
         if (!/^file:/.test(url)) {
             url = "file://" + url;
@@ -248,10 +251,11 @@ xThunderComponent.prototype = {
                 // DTA 2.0.x
                 this.DTA = mainWindow.DTA;
             } else {
-                // DTA 3.0+
+                // DTA 3.0b1+
                 try {
-                    this.DTA = {};
-                    Components.utils.import("resource://dta/api.jsm", this.DTA);
+                    var glue = {}
+                    Components.utils.import("chrome://dta-modules/content/glue.jsm", glue);
+                    this.DTA = glue.require("api");
                 } catch (ex) {
                     this.DTA = null;
                 }
@@ -274,8 +278,9 @@ xThunderComponent.prototype = {
                     throw e;
             }
         } else if(totalTask > 1 && DTA.saveLinkArray) {
+            var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
             var anchors = [], images = [];
-            var wrapURL = function(url, cs) {return new DTA.URL(DTA.IOService.newURI(url, cs, null));}
+            var wrapURL = function(url, cs) {return new DTA.URL(ios.newURI(url, cs, null));}
             for (var j = 0; j < totalTask; ++j) {
                 anchors.push({
                     url: wrapURL(urls[j], "UTF-8"),
