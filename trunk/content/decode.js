@@ -75,9 +75,8 @@ var xThunderDecode = {
             }
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
             // Thunder url in oncontextmenu attribute
-            var input = link.parentNode;
-            var params,mc;
-            if ((input = input.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) {    
+            var input,params,mc;
+            if ((input = link.parentNode.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) { 
                 params = params.split("&");
                 for (var i=0; i<params.length; ++i) {
                     if (matches = params[i].match(/xzurl=(.*)/)) {
@@ -97,7 +96,13 @@ var xThunderDecode = {
                         url = "http://www.7369.com/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
                     } else if (/^http:\/\/www\.2tu\.cc\//i.test(referrer)) {
                         url = "http://bt.2tu.cc/" + cid + "/" + mc;
-                    } 
+                    } else if (/^http:\/\/www\.xunleikuai\.com\//i.test(referrer)) {
+                        url = this.getDecodedUrl(link.getAttribute("rel") || "");
+                        if (url.substr(0, 5) == "bt://") {
+                            mc = url.substring(5, url.lastIndexOf("/"));
+                            url = "http://bt.box.n0808.com/" + mc.substr(0, 2) + "/" + mc.substr(38, 40) + "/" + mc + ".torrent"; 
+                        }
+                    }
                 }
             }     
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("onclick")) && matches.indexOf("thunder://") != -1) {
