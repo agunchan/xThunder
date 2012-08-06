@@ -1,7 +1,0 @@
-#include "nsISupports.idl"
-
-[scriptable, uuid(77683972-8cb9-4f92-a962-aea5b6f1e2a1)]
-interface IXThunderComponent : nsISupports
-{
-  long CallAgent(in string agentname, in unsigned long count, in wstring referrer, [array, size_is(count)] in wstring urls, [array, size_is(count)] in wstring cookies, [array, size_is(count)] in wstring descs);
-};
