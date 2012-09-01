@@ -65,17 +65,24 @@ window.addEventListener("load", function() {
         de.removeAttribute("onblur");
         de.removeAttribute("onfocus");
         de.cancelDialog();
-    } // End function
-
-    if (!xThunderPref.getValue("downInSaveFile")) {
-        $("xThunderDown").setAttribute("hidden", true);
-        return;
     } 
+    
+    function remAndDownload(supExt, agentName) {
+        if (!extExists) {
+            xThunderPref.setValue("supportExt", supExt);
+        }
 
+        download(agentName);
+    } // End function
+    
+    var radioExists = xThunderPref.getValue("downInSaveFile");
+    $("xThunderDown").hidden = !radioExists;
+    var downOffLineExists = xThunderPref.getValue("downOffLineInSaveFile");
     var xThunderRadio = $("xThunderRadio");
-    xThunderPref.appendAgentList($("xThunderAgentPopup"), "xThunderAgent", null, false, xThunderPref.getValue("downOffLineInSaveFile"));
-    $("xThunderAgentList").value = xThunderPref.getDefaultAgent();
-    $("xThunderAgentList").setAttribute("hidden", !xThunderPref.getValue("downListInSaveFile"));
+    var xThunderAgentList = $("xThunderAgentList");
+    xThunderPref.appendAgentList($("xThunderAgentPopup"), "xThunderAgent", null, false, downOffLineExists);
+    xThunderAgentList.value = xThunderPref.getDefaultAgent();
+    xThunderAgentList.hidden = !xThunderPref.getValue("downListInSaveFile");
 
     var ext = dialog.mLauncher.suggestedFileName.split(".");
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
@@ -87,50 +94,90 @@ window.addEventListener("load", function() {
         return;
     }
 
-    forceNormal();
-
     var mode = $("mode");
-
-    // Same width as open radio
-    var openRadio = $("open");
-    if (openRadio) {
-        var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
-        if (maxWidth > 0) {
-            openRadio.width = xThunderRadio.width = maxWidth;
+    
+    if (radioExists) {
+        // Show radio for EXE dialog
+        forceNormal();
+            
+        // Same width as open radio
+        var openRadio = $("open");
+        if (openRadio) {
+            var maxWidth = Math.max(openRadio.boxObject.width, xThunderRadio.boxObject.width);
+            if (maxWidth > 0) {
+                openRadio.width = xThunderRadio.width = maxWidth;
+            }
         }
+        
+        if (extExists) {
+            mode.selectedItem = xThunderRadio;
+        } 
     }
-
-    if (extExists) {
-        mode.selectedItem = xThunderRadio;
-    } 
-	
+    
     // Mouse middle click and right click on accept button
     var acceptBtn = document.documentElement.getButton("accept");
     if (acceptBtn) {
         acceptBtn.addEventListener("click", function(event) {
             if (mode.selectedItem == xThunderRadio && event.button != 0) {
-                if (!extExists) {
-                    xThunderPref.setValue("supportExt", ext + supportExt);
-                }
-
-                download(xThunderPref.getAgentByClick(event, xThunderPref.getValue("downOffLineInSaveFile")));
+                remAndDownload(ext + supportExt, xThunderPref.getAgentByClick(event, downOffLineExists));
             }
         }, false);
     }
 
-    // Mouse left click on accept button
+    // Mouse left click or Enter key on accept button
     addEventListener("dialogaccept", function() {
         if (mode.selectedItem == xThunderRadio) {
-            if (!extExists) {
-                xThunderPref.setValue("supportExt", ext + supportExt);
-            }
-
-            download();
-        } else {
-            if (extExists) {
-                xThunderPref.setValue("supportExt", supportExt.replace(ext, ""));
-            }
+            remAndDownload(ext + supportExt);
+        } else if (extExists) {
+            xThunderPref.setValue("supportExt", supportExt.replace(ext, ""));
         }
     }, false); // Dialogaccept
     
+    // Create a menu-button to download by xThunder
+    if (xThunderPref.getValue("downBtnInSaveFile")) {
+        var xThunderBtn = document.createElement("button");
+        var xThunderBtnPopup = null;
+        if (xThunderBtn && acceptBtn) {
+            var btns = acceptBtn.parentNode.childNodes;
+            for (var i = btns.length-1; i >= 0; --i) {
+                if (btns[i].getAttribute("dlgtype") == "accept" || btns[i].getAttribute("dlgtype") == "cancel") {
+                    acceptBtn.parentNode.insertBefore(xThunderBtn, btns[i]);
+                    break;
+                }
+            }
+            
+            if (xThunderAgentList.itemCount > 1) {
+                var popDisAllowed = false;
+                xThunderBtn.type = "menu";
+                xThunderBtn.addEventListener("mousedown", function(event) {
+                    popDisAllowed = event.button == 0 && event.target.boxObject.x + event.target.boxObject.width - event.clientX > 20;
+                }, false);
+                xThunderBtnPopup = document.createElement("menupopup");
+                xThunderBtnPopup.addEventListener("popupshowing", function(event) {
+                    if (popDisAllowed) {
+                        event.preventDefault();
+                    }
+                }, false);
+                xThunderPref.appendAgentList(xThunderBtnPopup, "xThunderBtnAgent", null, false, downOffLineExists);
+                var popMenuItems = xThunderBtnPopup.childNodes;
+                for (var j = 0; j < popMenuItems.length; ++j) {
+                    popMenuItems[j].className = "menuitem-non-iconic";
+                    popMenuItems[j].addEventListener("click", function(event) {
+                        download(this.value);
+                    }, false);
+                }
+                xThunderBtn.appendChild(xThunderBtnPopup);
+            }
+            xThunderBtn.label = "xThunder";
+            xThunderBtn.className = acceptBtn.className;
+            xThunderBtn.addEventListener("click", function(event) {
+                if (event.target == this) {
+                    if (xThunderBtn.type != "menu" || event.button != 0 || event.target.boxObject.x + event.target.boxObject.width - event.clientX > 20) {
+                        download(xThunderPref.getAgentByClick(event, downOffLineExists));
+                    }
+                }
+            }, false);
+        }
+    }
+ 
 }, false); // End load function

@@ -19,7 +19,6 @@ var xThunderOptions = {
 
         // Get interface
         document.getElementById("downSubMenu").disabled = !xThunderPref.getValue("downInCxtMenu");
-        document.getElementById("downOffLineAnyway").disabled = !xThunderPref.getValue("downOffLineInCxtMenu");
         document.getElementById("downListInSaveFile").disabled = !xThunderPref.getValue("downInSaveFile");
         
         // Get agents, click added and status icon

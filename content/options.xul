@@ -34,6 +34,7 @@
             <preference id="pref_downSubMenu" name="extensions.xthunder.downSubMenu" type="bool"/>
             <preference id="pref_downAllInCxtMenu" name="extensions.xthunder.downAllInCxtMenu" type="bool"/>
             <preference id="pref_downInSaveFile" name="extensions.xthunder.downInSaveFile" type="bool"/>
+            <preference id="pref_downBtnInSaveFile" name="extensions.xthunder.downBtnInSaveFile" type="bool"/>
             <preference id="pref_downListInSaveFile" name="extensions.xthunder.downListInSaveFile" type="bool"/>
             <preference id="pref_downOffLineInCxtMenu" name="extensions.xthunder.downOffLineInCxtMenu" type="bool"/>
             <preference id="pref_downOffLineAnyway" name="extensions.xthunder.downOffLineAnyway" type="bool"/>
@@ -103,11 +104,11 @@
                         <checkbox id="compactMenu" label="&compactMenu;" preference="pref_compactMenu"/>
                         <checkbox id="downInCxtMenu" label="&downInCxtMenu;" preference="pref_downInCxtMenu" oncommand="document.getElementById('downSubMenu').disabled = !this.checked;"/>
                         <checkbox id="downSubMenu" label="&downSubMenu;" style="margin-left:22px;"  preference="pref_downSubMenu"/>
-                        <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu" oncommand="document.getElementById('downOffLineAnyway').disabled = !this.checked;"/>
-                        <checkbox id="downOffLineAnyway" label="&downOffLineAnyway;" style="margin-left:22px;" preference="pref_downOffLineAnyway"/>
+                        <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
                         <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile" oncommand="document.getElementById('downListInSaveFile').disabled = !this.checked;"/>
                         <checkbox id="downListInSaveFile" label="&downListInSaveFile;" style="margin-left:22px;" preference="pref_downListInSaveFile"/>
+                        <checkbox id="downBtnInSaveFile" label="&downBtnInSaveFile;" preference="pref_downBtnInSaveFile"/>
                     </groupbox>
                      
                     <groupbox>
