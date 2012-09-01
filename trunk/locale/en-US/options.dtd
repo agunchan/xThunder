@@ -23,13 +23,13 @@
 <!ENTITY	compactMenu             "Compact context menu">
 <!ENTITY	downInCxtMenu           "xThunder Link in context menu">
 <!ENTITY	downSubMenu             "Show download tools in submenu">
+<!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
 <!ENTITY	downAllInCxtMenu        "xThunder All in context menu">
 <!ENTITY	downInSaveFile          "xThunder Radio in save as dialog">
 <!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
+<!ENTITY	downBtnInSaveFile       "xThunder Button in save as dialog">
 <!ENTITY	lbl.offLine             "OffLine Download">
-<!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
-<!ENTITY	downOffLineAnyway       "Show xThunder OffLine always">
-<!ENTITY	downOffLineSubMenu      "OffLine items in submenu">
+<!ENTITY	downOffLineSubMenu      "OffLine items in context submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">
 <!ENTITY	downOffLineSep          "Show separator before offLine items">
 <!ENTITY	vodOffLine              "Show Thunder vod after offLine items">

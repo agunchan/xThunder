@@ -37,7 +37,7 @@ var xThunderDecode = {
                     )
                 || protocols[i] == "magnet" && url.indexOf("magnet:") == 0
                 || protocols[i] == "fs2you" && url.indexOf("fs2you:") == 0
-                || protocols[i] == "udown" && link.id == "udown" && (attr = link.getAttribute("onclick")) && attr.indexOf("AddDownTask") != -1
+                || protocols[i] == "udown" && url.indexOf("udown:") == 0
                 )
                 return true;
         }
@@ -117,7 +117,7 @@ var xThunderDecode = {
             } else if (matches = htmlDocument.defaultView.wrappedJSObject.fUrl) {
                 url = matches;
             }
-        } else if (link.id == "udown" && (matches = link.getAttribute("onclick")) && matches.indexOf("AddDownTask") != -1) {
+        } else if (link.id == "udown") {
             // Download url in sibling nodes
             url = this.getUDownUrl(link, referrer);
         } 
