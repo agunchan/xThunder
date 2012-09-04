@@ -146,7 +146,7 @@ window.addEventListener("load", function() {
                 }
             }
             
-            if (xThunderAgentList.itemCount > 1) {
+            if (xThunderAgentList.itemCount > 1 && xThunderPref.getValue("downListInSaveFile")) {
                 var popDisAllowed = false;
                 xThunderBtn.type = "menu";
                 xThunderBtn.addEventListener("mousedown", function(event) {
