@@ -106,9 +106,9 @@
                         <checkbox id="downSubMenu" label="&downSubMenu;" style="margin-left:22px;"  preference="pref_downSubMenu"/>
                         <checkbox id="downOffLineInCxtMenu" label="&downOffLineInCxtMenu;" preference="pref_downOffLineInCxtMenu"/>
                         <checkbox id="downAllInCxtMenu" label="&downAllInCxtMenu;" preference="pref_downAllInCxtMenu"/>
-                        <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile" oncommand="document.getElementById('downListInSaveFile').disabled = !this.checked;"/>
-                        <checkbox id="downListInSaveFile" label="&downListInSaveFile;" style="margin-left:22px;" preference="pref_downListInSaveFile"/>
+                        <checkbox id="downInSaveFile" label="&downInSaveFile;" preference="pref_downInSaveFile"/>
                         <checkbox id="downBtnInSaveFile" label="&downBtnInSaveFile;" preference="pref_downBtnInSaveFile"/>
+                        <checkbox id="downListInSaveFile" label="&downListInSaveFile;" style="margin-left:22px;" preference="pref_downListInSaveFile"/>
                     </groupbox>
                      
                     <groupbox>

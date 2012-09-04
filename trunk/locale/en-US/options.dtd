@@ -26,8 +26,8 @@
 <!ENTITY	downOffLineInCxtMenu    "xThunder OffLine in context menu">
 <!ENTITY	downAllInCxtMenu        "xThunder All in context menu">
 <!ENTITY	downInSaveFile          "xThunder Radio in save as dialog">
-<!ENTITY	downListInSaveFile      "Show drop down aside xThunder Radio">
 <!ENTITY	downBtnInSaveFile       "xThunder Button in save as dialog">
+<!ENTITY	downListInSaveFile      "Show drop-down aside radio or under button">
 <!ENTITY	lbl.offLine             "OffLine Download">
 <!ENTITY	downOffLineSubMenu      "OffLine items in context submenu">
 <!ENTITY	downOffLineInSaveFile   "OffLine items in save as dialog">

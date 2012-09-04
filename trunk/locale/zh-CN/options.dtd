@@ -26,8 +26,8 @@
 <!ENTITY	downOffLineInCxtMenu    "xThunder离线下载在右键菜单">
 <!ENTITY	downAllInCxtMenu        "xThunder全部链接在右键菜单">
 <!ENTITY	downInSaveFile          "xThunder项在保存方式对话框">
-<!ENTITY	downListInSaveFile      "显示xThunder项旁的下拉列表">
 <!ENTITY	downBtnInSaveFile       "xThunder按钮集成到保存方式对话框">
+<!ENTITY	downListInSaveFile      "显示xThunder项和按钮的下拉菜单">
 <!ENTITY	lbl.offLine             "离线下载">
 <!ENTITY	downOffLineSubMenu      "离线下载项在右键二级菜单">
 <!ENTITY	downOffLineInSaveFile   "离线下载项在保存方式对话框">
