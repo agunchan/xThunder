@@ -165,6 +165,7 @@
                                     <menuitem id="agentArgsPHCOMMENT" class="menuitem-non-iconic" label="Comment" oncommand="xThunderOptions.insertAgentPH('[COMMENT]');"/>
                                     <menuitem id="agentArgsPHCBURL" class="menuitem-non-iconic" label="ClipBoard Url" oncommand="xThunderOptions.insertAgentPH('[CBURL]');"/>
                                     <menuitem id="agentArgsPHUFILE" class="menuitem-non-iconic" label="Url File" oncommand="xThunderOptions.insertAgentPH('[UFILE]');"/>
+                                    <menuitem id="agentArgsPHCFILE" class="menuitem-non-iconic" label="Cookie File" oncommand="xThunderOptions.insertAgentPH('[CFILE]');"/>
                                 </menupopup>
                             </toolbarbutton>
                         </hbox>
