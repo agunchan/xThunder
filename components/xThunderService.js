@@ -116,8 +116,7 @@ xThunderComponent.prototype = {
     },
     
     createTempFile : function(data, ext, charset) {
-        var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).
-            get("TmpD", Ci.nsIFile);
+        var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("TmpD", Ci.nsIFile);
         file.append("xThunder");
         if (!file.exists()) {
             file.create(Ci.nsIFile.DIRECTORY_TYPE, 0700);
@@ -144,9 +143,19 @@ xThunderComponent.prototype = {
         } 
 
         if (arg.match(/\[UFILE\]/i)) {
-            // URL from files
+            // URLs from file
             var urlFilePath = this.createTempFile(urls.join("\n"));
             arg = arg.replace(/\[UFILE\]/ig, escape ? this.escapePath(urlFilePath) : urlFilePath);
+        }
+        
+        if (arg.match(/\[CFILE\]/i)) {
+            var cookieFilePath = "cookies.sqlite";
+            var cookieFile = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+            cookieFile.append(cookieFilePath);
+            if (cookieFile.exists()) {
+                cookieFilePath = cookieFile.path;
+            }
+            arg = arg.replace(/\[CFILE\]/ig, escape ? this.escapePath(cookieFilePath) : cookieFilePath);
         }
         
         var url = urls[0];
@@ -207,8 +216,8 @@ xThunderComponent.prototype = {
         if (exeFile.exists()) {
             var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
             proc.init(exeFile);
-//            var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
-//            cs.logStringMessage("Running " + exePath + " " + args.join(" "));
+            var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
+            cs.logStringMessage("Running " + exePath + " " + args.join(" "));
             proc["runw" in proc ? "runw" : "run"](false, args, args.length);
             return 0;
         } else {
