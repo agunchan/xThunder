@@ -20,7 +20,8 @@ var xThunderDecode = {
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
                       /^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
                       /^http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*&flag=1/.test(url) ||
-                      link.id == "union_download_thunder" && link.getAttribute("onclick")
+                      link.id == "union_download_thunder" && link.getAttribute("onclick") ||
+                      link.className.indexOf("file_name") != -1 && link.ownerDocument.URL.indexOf("http://kuai.xunlei.com/d/") == 0
                     )
                 || protocols[i] == "flashget" &&
                     ( url.indexOf("flashget:") == 0 ||
@@ -96,13 +97,7 @@ var xThunderDecode = {
                         url = "http://www.7369.com/" + cid + "/" + link.innerHTML.replace(/&nbsp;/g, "");
                     } else if (/^http:\/\/www\.2tu\.cc\//i.test(referrer)) {
                         url = "http://bt.2tu.cc/" + cid + "/" + mc;
-                    } else if (/^http:\/\/www\.xunleikuai\.com\//i.test(referrer)) {
-                        url = this.getDecodedUrl(link.getAttribute("rel") || "");
-                        if (url.substr(0, 5) == "bt://") {
-                            mc = url.substring(5, url.lastIndexOf("/"));
-                            url = "http://bt.box.n0808.com/" + mc.substr(0, 2) + "/" + mc.substr(38, 40) + "/" + mc + ".torrent"; 
-                        }
-                    }
+                    } 
                 }
             }     
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("onclick")) && matches.indexOf("thunder://") != -1) {
