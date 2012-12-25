@@ -67,14 +67,6 @@ window.addEventListener("load", function() {
         de.cancelDialog();
     } 
     
-    function remAndDownload(supExt, agentName) {
-        if (!extExists) {
-            xThunderPref.setValue("supportExt", supExt);
-        }
-
-        download(agentName);
-    } // End function
-    
     var radioExists = xThunderPref.getValue("downInSaveFile");
     $("xThunderDown").hidden = !radioExists;
     var downOffLineExists = xThunderPref.getValue("downOffLineInSaveFile");
@@ -86,9 +78,8 @@ window.addEventListener("load", function() {
 
     var ext = dialog.mLauncher.suggestedFileName.split(".");
     ext = ext.length > 0 ? "." + ext[ext.length -1].toLowerCase() + ";" : "";
-    var supportExt = xThunderPref.getValue("supportExt");
     var remExt = xThunderPref.getValue("remember");
-    var extExists = supportExt.indexOf(ext) != -1;
+    var extExists = xThunderPref.getValue("supportExt").indexOf(ext) != -1;
     if (extExists && remExt > 0) {
         download();
         return;
@@ -119,7 +110,7 @@ window.addEventListener("load", function() {
     if (acceptBtn) {
         acceptBtn.addEventListener("click", function(event) {
             if (mode.selectedItem == xThunderRadio && event.button != 0) {
-                remAndDownload(ext + supportExt, xThunderPref.getAgentByClick(event, downOffLineExists));
+                download(xThunderPref.getAgentByClick(event, downOffLineExists));
             }
         }, false);
     }
@@ -127,10 +118,8 @@ window.addEventListener("load", function() {
     // Mouse left click or Enter key on accept button
     addEventListener("dialogaccept", function() {
         if (mode.selectedItem == xThunderRadio) {
-            remAndDownload(ext + supportExt);
-        } else if (extExists) {
-            xThunderPref.setValue("supportExt", supportExt.replace(ext, ""));
-        }
+            download();
+        } 
     }, false); // Dialogaccept
     
     // Create a menu-button to download by xThunder
@@ -168,6 +157,7 @@ window.addEventListener("load", function() {
                 }
                 xThunderBtn.appendChild(xThunderBtnPopup);
             }
+            xThunderBtn.id = "xThunderDownBtn";
             xThunderBtn.label = "xThunder";
             xThunderBtn.className = acceptBtn.className;
             xThunderBtn.addEventListener("click", function(event) {
