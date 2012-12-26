@@ -16,6 +16,7 @@ var xThunderDecode = {
             if (protocols[i] == "thunder" && 
                     ( url.indexOf("thunder:") == 0 ||
                       link.getAttribute("thunderhref") || 
+                      link.getAttribute("downloadurl") || 
                       (attr = link.getAttribute("oncontextmenu")) && attr.indexOf("ThunderNetwork_SetHref") != -1 ||
                       (attr = link.getAttribute("onclick")) && attr.indexOf("thunder://") != -1 ||
                       /^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
@@ -38,7 +39,6 @@ var xThunderDecode = {
                     )
                 || protocols[i] == "magnet" && url.indexOf("magnet:") == 0
                 || protocols[i] == "fs2you" && url.indexOf("fs2you:") == 0
-                || protocols[i] == "udown" && url.indexOf("udown:") == 0
                 )
                 return true;
         }
@@ -77,7 +77,7 @@ var xThunderDecode = {
         } else if (!link.getAttribute("thunderhref") && (matches = link.getAttribute("oncontextmenu")) && matches.indexOf("ThunderNetwork_SetHref") != -1) {
             // Thunder url in oncontextmenu attribute
             var input,params,mc;
-            if ((input = link.parentNode.firstChild) && input.getAttribute("type") == "checkbox" && (params = input.value)) { 
+            if ((input = link.parentNode.firstChild) && (input.type == "checkbox" || input.type == "hidden") && (params = input.value)) { 
                 params = params.split("&");
                 for (var i=0; i<params.length; ++i) {
                     if (matches = params[i].match(/xzurl=(.*)/)) {
