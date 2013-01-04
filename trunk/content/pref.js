@@ -8,7 +8,10 @@ var xThunderPref = {
     agentsNonsup : {"ed2k"   : ["DTA", "IDM", "FlashGetMini", "BitComet", "FDM", "Orbit", "UDown"],
                     "magnet" : ["DTA", "IDM", "ThunderLite", "ToolbarThunder", "FlashGetMini", "FDM", "Orbit", "UDown"],
                     "flashget" : ["Thunder", "QQDownload", "DTA", "IDM", "ThunderLite", "ToolbarThunder", "BitComet", "FDM", "NetTransport", "Orbit", "UDown",
-                                    "ThunderVOD", "ThunderOffLine", "QQDownloadOffLine", "ThunderVODOffLine"]},    
+                                    "ThunderVOD", "ThunderOffLine", "QQDownloadOffLine", "ThunderVODOffLine"]},
+    agentsOffLine : {"Thunder" : "http://lixian.vip.xunlei.com/lixian_login.html?furl=[URL]",
+                    "QQDownload": "http://lixian.qq.com/main.html?url=[URL]", 
+                    "ThunderVOD": "http://dynamic.vod.lixian.xunlei.com/play?action=http_sec&go=check&location=home&furl=[URL]"},
 
     // Only show available agents in popup menu
     appendAgentList : function(menupop, idpre, func, isradio, addOffLine){
@@ -115,15 +118,10 @@ var xThunderPref = {
         return agentList;
     },
     
-    // Set string of all agents, e.g. Thunder,DTA,wget|0,...
-    setAgentsListStr : function(showAgents) {
-        var showAgentsPref = "showAgents" + (this.detectOS() == "WINNT" ? "" : this.detectOS());
-        this.setValue(showAgentsPref, showAgents);
-    },
-    
     getUnixAgentList : function() {
         var showAgentsPref = "showAgents" + this.detectOS();
-        var unixAgents = this.getValue(showAgentsPref);
+        var oldUnixAgents = this.getValue(showAgentsPref);
+        var unixAgents = oldUnixAgents;
         if (!unixAgents) {
             // get agents from previous agent list
             unixAgents = "";
@@ -140,14 +138,28 @@ var xThunderPref = {
                     }
                 }
             }
-            
-            unixAgents += this.detectOS() == "Darwin" ? "curl|0,aria2|0," : "wget|0,transmission|0,curl|0,aria2|0,";
+        }
+        
+        var builtInAgents = this.detectOS() == "Darwin" ?  ["curl","aria2"] : ["wget", "transmission", "curl", "aria2", "mldonkeyOffLine"];
+        for (var j=0; j<builtInAgents.length; ++j) {
+            if (unixAgents.indexOf(builtInAgents[j]) == -1) {
+                unixAgents += (builtInAgents[j] + "|0,");
+            }
+        }
+        
+        if (unixAgents != oldUnixAgents) {
             this.setValue(showAgentsPref, unixAgents);
         }
         
         var unixAgentsList = unixAgents.split(",");
         unixAgentsList.pop();
         return unixAgentsList;
+    },
+        
+    // Set string of all agents, e.g. Thunder,DTA,wget|0,...
+    setAgentsListStr : function(showAgents) {
+        var showAgentsPref = "showAgents" + (this.detectOS() == "WINNT" ? "" : this.detectOS());
+        this.setValue(showAgentsPref, showAgents);
     },
 	
     getDefaultAgent : function() {
