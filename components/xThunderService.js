@@ -22,9 +22,13 @@ xThunderComponent.prototype = {
         if (!args) {
             args = [];
         }
-        if (agentName == "DTA") {
+        if (agentName.indexOf("OffLine") != -1) {
+            result = this.runWeb(false, exePath);
+        } else if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
-        } else if (this.detectOS() != "WINNT" || agentName.indexOf("custom") != -1) {
+        } else if (this.detectOS() == "WINNT" && agentName.indexOf("custom") == -1) {
+            result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args); 
+        } else {
             var names = exePath.split("/");
             var exeName = names[names.length-1];
             if (/(wget|curl|aria2c)(\.exe)?$/i.test(exeName)) {
@@ -50,8 +54,6 @@ xThunderComponent.prototype = {
                 }
                 result = this.runNative(exePath, nativeArgs);
             }
-        } else {
-            result = this.COMDownload(agentName, totalTask, referrer, urls, cookies, descs, cids, args); 
         }
         return result;
     },
@@ -216,13 +218,41 @@ xThunderComponent.prototype = {
         if (exeFile.exists()) {
             var proc = Cc["@mozilla.org/process/util;1"].createInstance(Ci.nsIProcess);
             proc.init(exeFile);
-            var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
-            cs.logStringMessage("Running " + exePath + " " + args.join(" "));
+            //var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
+            //cs.logStringMessage("Running " + exePath + " " + args.join(" "));
             proc["runw" in proc ? "runw" : "run"](false, args, args.length);
             return 0;
         } else {
             return this.EXE_NOT_FOUND;
         }
+    },
+        
+    runWeb : function(inBackground, reqUrl, method, data) {
+        if (/^https?:\/\//.test(reqUrl)) {
+            if (inBackground) {
+                var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(CI.nsIXMLHttpRequest);
+                req.open(method, reqUrl, true);
+                req.setRequestHeader('Host','localhost');
+                if (method == "POST" && data) {
+                    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    req.send(data);
+                } else {
+                    req.send(null);
+                }
+                return 0;
+            } else {
+                var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                    getService(Components.interfaces.nsIWindowMediator);
+                var mainWindow = wm.getMostRecentWindow("navigator:browser");
+                var browser = mainWindow ? mainWindow.gBrowser : null;
+                if (browser) {
+                    browser.selectedTab = browser.addTab(reqUrl); 
+                    return 0;
+                }
+            }
+        }
+        
+        return -1;
     },
     
     COMDownload : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {

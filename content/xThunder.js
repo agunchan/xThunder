@@ -101,49 +101,48 @@ var xThunder = {
         
         if (this.urls.length == this.totalTask && this.totalTask > 0 ) {
             try {
-                if (this.offLine && (this.agentName != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) {
-                    result = this.callOffLine(this.agentName, this.urls[0]);
-                } else {
-                    // Normal download
-                    var exePath,args;
-                    if (this.xThunderComponent == null) {
-                        this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
-                    }
-                    
-                    args = [];
-                    if (this.agentName == "DTA") {
-                        args.push(xThunderPref.getValue("dtaOneClick"));
-                        exePath = null;
-                    } else if (this.xThunderComponent.detectOS() != "WINNT" || this.agentName.indexOf("custom") != -1) {
-                        args.push(xThunderPref.getUnicodeValue("downloadDir") || this.getDownDir());
-                        args.push(xThunderPref.getValue("batEncoding"));
-                        if (this.agentName.indexOf("custom") == -1) {
-                            exePath = this.xThunderComponent.getExecutablePath(this.agentName, args);
-                        } else {
-                            args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
-                            exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
-                        }
-                    } else {
-                        args.push("-s", xThunderPref.getValue("sleepSecond"));
-                        exePath = null;
-                    }
-
-                    result = this.xThunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);
-                    switch(result) {
-                        case this.xThunderComponent.COM_NOT_FOUND:
-                            alert("xThunder.exe missing, please check if xThunder was unpacked!");
-                            break;
-                        case this.xThunderComponent.DTA_NOT_FOUND:
-                            alert("Call DTA error, please check if DTA was properly installed!");
-                            break;
-                        case this.xThunderComponent.EXE_NOT_FOUND:
-                            alert(exePath + " missing, please check if it was properly installed!");
-                            break;
-                    }
-
-                    // Clear array to free memory
-                    this.urls.length = this.cookies.length = this.descs.length = this.cids.length = this.totalTask = 0;
+                var exePath,args;
+                if (this.xThunderComponent == null) {
+                    this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
                 }
+
+                args = [];
+                if (this.offLine && (this.agentName != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) { 
+                    this.agentName = this.agentName.concat("OffLine");
+                    exePath = this.getRequestUrl(this.agentName, this.urls[0]);
+                } else if (this.agentName == "DTA") {
+                    args.push(xThunderPref.getValue("dtaOneClick"));
+                    exePath = null;
+                } else if (this.xThunderComponent.detectOS() == "WINNT" && this.agentName.indexOf("custom") == -1) {
+                    args.push("-s", xThunderPref.getValue("sleepSecond"));
+                    exePath = null;
+                } else {
+                    args.push(xThunderPref.getUnicodeValue("downloadDir") || this.getDownDir());
+                    args.push(xThunderPref.getValue("batEncoding"));
+
+                    if (this.agentName.indexOf("custom") != -1) {
+                        args.push(xThunderPref.getUnicodeValue("agent." + this.agentName + ".args"));
+                        exePath = xThunderPref.getUnicodeValue("agent." + this.agentName + ".exe");
+                    } else {
+                        exePath = this.xThunderComponent.getExecutablePath(this.agentName, args);
+                    }
+                } 
+
+                result = this.xThunderComponent.CallAgent(this.agentName, this.totalTask, this.referrer, this.urls, this.cookies, this.descs, this.cids, exePath, args);
+                switch(result) {
+                    case this.xThunderComponent.COM_NOT_FOUND:
+                        alert("xThunder.exe missing, please check if xThunder was unpacked!");
+                        break;
+                    case this.xThunderComponent.DTA_NOT_FOUND:
+                        alert("Call DTA error, please check if DTA was properly installed!");
+                        break;
+                    case this.xThunderComponent.EXE_NOT_FOUND:
+                        alert(exePath + " missing, please check if it was properly installed!");
+                        break;
+                }
+
+                // Clear array to free memory
+                this.urls.length = this.cookies.length = this.descs.length = this.cids.length = this.totalTask = 0;
             } catch(ex) {
                 alert(ex);
                 result = -1;
@@ -159,44 +158,23 @@ var xThunder = {
         return result == 0;
     },
     
-    callOffLine : function(agentName, url) {
-        var result = 0;
-        
-        var browser = this.getGBrowser();
-        var offLineAgents = ["QQDownload", "Thunder", "ThunderVOD"];
-        var offIdx = offLineAgents.indexOf(agentName);
-        if (browser) {
-            var offUrls = ["http://lixian.qq.com/main.html?url=[URL]", "http://lixian.vip.xunlei.com/lixian_login.html?furl=[URL]", xThunderPref.getValue("vodTemplate")];
-            var matches;
-            if ((matches = offUrls[offIdx].match(/(?:https?:\/\/)?([^#?/]+)/))) {
-                if (url.indexOf(matches[1]) == -1) {
-                    url = offUrls[offIdx].replace(/\[URL\]/, url);
-                }
-                browser.selectedTab = browser.addTab(url);  
-            } else {
-                alert("VOD Template is invalid!");
-                result = -1;
-            }
-        } else {
-            result = -1;
-        }
-        
-        return result;
-    },
-    
     callCandidate : function() {
         var result = 0;
         
         for (var i in this.candidate.agents) {
+            var offLine = this.candidate.agents[i].indexOf("OffLine") != -1;
             var agent = this.candidate.agents[i].replace("OffLine", "");
             var canUrls = this.candidate.urlArrays[i];
             if (canUrls.length > 0) {
-                if (agent != this.candidate.agents[i] && (agent != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) {
-                    result += this.callOffLine(agent, canUrls[0]);
-                } else {   
-                    if (this.xThunderComponent == null) {
-                        this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
-                    }
+                if (this.xThunderComponent == null) {
+                    this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
+                }
+
+                if (offLine && (agent != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) { 
+                    agent = this.candidate.agents[i];
+                    result += this.xThunderComponent.CallAgent(agent, 1, 
+                        this.referrer, canUrls[0], [], [], [], this.getRequestUrl(agent, canUrls[0]), []);
+                } else {
                     var canCookies = [];
                     var canDecs = [];
                     var canCids = [];
@@ -208,7 +186,7 @@ var xThunder = {
                         canCids.push(this.getCid(canUrls[j]));
                     }
                     result += this.xThunderComponent.CallAgent(agent, canUrls.length, 
-                        this.referrer, canUrls, canCookies, canDecs, canCids, null, args); 
+                        this.referrer, canUrls, canCookies, canDecs, canCids, null, args);
                 }
                 
                 this.candidate.taskCount -= canUrls.length;
@@ -217,6 +195,17 @@ var xThunder = {
         }
         
         return result;
+    },
+    
+    getRequestUrl : function(agent, url) {
+        agent = agent.split("OffLine")[0];
+        var reqUrl = xThunderPref.agentsOffLine[agent] || xThunderPref.getValue("agent." + agent);
+        if (/\[EURL\]/.test(reqUrl)) {
+            reqUrl = reqUrl.replace(/\[EURL\]/, encodeURIComponent(url));
+        } else {
+            reqUrl = reqUrl.replace(/\[URL\]/, url);
+        }
+        return reqUrl;
     },
     
     getDownDir : function() {
@@ -237,17 +226,6 @@ var xThunder = {
         
         xThunderPref.setUnicodeValue("downloadDir", downloadDir);
         return downloadDir;
-    },
-    
-    getGBrowser : function() {
-        if (typeof gBrowser != "undefined") {
-            return gBrowser;
-        } else {
-            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
-                getService(Components.interfaces.nsIWindowMediator);
-            var mainWindow = wm.getMostRecentWindow("navigator:browser");
-            return mainWindow ? mainWindow.gBrowser : null;
-        }
     },
     
     getCookie : function(href){
