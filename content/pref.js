@@ -39,7 +39,9 @@ var xThunderPref = {
                     mi.setAttribute("checked", true);
             }
             if(agent.indexOf("OffLine") != -1 && downOffLineSep) {
-                menupop.insertBefore(ownDoc.createElement("menuseparator"), mi);
+                if (menupop.childNodes.length > 1) {
+                    menupop.insertBefore(ownDoc.createElement("menuseparator"), mi);
+                }
                 downOffLineSep = false;
             }
         }
@@ -56,10 +58,12 @@ var xThunderPref = {
     getEnabledAgentList : function(addOffLine) {
         var agentList = this.getFixedAgentList();
         var enableAgentList = [];
+        var offLineAutoHide = this.getValue("downOffLineAutoHide");
         for (var i=0; i<agentList.length; ++i) {
             var agentItem = agentList[i].split("|");
             var agent = agentItem[0];
-            if (addOffLine && (!this.getValue("downOffLineAutoHide") || agentItem.length == 1)) {
+            var enabled = (agentItem.length == 1);
+            if (addOffLine && (enabled || !offLineAutoHide)) {
                 if (agent == "Thunder") {
                     agentList.push(agent + "OffLine");
                     if (this.getValue("vodOffLine")) {
@@ -70,10 +74,15 @@ var xThunderPref = {
                 }
             }
             
-            if (agentItem.length == 1) {
+            if (enabled) {
                 enableAgentList.push(agent);
             }
         }
+        
+        if (addOffLine && this.getValue("qqOffLineWeb") && enableAgentList.indexOf("QQDownloadOffLine") == -1) {
+            enableAgentList.push("QQDownloadOffLine");
+        }
+        
         return enableAgentList;
     },
 
@@ -140,7 +149,8 @@ var xThunderPref = {
             }
         }
         
-        var builtInAgents = this.detectOS() == "Darwin" ?  ["curl","aria2"] : ["wget", "transmission", "curl", "aria2", "mldonkeyOffLine"];
+        var builtInAgents = this.detectOS() == "Darwin" ?  ["curl","aria2"] : 
+            ["wget", "transmission", "curl", "aria2", "mldonkeyOffLine", "utorrentOffLine"];
         for (var j=0; j<builtInAgents.length; ++j) {
             if (unixAgents.indexOf(builtInAgents[j]) == -1) {
                 unixAgents += (builtInAgents[j] + "|0,");
