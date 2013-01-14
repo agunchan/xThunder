@@ -38,14 +38,12 @@ var xThunder = {
         this.descs = [];
         this.cids = [];
         this.totalTask = totalTask;
-        if (agentName) {
-            var agent = agentName.replace("OffLine", "");
-            this.agentName = agent;
-            this.offLine = (agent != agentName) || offLine || false;
-        } else {
-            this.agentName = xThunderPref.getDefaultAgent();
-            this.offLine = false;
-        }
+        if (!agentName) {
+            agentName = xThunderPref.getDefaultAgent();
+        } 
+        var agent = agentName.replace("OffLine", "");
+        this.agentName = agent;
+        this.offLine = (agent != agentName) || offLine || false;
         this.filerExtStr = (this.totalTask > 1 && xThunderPref.getValue("filterExt")) 
             ? xThunderPref.getValue("supportExt") : "";
         this.candidate.agents = xThunderPref.getValue("useCandidate") 
@@ -109,7 +107,7 @@ var xThunder = {
                 args = [];
                 if (this.offLine && (this.agentName != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) { 
                     this.agentName = this.agentName.concat("OffLine");
-                    exePath = this.getRequestUrl(this.agentName, this.urls[0]);
+                    exePath = this.getRequestUrl(this.agentName, this.urls[0], args);
                 } else if (this.agentName == "DTA") {
                     args.push(xThunderPref.getValue("dtaOneClick"));
                     exePath = null;
@@ -164,48 +162,82 @@ var xThunder = {
         for (var i in this.candidate.agents) {
             var offLine = this.candidate.agents[i].indexOf("OffLine") != -1;
             var agent = this.candidate.agents[i].replace("OffLine", "");
+            var exePath = null;
+            var args = [];
             var canUrls = this.candidate.urlArrays[i];
+            var canCookies = [];
+            var canDecs = [];
+            var canCids = [];
             if (canUrls.length > 0) {
                 if (this.xThunderComponent == null) {
                     this.xThunderComponent = Components.classes["@fxthunder.com/component;1"].getService().wrappedJSObject;
                 }
 
                 if (offLine && (agent != "QQDownload" || xThunderPref.getValue("qqOffLineWeb"))) { 
-                    agent = this.candidate.agents[i];
-                    result += this.xThunderComponent.CallAgent(agent, 1, 
-                        this.referrer, canUrls[0], [], [], [], this.getRequestUrl(agent, canUrls[0]), []);
+                    agent = this.candidate.agents[i];   //agent name ends with 'OffLine''
+                    exePath = this.getRequestUrl(agent, canUrls[0], args);
                 } else {
-                    var canCookies = [];
-                    var canDecs = [];
-                    var canCids = [];
-                    var args = [];
                     args.push("-silent");
+                    exePath = null;
                     for (var j in canUrls) {
                         canCookies.push(this.ARG_DEF_STR);
                         canDecs.push(this.getFileName(canUrls[j]));
                         canCids.push(this.getCid(canUrls[j]));
                     }
-                    result += this.xThunderComponent.CallAgent(agent, canUrls.length, 
-                        this.referrer, canUrls, canCookies, canDecs, canCids, null, args);
                 }
                 
+                result += this.xThunderComponent.CallAgent(agent, canUrls.length, this.referrer, canUrls, canCookies, canDecs, canCids, exePath, args);
+                
                 this.candidate.taskCount -= canUrls.length;
-                canUrls.length = 0;
+                this.candidate.urlArrays[i].length = 0; // Clear array to free memory
             }
         }
         
         return result;
     },
     
-    getRequestUrl : function(agent, url) {
-        agent = agent.split("OffLine")[0];
-        var reqUrl = xThunderPref.agentsOffLine[agent] || xThunderPref.getValue("agent." + agent);
+    getRequestUrl : function(agent, url, args) {
+        agent = agent.replace("OffLine", "");
+        var reqUrl = xThunderPref.agentsOffLine[agent];
+        if (reqUrl) {
+            //open built-in offline agent in a new tab
+            args.push("--in-background", false);
+        } else {
+            reqUrl = xThunderPref.getValue("agent." + agent);
+            args.push("--in-background", xThunderPref.getValue("agent.requestInBackground", false));
+            args.push("--method", "GET");
+            args.push("--data", "");
+            args.push("--user", xThunderPref.getValue("agent." + agent + ".user", ""));
+            args.push("--password", xThunderPref.getValue("agent." + agent + ".password", ""));
+            args.push("--callback", this.reqCallBack);
+        }
         if (/\[EURL\]/.test(reqUrl)) {
             reqUrl = reqUrl.replace(/\[EURL\]/, encodeURIComponent(url));
         } else {
             reqUrl = reqUrl.replace(/\[URL\]/, url);
         }
         return reqUrl;
+    },
+
+    reqCallBack : function(agent, url, succeed, res) {
+        agent = agent.replace("OffLine", "");
+        var title = succeed ? "Succeed" : "Failed";
+        var text = agent + " adds " + url.substring(0, url.indexOf(":")) + " link ";
+        var reqUrl = xThunderPref.agentsOffLine[agent] || xThunderPref.getValue("agent." + agent);
+        var serverUrl = reqUrl.substring(0, reqUrl.lastIndexOf("/") + 1);
+        var alertsService = Components.classes["@mozilla.org/alerts-service;1"].getService(Components.interfaces.nsIAlertsService);
+        alertsService.showAlertNotification("chrome://xthunder/skin/icon.png", title, text, true, serverUrl, xThunder, "xThunder Status");
+    },
+    
+    observe: function(aSubject, aTopic, aData) {
+        switch (aTopic) {
+            case "alertclickcallback":
+                // Open the webui in the top window
+                var args = [];
+                args.push("--in-background", false);
+                this.xThunderComponent.CallAgent("OffLine", 1, "", [aData], [], [], [], aData, args);
+                break;
+        }
     },
     
     getDownDir : function() {

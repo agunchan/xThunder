@@ -23,7 +23,7 @@ xThunderComponent.prototype = {
             args = [];
         }
         if (agentName.indexOf("OffLine") != -1) {
-            result = this.runWeb(false, exePath);
+            result = this.runWeb(agentName, urls[0], exePath, args);
         } else if (agentName == "DTA") {
             result = this.DTADownload(totalTask, referrer, urls, descs, args[0] || false);
         } else if (this.detectOS() == "WINNT" && agentName.indexOf("custom") == -1) {
@@ -46,8 +46,8 @@ xThunderComponent.prototype = {
                 var nativeArgs;
                 if (args.length >= 1) {
                     nativeArgs = args[args.length-1].split(/\s+/);
-                    for (var key in nativeArgs) {
-                        nativeArgs[key] = this.replaceHolder(nativeArgs[key], referrer, urls, cookies, descs);
+                    for (var i in nativeArgs) {
+                        nativeArgs[i] = this.replaceHolder(nativeArgs[i], referrer, urls, cookies, descs);
                     }
                 } else {
                     nativeArgs = [];
@@ -227,32 +227,92 @@ xThunderComponent.prototype = {
         }
     },
         
-    runWeb : function(inBackground, reqUrl, method, data) {
-        if (/^https?:\/\//.test(reqUrl)) {
-            if (inBackground) {
-                var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(CI.nsIXMLHttpRequest);
-                req.open(method, reqUrl, true);
-                req.setRequestHeader('Host','localhost');
-                if (method == "POST" && data) {
-                    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    req.send(data);
-                } else {
-                    req.send(null);
+    runWeb : function(agentName, url, reqUrl, args) {
+        if (! /^https?:\/\//.test(reqUrl)) {
+            return -1;
+        }
+        
+        var inBackground = false;
+        var method = "GET";
+        var data = "";
+        var user = "";
+        var password = "";
+        var callback = null;
+        for (var i = 0; i < args.length; i++) {
+            if (args[i] == "--in-background") {
+                inBackground = args[++i];
+            } else if (args[i] == "--method") {
+                method = args[++i];
+            } else if (args[i] == "--data") {
+                data = args[++i];
+            } else if (args[i] == "--user") {
+                user = args[++i];
+            } else if (args[i] == "--password") {
+                password = args[++i];
+            } else if (args[i] == "--callback") {
+                callback = args[++i];
+            }
+        }
+        
+        if (inBackground) {
+            if (reqUrl.indexOf("[TOKEN]") != -1) {  //need token
+                if (!xThunderComponent.tokenAuth) {
+                    this.fetchToken(agentName, url, reqUrl, args, user, password, this.runWeb, callback);
+                    return -1;
                 }
-                return 0;
+                reqUrl = reqUrl.replace("[TOKEN]", xThunderComponent.tokenAuth);
+            }
+            var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
+            req.open(method, reqUrl, true, user, password);
+            req.onreadystatechange = function() {
+                if (req.readyState == 4)  callback(agentName, url, req.status==200, req.responseText);
+            };
+            req.setRequestHeader('Host','localhost');
+            if (method == "POST" && data) {
+                req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                req.send(data);
             } else {
-                var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
-                    getService(Components.interfaces.nsIWindowMediator);
-                var mainWindow = wm.getMostRecentWindow("navigator:browser");
-                var browser = mainWindow ? mainWindow.gBrowser : null;
-                if (browser) {
-                    browser.selectedTab = browser.addTab(reqUrl); 
-                    return 0;
-                }
+                req.send(null);
+            }
+            return 0;
+        } else {
+            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                getService(Components.interfaces.nsIWindowMediator);
+            var mainWindow = wm.getMostRecentWindow("navigator:browser");
+            var browser = mainWindow ? mainWindow.gBrowser : null;
+            if (browser) {
+                browser.selectedTab = browser.addTab(reqUrl); 
+                return 0;
             }
         }
         
         return -1;
+    },
+    
+    fetchToken : function(agentName, url, reqUrl, args, user, password, tokenCallback, downCallback) {
+        var tokenUrl = reqUrl.substring(0, reqUrl.indexOf("?token=")).concat("token.html");
+        var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
+        var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
+        req.mozBackgroundRequest = true;
+        cs.logStringMessage(tokenUrl);
+        req.open("GET", tokenUrl, true, user, password);
+        req.setRequestHeader("accept-charset", "utf-8");
+        req.overrideMimeType("text/xml");
+        req.onload = function() {
+            if (req.status == 200) {
+                var divs = this.responseXML.getElementsByTagName("div");
+                if (divs) {
+                    xThunderComponent.tokenAuth = divs[0].firstChild.nodeValue;
+                    tokenCallback(agentName, url, reqUrl, args);
+                } else {
+                    downCallback(agentName, url, false, "");
+                }
+            }
+        };
+        req.onerror = function() {
+            downCallback(agentName, url, false, "");
+        }
+        req.send(null);
     },
     
     COMDownload : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
