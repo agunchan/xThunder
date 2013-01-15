@@ -1,6 +1,6 @@
 <!ENTITY	options         "xThunder Options">
 <!ENTITY	restoreDefault	"Restore Default">
-<!ENTITY	tab.general		"General">
+<!ENTITY	tab.general     "General">
 <!ENTITY	tab.interface   "Interface">
 <!ENTITY	tab.downloader  "Downloader">
 <!ENTITY	tab.advanced    "Advanced">
@@ -17,6 +17,10 @@
 <!ENTITY	filterext       "Filter links by above extensions first">
 <!ENTITY	lbl.downloadAll "Download All">
 <!ENTITY	includeImages   "Include images found in current page">
+<!ENTITY	lbl.monitor     "Monitor Link">
+<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background tab">
+<!ENTITY	ctrlAltDecode   "Ctrl+Alt+Click = Copy decoded link url to clipboard">
+<!ENTITY	useCandidate    "Try candidate downloaders when url is unsupported">
 <!ENTITY	lbl.showMenu            "Show Menu">
 <!ENTITY	showStatusIcon          "Show icon in status bar">
 <!ENTITY	showMenuIcons           "Show context menu icons">
@@ -52,7 +56,3 @@
 <!ENTITY	tip.rClickList  "    right click or middle click to select it only">
 <!ENTITY	tip.lClickMenu  "2. Left click xThunder menuitem to use FIRST downloader,">
 <!ENTITY	tip.rClickMenu  "    right click - SECOND, middle click - THIRD">
-<!ENTITY	lbl.monitor     "Monitor Link">
-<!ENTITY	ctrlNoMonitor   "Ctrl+Click = Open decoded link in background tab">
-<!ENTITY	ctrlAltDecode   "Ctrl+Alt+Click = Copy decoded link url to clipboard">
-<!ENTITY	useCandidate    "Try candidate downloaders when url is unsupported">
