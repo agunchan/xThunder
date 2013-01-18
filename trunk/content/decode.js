@@ -2,8 +2,8 @@ var xThunderDecode = {
     // Flashgetx is encoded at least twice, so pre decode it.
     getPreDecodedUrl : function(url) {
         url = url.replace(/ /g, "");
-        var isFlashGet = /^flashget:\/\//i.test(url);
-        if (isFlashGet) {
+        var isSpecific = /^(flashget|qqdl):\/\//i.test(url);
+        if (isSpecific) {
             url = this.getDecodedUrl(url);
         }
         return url;
@@ -22,7 +22,8 @@ var xThunderDecode = {
                       /^http:\/\/goxiazai\.(?:com|cc)\/xiazai\.html\?cid=.*&f=thunder.+/i.test(url) ||
                       /^http:\/\/db\.gamersky\.com\/Soft\/ShowSoftDown\.asp\?UrlID=.*&SoftID=.*&flag=1/.test(url) ||
                       link.id == "union_download_thunder" && link.getAttribute("onclick") ||
-                      link.className.indexOf("file_name") != -1 && link.ownerDocument.URL.indexOf("http://kuai.xunlei.com/d/") == 0
+                      link.className.indexOf("file_name") != -1 && link.href && 
+                          (link.href.indexOf(".sendfile.vip.xunlei.com:8000/") != -1 || link.href.indexOf("http://192.168.") == 0)
                     )
                 || protocols[i] == "flashget" &&
                     ( url.indexOf("flashget:") == 0 ||
@@ -142,7 +143,10 @@ var xThunderDecode = {
             if (/^(?:thunder|flashget|qqdl|fs2you):\/\//i.test(url)) {
                 url = this.decode64(url.replace(/^(?:thunder|flashget|qqdl|fs2you):\/\/|&.*|\/$/ig, "")).
                     replace(/^AA|ZZ$|\[FLASHGET\]|\|\d+$/g, "");
-                if (/^flashget:\/\//i.test(oriUrl)) {
+                if (/^qqdl:\/\//i.test(oriUrl) && url.indexOf("http://192.168.") != -1) {
+                    // User oriUrl when it is qqdl://aHR0cDovLzE5Mi4xNjgu
+                    url = oriUrl;
+                } else if (/^flashget:\/\//i.test(oriUrl)) {
                     // Use oriUrl when it is actually flashgetx://|mhts|, or decode once more
                     url = /http:\/\/.*\/Zmxhc2hnZXR4Oi8vfG1odHN8[^/]*/.test(url) ? oriUrl : this.getDecodedUrl(url);
                 } else if(/^ftp:\/\//i.test(url)) {

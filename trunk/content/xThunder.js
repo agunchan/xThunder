@@ -91,7 +91,7 @@ var xThunder = {
             des = des.replace(/^\s+|\s+$|[\r\n]+/g,"");
         }
         this.descs.push(des);
-        this.cids.push(this.getCid(url));
+        this.cids.push(this.getCid(url, this.agentName, this.offLine));
     },
     
     callAgent : function() {   
@@ -182,7 +182,7 @@ var xThunder = {
                     for (var j in canUrls) {
                         canCookies.push(this.ARG_DEF_STR);
                         canDecs.push(this.getFileName(canUrls[j]));
-                        canCids.push(this.getCid(canUrls[j]));
+                        canCids.push(this.getCid(canUrls[j], agent, offLine));
                     }
                 }
                 
@@ -298,11 +298,11 @@ var xThunder = {
         return fileName;
     },
     
-    getCid : function(href) {
+    getCid : function(href, agentName, offLine) {
         var cid = this.ARG_DEF_STR;
-        if (this.agentName == "QQDownload") {
-            cid = this.offLine ? "10600" : "0";
-        } else if (this.agentName.indexOf("Thunder") != -1) {
+        if (agentName == "QQDownload") {
+            cid = offLine ? "10600" : "0";
+        } else if (agentName.indexOf("Thunder") != -1) {
             var matches;
             if (matches = href.match(/^http:\/\/(?:thunder\.ffdy\.cc|www\.7369\.com|bt\.2tu\.cc)\/([0-9A-F]+)\//)) {
                 cid = matches[1];

@@ -354,7 +354,7 @@ var xThunderMain = {
             if (typeof linkNode.href == "undefined" ) {
                 linkNode = linkNode.parentNode;
             }
-            url = linkNode.getAttribute("fg") || gContextMenu.linkURL;
+            url = linkNode.getAttribute("fg") || linkNode.getAttribute("qhref") || gContextMenu.linkURL;
         } else if (gContextMenu.onImage) {
             url = gContextMenu.target.src;
         } else {
