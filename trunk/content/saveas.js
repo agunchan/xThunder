@@ -44,6 +44,12 @@ window.addEventListener("load", function() {
             } catch (ex) {}	
         }
     }
+        
+    function copyUrl() {
+        var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+                getService(Components.interfaces.nsIClipboardHelper);
+        gClipboardHelper.copyString(dialog.mLauncher.source.spec);
+    }
 
     function download(agentName) {
         var de = document.documentElement;
@@ -65,7 +71,7 @@ window.addEventListener("load", function() {
         de.removeAttribute("onblur");
         de.removeAttribute("onfocus");
         de.cancelDialog();
-    } 
+    }
     
     var radioExists = xThunderPref.getValue("downInSaveFile");
     $("xThunderDown").hidden = !radioExists;
@@ -162,7 +168,9 @@ window.addEventListener("load", function() {
             xThunderBtn.className = acceptBtn.className;
             xThunderBtn.addEventListener("click", function(event) {
                 if (event.target == this) {
-                    if (xThunderBtn.type != "menu" || event.button != 0 || event.target.boxObject.x + event.target.boxObject.width - event.clientX > 20) {
+                    if (event.button == 0 && event.ctrlKey && event.altKey) {    
+                        copyUrl();
+                    } else if (xThunderBtn.type != "menu" || event.button != 0 || event.target.boxObject.x + event.target.boxObject.width - event.clientX > 20) {
                         download(xThunderPref.getAgentByClick(event, downOffLineExists));
                     }
                 }
