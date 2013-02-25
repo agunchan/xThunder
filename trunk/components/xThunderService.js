@@ -366,13 +366,18 @@ xThunderComponent.prototype = {
         }
 
         var DTA = this.DTA;
-        if (totalTask == 1 && DTA.saveSingleLink) {
+        if (totalTask == 1 && DTA.saveSingleItem) {
+            var item = {
+                url : urls[0],
+                referrer : refer,
+                description : descs[0]
+            };
             try {
-                DTA.saveSingleLink(mainWindow, oneClick, urls[0], refer, descs[0]);
+                DTA.saveSingleItem(mainWindow, oneClick, item);
             } catch(e) {
                 // Use dta dialog to set download directory if oneClick failed
                 if (oneClick)
-                    DTA.saveSingleLink(mainWindow, false, urls[0], refer, descs[0]);
+                    DTA.saveSingleItem(mainWindow, false, item);
                 else
                     throw e;
             }
