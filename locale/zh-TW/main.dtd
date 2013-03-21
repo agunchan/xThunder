@@ -1,0 +1,8 @@
+<!ENTITY	download        "xThunder下載">
+<!ENTITY	downloadOffLine "xThunder離線下載">
+<!ENTITY	downloadAll     "xThunder全部連結">
+<!ENTITY	optionsPrompt   "左鍵下載全部連結，右鍵顯示功能表">
+<!ENTITY	includeImages   "包含目前頁面中圖片">
+<!ENTITY	filterExt       "預先過濾檔案副檔名">
+<!ENTITY	moreOptions     "更多選項...">
+<!ENTITY	defaultAgent    "預設下載器">

@@ -2,6 +2,7 @@ content xthunder content/
 skin    xthunder classic/1.0 skin/
 locale  xthunder en-US locale/en-US/
 locale  xthunder zh-CN locale/zh-CN/
+locale  xthunder zh-TW locale/zh-TW/
 
 # Gecko 2 JavaScript component registration
 component {77683972-8cb9-4f92-a962-aea5b6f1e2a1} components/xThunderService.js
