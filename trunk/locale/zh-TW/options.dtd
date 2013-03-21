@@ -1,0 +1,58 @@
+<!ENTITY	options         "xThunder 設定">
+<!ENTITY	restoreDefault	"恢復預設設定">
+<!ENTITY	tab.general     "一般設定">
+<!ENTITY	tab.interface   "介面功能表">
+<!ENTITY	tab.downloader  "下載工具">
+<!ENTITY	tab.advanced  	"進階">
+<!ENTITY	lbl.supClick    "左鍵直接下載">
+<!ENTITY	pro.thunder     "迅雷 (thunder://)">
+<!ENTITY	pro.flashget    "快車 (flashget://)">
+<!ENTITY	pro.qqdl        "旋風 (qqdl://)">
+<!ENTITY	pro.fs2you      "飛速 (fs2you://)">
+<!ENTITY	pro.ed2k        "電驢 (ed2k://)">
+<!ENTITY	pro.magnet      "磁力 (magnet:?)">
+<!ENTITY	pro.udown       "優蛋 (udown://)">
+<!ENTITY	pro.115         "115 (115.com/file)">
+<!ENTITY	remember        "關聯普通檔案類型">
+<!ENTITY	filterext       "預先以上述副檔名過濾連結">
+<!ENTITY	lbl.downloadAll "下載全部連結">
+<!ENTITY	includeImages   "包含目前頁面中的圖片源位址">
+<!ENTITY	lbl.monitor     "監視連結">
+<!ENTITY	ctrlNoMonitor   "Ctrl+左鍵 = 背景標籤頁開啟解碼的連結">
+<!ENTITY	ctrlAltDecode   "Ctrl+Alt+左鍵 = 複製解碼後的連結位址到剪貼簿">
+<!ENTITY	useCandidate    "當無法下載連結時嘗試調用其它候選下載器">
+<!ENTITY	lbl.showMenu            "顯示功能表">
+<!ENTITY	showStatusIcon          "顯示狀態列圖示">
+<!ENTITY	showMenuIcons           "顯示右鍵功能表圖示">
+<!ENTITY	compactMenu             "合併所有右鍵功能表">
+<!ENTITY	downInCxtMenu           "xThunder下載在右鍵功能表">
+<!ENTITY	downSubMenu             "顯示下載工具在二級功能表">
+<!ENTITY	downOffLineInCxtMenu    "xThunder離線下載在右鍵功能表">
+<!ENTITY	downAllInCxtMenu        "xThunder全部連結在右鍵功能表">
+<!ENTITY	downInSaveFile          "xThunder項在儲存方式對話方塊">
+<!ENTITY	downBtnInSaveFile       "xThunder按鈕整合到儲存方式對話方塊">
+<!ENTITY	downListInSaveFile      "顯示xThunder項和按鈕的下拉功能表">
+<!ENTITY	lbl.offLine             "離線下載">
+<!ENTITY	downOffLineSubMenu      "離線下載項在右鍵二級功能表">
+<!ENTITY	downOffLineInSaveFile   "離線下載項在儲存方式對話方塊">
+<!ENTITY	downOffLineSep          "顯示離線下載項前的分隔線">
+<!ENTITY	vodOffLine              "顯示離線下載項後的迅雷雲播放">
+<!ENTITY	qqOffLineWeb            "使用網頁版QQ旋風離線下載">
+<!ENTITY	moveUpButton    "上移">
+<!ENTITY	moveDownButton  "下移">
+<!ENTITY	editButton      "編輯">
+<!ENTITY	removeButton    "移除">
+<!ENTITY	newButton       "新增">
+<!ENTITY	lbl.newAgent    "自訂">
+<!ENTITY	agentName       "名稱">
+<!ENTITY	agentExe        "程式">
+<!ENTITY	agentBrowse     "瀏覽...">
+<!ENTITY	agentArgs       "參數">
+<!ENTITY	agentArgsPH     "占位符">
+<!ENTITY	agentFinishBtn  "完成">
+<!ENTITY	agentCancelBtn  "放棄">
+<!ENTITY	lbl.agentTip    "提示：">
+<!ENTITY	tip.lClickList  "1. 左鍵點選上述下載器清單選取並取反相對項，">
+<!ENTITY	tip.rClickList  "    右鍵點選或中鍵點選僅選取該項">
+<!ENTITY	tip.lClickMenu  "2. 左鍵點選xThunder選項使用第一個下載器，">
+<!ENTITY	tip.rClickMenu  "    右鍵點選 - 第二，中鍵點選 - 第三">
