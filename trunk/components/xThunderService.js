@@ -70,10 +70,10 @@ xThunderComponent.prototype = {
     
     getExecutablePath : function(agentName, args) {
         var path;
-		if (agentName == "curl") {
+        if (agentName == "curl") {
             args.push("-L -O -b [COOKIE] -e [REFERER] [URL]");
-			path = "/usr/bin/curl";
-		} else {
+            path = "/usr/bin/curl";
+        } else {
             args.push("[URL]");
             switch (agentName) {
                 case "Thunder":
@@ -89,7 +89,7 @@ xThunderComponent.prototype = {
                 default:
                     path = "/usr/bin/" + agentName;
             }
-		}
+        }
 
         return path;
     },
@@ -235,8 +235,6 @@ xThunderComponent.prototype = {
         var inBackground = false;
         var method = "GET";
         var data = "";
-        var user = "";
-        var password = "";
         var callback = null;
         for (var i = 0; i < args.length; i++) {
             if (args[i] == "--in-background") {
@@ -245,27 +243,18 @@ xThunderComponent.prototype = {
                 method = args[++i];
             } else if (args[i] == "--data") {
                 data = args[++i];
-            } else if (args[i] == "--user") {
-                user = args[++i];
-            } else if (args[i] == "--password") {
-                password = args[++i];
             } else if (args[i] == "--callback") {
                 callback = args[++i];
             }
         }
         
         if (inBackground) {
-            if (reqUrl.indexOf("[TOKEN]") != -1) {  //need token
-                if (!xThunderComponent.tokenAuth) {
-                    this.fetchToken(agentName, url, reqUrl, args, user, password, this.runWeb, callback);
-                    return -1;
-                }
-                reqUrl = reqUrl.replace("[TOKEN]", xThunderComponent.tokenAuth);
-            }
             var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
-            req.open(method, reqUrl, true, user, password);
+            req.open(method, reqUrl, true);
             req.onreadystatechange = function() {
-                if (req.readyState == 4)  callback(agentName, url, req.status==200, req.responseText);
+                if (req.readyState == 4 && callback)  {
+                    callback(agentName, url, req.status==200, req.responseText);
+                }
             };
             req.setRequestHeader('Host','localhost');
             if (method == "POST" && data) {
@@ -287,32 +276,6 @@ xThunderComponent.prototype = {
         }
         
         return -1;
-    },
-    
-    fetchToken : function(agentName, url, reqUrl, args, user, password, tokenCallback, downCallback) {
-        var tokenUrl = reqUrl.substring(0, reqUrl.indexOf("?token=")).concat("token.html");
-        var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
-        var cs = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
-        req.mozBackgroundRequest = true;
-        cs.logStringMessage(tokenUrl);
-        req.open("GET", tokenUrl, true, user, password);
-        req.setRequestHeader("accept-charset", "utf-8");
-        req.overrideMimeType("text/xml");
-        req.onload = function() {
-            if (req.status == 200) {
-                var divs = this.responseXML.getElementsByTagName("div");
-                if (divs) {
-                    xThunderComponent.tokenAuth = divs[0].firstChild.nodeValue;
-                    tokenCallback(agentName, url, reqUrl, args);
-                } else {
-                    downCallback(agentName, url, false, "");
-                }
-            }
-        };
-        req.onerror = function() {
-            downCallback(agentName, url, false, "");
-        }
-        req.send(null);
     },
     
     COMDownload : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
