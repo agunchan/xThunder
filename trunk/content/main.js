@@ -208,14 +208,16 @@ var xThunderMain = {
         try {
             var clip = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
             var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+            if ('init' in trans) {
+                trans.init(null);
+            }
             var str       = {};
             var strLength = {};
             trans.addDataFlavor("text/unicode");
             clip.getData(trans, clip.kGlobalClipboard);
             trans.getTransferData("text/unicode", str, strLength);
             if (str) {
-                str = str.value.QueryInterface(Components.interfaces.nsISupportsString);
-                pasteText = str.data.substring(0, strLength.value / 2);
+                pasteText = str.value.QueryInterface(Components.interfaces.nsISupportsString).data;
             }
         } catch (ex) {}
         
