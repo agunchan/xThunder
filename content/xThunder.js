@@ -207,8 +207,6 @@ var xThunder = {
             args.push("--in-background", xThunderPref.getValue("agent.requestInBackground", false));
             args.push("--method", "GET");
             args.push("--data", "");
-            args.push("--user", xThunderPref.getValue("agent." + agent + ".user", ""));
-            args.push("--password", xThunderPref.getValue("agent." + agent + ".password", ""));
             args.push("--callback", this.reqCallBack);
         }
         if (/\[EURL\]/.test(reqUrl)) {

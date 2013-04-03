@@ -98,10 +98,11 @@ var xThunderPref = {
         var agentList = showAgents.split(",");
         var agentLen = agentList.length-1;
         var cusAgentLen = this.getUnicodeValue("agent.custom").split(",").length - 1;
+        var agent;
+        var i;        
 
         if (agentLen - cusAgentLen < this.agents.length) {
-            // For user config before v1.0.2
-            var i;
+            // Add newly supported agents 
             for (i=0; i<this.agents.length; ++i) {
                 if (agentList.indexOf(this.agents[i]) == -1 && agentList.indexOf(this.agents[i]+"|0") == -1) {
                     showAgents += (this.agents[i] + "|0,");
@@ -115,10 +116,11 @@ var xThunderPref = {
             this.setValue("showAgents", showAgents);
             agentList = showAgents.split(",");
         } else if(agentLen - cusAgentLen > this.agents.length) {
-            // For user config after v1.1.1
-            for (var j=0; j<agentLen; ++j) {
-                if (this.agents.indexOf(agentList[j].split("|")[0]) == -1) {
-                    showAgents = showAgents.replace(agentList[j] + ",", "");
+            // Delete no longer supported agents
+            for (i=0; i<agentLen; ++i) {
+                agent = agentList[i].split("|")[0];
+                if (agent.indexOf("custom") == -1 && this.agents.indexOf(agent) == -1) {
+                    showAgents = showAgents.replace(agentList[i] + ",", "");
                 }
             }
             this.setValue("showAgents", showAgents);
@@ -133,13 +135,15 @@ var xThunderPref = {
         var showAgentsPref = "showAgents" + this.detectOS();
         var oldUnixAgents = this.getValue(showAgentsPref);
         var unixAgents = oldUnixAgents;
+        var agent;
+        var i;
         if (!unixAgents) {
             // get agents from previous agent list
             unixAgents = "";
             var agentList = this.getValue("showAgents").split(",");
             agentList.pop();
-            for (var i=0; i<agentList.length; ++i) {
-                var agent = agentList[i].split("|")[0];
+            for (i=0; i<agentList.length; ++i) {
+                agent = agentList[i].split("|")[0];
                 if (agent == "Thunder" || agent == "DTA") {
                     unixAgents += (agentList[i] + ",");
                 } else if (agent.indexOf("custom") != -1) {
@@ -151,20 +155,32 @@ var xThunderPref = {
             }
         }
         
-        var builtInAgents = this.detectOS() == "Darwin" ?  ["curl","aria2"] : 
-            ["wget", "transmission", "curl", "aria2", "mldonkeyOffLine", "utorrentOffLine"];
-        for (var j=0; j<builtInAgents.length; ++j) {
-            if (unixAgents.indexOf(builtInAgents[j]) == -1) {
-                unixAgents += (builtInAgents[j] + "|0,");
+        var builtInAgents = this.detectOS() == "Darwin" ?  ["Thunder", "DTA", "curl","aria2"] : 
+            ["Thunder", "DTA", "wget", "transmission", "curl", "aria2", "mldonkeyOffLine"];
+        
+        // Add newly supported agents 
+        for (i=0; i<builtInAgents.length; ++i) {
+            if (unixAgents.indexOf(builtInAgents[i]) == -1) {
+                unixAgents += (builtInAgents[i] + "|0,");
+            }
+        }
+        // Delete no longer supported agents
+        var unixAgentsList = unixAgents.split(",");
+        unixAgentsList.pop();
+        for (i=0; i<unixAgentsList.length; ) {
+            agent = unixAgentsList[i].split("|")[0];
+            if (agent.indexOf("custom") == -1 && builtInAgents.indexOf(agent) == -1) {
+                unixAgents = unixAgents.replace(unixAgentsList[i] + ",", "");
+                unixAgentsList.splice(i, 1);
+            } else {
+                ++i;
             }
         }
         
         if (unixAgents != oldUnixAgents) {
             this.setValue(showAgentsPref, unixAgents);
         }
-        
-        var unixAgentsList = unixAgents.split(",");
-        unixAgentsList.pop();
+
         return unixAgentsList;
     },
         
