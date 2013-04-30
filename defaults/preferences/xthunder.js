@@ -28,6 +28,8 @@ pref("extensions.xthunder.qqOffLineWeb", false);
 pref("extensions.xthunder.agent.custom", "");
 pref("extensions.xthunder.agent.requestInBackground", true);
 pref("extensions.xthunder.agent.mldonkey", "http://localhost:4080/submit?q=dllink+[EURL]");
+pref("extensions.xthunder.agent.utorrent", "http://localhost:8080/gui/?token=[TOKEN]&action=add-url&s=[EURL]");
+pref("extensions.xthunder.agent.utorrent.user", "admin");
 pref("extensions.xthunder.vodOffLine", true);
 pref("extensions.xthunder.downloadDir", "");
 pref("extensions.xthunder.batEncoding", "GBK");

@@ -156,7 +156,7 @@ var xThunderPref = {
         }
         
         var builtInAgents = this.detectOS() == "Darwin" ?  ["Thunder", "DTA", "curl","aria2"] : 
-            ["Thunder", "DTA", "wget", "transmission", "curl", "aria2", "mldonkeyOffLine"];
+            ["Thunder", "DTA", "wget", "transmission", "curl", "aria2", "mldonkeyOffLine", "utorrentOffLine"];
         
         // Add newly supported agents 
         for (i=0; i<builtInAgents.length; ++i) {

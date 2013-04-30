@@ -235,6 +235,8 @@ xThunderComponent.prototype = {
         var inBackground = false;
         var method = "GET";
         var data = "";
+        var user = "";
+        var password = "";
         var callback = null;
         for (var i = 0; i < args.length; i++) {
             if (args[i] == "--in-background") {
@@ -243,17 +245,28 @@ xThunderComponent.prototype = {
                 method = args[++i];
             } else if (args[i] == "--data") {
                 data = args[++i];
+            } else if (args[i] == "--user") {
+                user = args[++i];
+            } else if (args[i] == "--password") {
+                password = args[++i];
             } else if (args[i] == "--callback") {
                 callback = args[++i];
             }
         }
         
         if (inBackground) {
+            if (reqUrl.indexOf("[TOKEN]") != -1) {  //need token
+                if (!xThunderComponent.tokenAuth) {
+                    this.fetchToken(agentName, url, reqUrl, args, user, password, this.runWeb, callback);
+                    return -1;
+                }
+                reqUrl = reqUrl.replace("[TOKEN]", xThunderComponent.tokenAuth);
+            }
             var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
-            req.open(method, reqUrl, true);
+            req.open(method, reqUrl, true, user, password);
             req.onreadystatechange = function() {
                 if (req.readyState == 4 && callback)  {
-                    callback(agentName, url, req.status==200, req.responseText);
+                    callback(agentName, url, req.status, user, password);
                 }
             };
             req.setRequestHeader('Host','localhost');
@@ -276,6 +289,32 @@ xThunderComponent.prototype = {
         }
         
         return -1;
+    },
+    
+    fetchToken : function(agentName, url, reqUrl, args, user, password, tokenCallback, downCallback) {
+        var tokenUrl = reqUrl.substring(0, reqUrl.indexOf("?token=")).concat("token.html");
+        var req = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
+        req.mozBackgroundRequest = true;
+        req.open("GET", tokenUrl, true, user, password);
+        req.setRequestHeader("accept-charset", "utf-8");
+        req.overrideMimeType("text/xml");
+        req.onload = function() {
+            if (req.status == 200) {
+                var divs = this.responseXML ? this.responseXML.getElementsByTagName("div") : null;
+                if (divs) {
+                    xThunderComponent.tokenAuth = divs[0].firstChild.nodeValue;
+                    tokenCallback(agentName, url, reqUrl, args);
+                } else {
+                    downCallback(agentName, url, req.status, user, password);
+                }
+            } else if (req.status == 401) {
+                downCallback(agentName, url, req.status, user, password);
+            }
+        };
+        req.onerror = function() {
+            downCallback(agentName, url, req.status, user, password);
+        }
+        req.send(null);
     },
     
     COMDownload : function(agentName, totalTask, referrer, urls, cookies, descs, cids, args) {
