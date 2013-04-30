@@ -207,6 +207,13 @@ var xThunder = {
             args.push("--in-background", xThunderPref.getValue("agent.requestInBackground", false));
             args.push("--method", "GET");
             args.push("--data", "");
+            var user = xThunderPref.getValue("agent." + agent + ".user", "");
+            var password = "";
+            if (user) {
+                password = this.getLoginPassword(agent, user, reqUrl) || this.promptPassword(agent, user);
+            }
+            args.push("--user", user);
+            args.push("--password", password);
             args.push("--callback", this.reqCallBack);
         }
         if (/\[EURL\]/.test(reqUrl)) {
@@ -216,15 +223,75 @@ var xThunder = {
         }
         return reqUrl;
     },
+    
+    getLoginPassword : function(agent, user, reqUrl) {
+        var matches;
+        if (matches = reqUrl.match(/^https?:\/\/\w+?(:\d+)?\//)) {
+            // Find users for the given parameters
+            var hostName = matches[0];
+            var loginManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
+            var logins = loginManager.findLogins({}, hostName, null, agent);
+            // Find user from returned array of nsILoginInfo objects
+            for (var i = 0; i < logins.length; i++) {
+                if (logins[i].username == user) {
+                    return logins[i].password;
+                }
+            }
+        }
+        
+        return "";
+    },
+    
+    promptPassword : function(agent, user) {
+        var authUsername = {value: user};
+        var authPassword = {value: ""};
+        var checkbox = {value: true};
+        var title = "xThunder Prompt";
+        var stringBundleService = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+        var textLabel = stringBundleService.createBundle("chrome://global/locale/commonDialogs.properties").formatStringFromName("EnterUserPasswordFor", [agent], 1);
+        var checkLabel = stringBundleService.createBundle("chrome://passwordmgr/locale/passwordmgr.properties").GetStringFromName("rememberPassword");
+        var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+        var ok = prompts.promptUsernameAndPassword(null, title, textLabel, authUsername, authPassword, checkLabel, checkbox);
+        if (ok) {
+            xThunderPref.setValue("agent." + agent + ".user", authUsername.value);
+            return authPassword.value;
+        } else {
+            return "";
+        }
+    },
 
-    reqCallBack : function(agent, url, succeed, res) {
+    reqCallBack : function(agent, url, reqStatus, user, password) {
         agent = agent.replace("OffLine", "");
+        var reqUrl = xThunderPref.agentsOffLine[agent] || xThunderPref.getValue("agent." + agent);
+        var succeed = (reqStatus == 200);
+        if (password) {
+            var hostName = reqUrl.match(/^https?:\/\/\w+?(:\d+)?\//)[0];
+            var newLogin = Components.classes["@mozilla.org/login-manager/loginInfo;1"].createInstance(Components.interfaces.nsILoginInfo);
+            newLogin.init(hostName, null, agent, user, password, "", "");
+            var loginManager = Components.classes["@mozilla.org/login-manager;1"].getService(Components.interfaces.nsILoginManager);
+            var logins = loginManager.findLogins({}, hostName, null, agent);
+            var hasLogin = false;
+            for (var i = 0; i < logins.length; i++) {
+                if (logins[i].username == user) {
+                    //Invalid credentials
+                    if (reqStatus == 401 || logins[i].password != password) {
+                        loginManager.removeLogin(logins[i]);
+                    } 
+                    else {
+                        hasLogin = true;
+                    }
+                    break;
+                }
+            }
+            if (succeed && !hasLogin) {
+                loginManager.addLogin(newLogin);
+            }
+        }
         var title = succeed ? "Succeed" : "Failed";
         var text = agent + " adds " + url.substring(0, url.indexOf(":")) + " link ";
-        var reqUrl = xThunderPref.agentsOffLine[agent] || xThunderPref.getValue("agent." + agent);
         var serverUrl = reqUrl.substring(0, reqUrl.lastIndexOf("/") + 1);
         var alertsService = Components.classes["@mozilla.org/alerts-service;1"].getService(Components.interfaces.nsIAlertsService);
-        alertsService.showAlertNotification("chrome://xthunder/skin/icon.png", title, text, true, serverUrl, xThunder, "xThunder Status");
+        alertsService.showAlertNotification("chrome://xthunder/skin/icon.png", title, text, true, serverUrl, xThunder, "xThunder Prompt");
     },
     
     observe: function(aSubject, aTopic, aData) {
