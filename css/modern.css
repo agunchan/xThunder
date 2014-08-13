@@ -1,0 +1,1721 @@
+/*
+ * Metro UI CSS v 0.1.4
+ * Copyright 2012 Sergey Pimenov
+ * Licensed under the MIT Lilcense
+ */
+/*! normalize.css 2012-03-11T12:53 UTC - http://github.com/necolas/normalize.css */
+/* =============================================================================
+   HTML5 display definitions
+   ========================================================================== */
+/*
+ * Corrects block display not defined in IE6/7/8/9 & FF3
+ */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+summary {
+  display: block;
+}
+/*
+ * Corrects inline-block display not defined in IE6/7/8/9 & FF3
+ */
+audio,
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+/*
+ * Prevents modern browsers from displaying 'audio' without controls
+ * Remove excess height in iOS5 devices
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+/*
+ * Addresses styling for 'hidden' attribute not present in IE7/8/9, FF3, S4
+ * Known issue: no IE6 support
+ */
+[hidden] {
+  display: none;
+}
+/* =============================================================================
+   Base
+   ========================================================================== */
+/*
+ * 1. Corrects text resizing oddly in IE6/7 when body font-size is set using em units
+ *    http://clagnut.com/blog/348/#c790
+ * 2. Prevents iOS text size adjust after orientation change, without disabling user zoom
+ *    www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/
+ */
+html {
+  font-size: 100%;
+  /* 1 */
+
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+
+}
+/*
+ * Addresses font-family inconsistency between 'textarea' and other form elements.
+ */
+html,
+button,
+input,
+select,
+textarea {
+  font-family: sans-serif;
+}
+/*
+ * Addresses margins handled incorrectly in IE6/7
+ */
+body {
+  margin: 0;
+}
+/* =============================================================================
+   Links
+   ========================================================================== */
+/*
+ * Addresses outline displayed oddly in Chrome
+ */
+a:focus {
+  outline: thin dotted;
+}
+/*
+ * Improves readability when focused and also mouse hovered in all browsers
+ * people.opera.com/patrickl/experiments/keyboard/test
+ */
+a:hover,
+a:active {
+  outline: 0;
+}
+/* =============================================================================
+   Typography
+   ========================================================================== */
+/*
+ * Addresses font sizes and margins set differently in IE6/7
+ * Addresses font sizes within 'section' and 'article' in FF4+, Chrome, S5
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+h5 {
+  font-size: 0.83em;
+  margin: 1.67em 0;
+}
+h6 {
+  font-size: 0.75em;
+  margin: 2.33em 0;
+}
+/*
+ * Addresses styling not present in IE7/8/9, S5, Chrome
+ */
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+/*
+ * Addresses style set to 'bolder' in FF3+, S4/5, Chrome
+*/
+b,
+strong {
+  font-weight: bold;
+}
+blockquote {
+  margin: 1em 40px;
+}
+/*
+ * Addresses styling not present in S5, Chrome
+ */
+dfn {
+  font-style: italic;
+}
+/*
+ * Addresses styling not present in IE6/7/8/9
+ */
+mark {
+  background: #ff0;
+  color: #000;
+}
+/*
+ * Addresses margins set differently in IE6/7
+ */
+p,
+pre {
+  margin: 1em 0;
+}
+/*
+ * Corrects font family set oddly in IE6, S4/5, Chrome
+ * en.wikipedia.org/wiki/User:Davidgothberg/Test59
+ */
+pre,
+code,
+kbd,
+samp {
+  font-family: monospace, serif;
+  _font-family: 'courier new', monospace;
+  font-size: 1em;
+}
+/*
+ * Improves readability of pre-formatted text in all browsers
+ */
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+/*
+ * 1. Addresses CSS quotes not supported in IE6/7
+ * 2. Addresses quote property not supported in S4
+ */
+/* 1 */
+q {
+  quotes: none;
+}
+/* 2 */
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+small {
+  font-size: 75%;
+}
+/*
+ * Prevents sub and sup affecting line-height in all browsers
+ * gist.github.com/413930
+ */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+/* =============================================================================
+   Lists
+   ========================================================================== */
+/*
+ * Addresses margins set differently in IE6/7
+ */
+dl,
+menu,
+ol,
+ul {
+  margin: 1em 0;
+}
+dd {
+  margin: 0 0 0 40px;
+}
+/*
+ * Addresses paddings set differently in IE6/7
+ */
+menu,
+ol,
+ul {
+  padding: 0 0 0 40px;
+}
+/*
+ * Corrects list images handled incorrectly in IE7
+ */
+nav ul,
+nav ol {
+  list-style: none;
+  list-style-image: none;
+}
+/* =============================================================================
+   Embedded content
+   ========================================================================== */
+/*
+ * 1. Removes border when inside 'a' element in IE6/7/8/9, FF3
+ * 2. Improves image quality when scaled in IE7
+ *    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/
+ */
+img {
+  border: 0;
+  /* 1 */
+
+  -ms-interpolation-mode: bicubic;
+  /* 2 */
+
+}
+/*
+ * Corrects overflow displayed oddly in IE9
+ */
+svg:not(:root) {
+  overflow: hidden;
+}
+/* =============================================================================
+   Figures
+   ========================================================================== */
+/*
+ * Addresses margin not present in IE6/7/8/9, S5, O11
+ */
+figure {
+  margin: 0;
+}
+/* =============================================================================
+   Forms
+   ========================================================================== */
+/*
+ * Corrects margin displayed oddly in IE6/7
+ */
+form {
+  margin: 0;
+}
+/*
+ * Define consistent border, margin, and padding
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+/*
+ * 1. Corrects color not being inherited in IE6/7/8/9
+ * 2. Corrects text not wrapping in FF3
+ * 3. Corrects alignment displayed oddly in IE6/7
+ */
+legend {
+  border: 0;
+  /* 1 */
+
+  padding: 0;
+  white-space: normal;
+  /* 2 */
+
+  *margin-left: -7px;
+  /* 3 */
+
+}
+/*
+ * 1. Corrects font size not being inherited in all browsers
+ * 2. Addresses margins set differently in IE6/7, FF3+, S5, Chrome
+ * 3. Improves appearance and consistency in all browsers
+ */
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  /* 1 */
+
+  margin: 0;
+  /* 2 */
+
+  vertical-align: baseline;
+  /* 3 */
+
+  *vertical-align: middle;
+  /* 3 */
+
+}
+/*
+ * Addresses FF3/4 setting line-height on 'input' using !important in the UA stylesheet
+ */
+button,
+input {
+  line-height: normal;
+  /* 1 */
+
+}
+/*
+ * 1. Improves usability and consistency of cursor style between image-type 'input' and others
+ * 2. Corrects inability to style clickable 'input' types in iOS
+ * 3. Removes inner spacing in IE7 without affecting normal text inputs
+ *    Known issue: inner spacing remains in IE6
+ */
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+  /* 1 */
+
+  -webkit-appearance: button;
+  /* 2 */
+
+  *overflow: visible;
+  /* 3 */
+
+}
+/*
+ * Re-set default cursor for disabled elements
+ */
+button[disabled],
+input[disabled] {
+  cursor: default;
+}
+/*
+ * 1. Addresses box sizing set to content-box in IE8/9
+ * 2. Removes excess padding in IE8/9
+ * 3. Removes excess padding in IE7
+      Known issue: excess padding remains in IE6
+ */
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+
+  padding: 0;
+  /* 2 */
+
+  *height: 13px;
+  /* 3 */
+
+  *width: 13px;
+  /* 3 */
+
+}
+/*
+ * 1. Addresses appearance set to searchfield in S5, Chrome
+ * 2. Addresses box-sizing set to border-box in S5, Chrome (include -moz to future-proof)
+ */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+
+  box-sizing: content-box;
+}
+/*
+ * Removes inner padding and search cancel button in S5, Chrome on OS X
+ */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+/*
+ * Removes inner padding and border in FF3+
+ * www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/
+ */
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+/*
+ * 1. Removes default vertical scrollbar in IE6/7/8/9
+ * 2. Improves readability and alignment in all browsers
+ */
+textarea {
+  overflow: auto;
+  /* 1 */
+
+  vertical-align: top;
+  /* 2 */
+
+}
+/* =============================================================================
+   Tables
+   ========================================================================== */
+/*
+ * Remove most spacing between table cells
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*
+ * Metro UI CSS v 0.1.4
+ * Copyright 2012 Sergey Pimenov
+ * Licensed under the MIT Lilcense
+ *
+ * Routines.less
+ */
+.place-left {
+  float: left !important;
+  margin-right: 10px;
+}
+.place-right {
+  float: right !important;
+  margin-left: 10px;
+}
+.scroll-y,
+.scroll-vertical {
+  overflow-y: scroll;
+}
+.scroll-x,
+.scroll-horizontal {
+  overflow-x: scroll;
+}
+.pos-rel {
+  position: relative;
+}
+.pos-abs {
+  position: absolute;
+}
+.pos-fix {
+  position: fixed;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.no-overflow {
+  overflow: hidden;
+}
+.no-display {
+  display: none;
+}
+.as-block {
+  display: block;
+  float: none !important;
+}
+.as-inline-block {
+  display: inline-block;
+}
+.nlm {
+  margin-left: 0 !important;
+}
+.nrm {
+  margin-right: 0 !important;
+}
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+.padding5 {
+  padding: 5px;
+}
+.padding10 {
+  padding: 10px;
+}
+.padding15 {
+  padding: 15px;
+}
+.padding20 {
+  padding: 20px;
+}
+.padding30 {
+  padding: 30px;
+}
+.padding40 {
+  padding: 40px;
+}
+.padding80 {
+  padding: 80px;
+}
+.selected {
+  border: 4px #2d89ef solid;
+}
+.selected:after {
+  width: 0;
+  height: 0;
+  border-top: 40px solid #2d89ef;
+  border-left: 40px solid transparent;
+  position: absolute;
+  display: block;
+  right: 0;
+  content: ".";
+  top: 0;
+  z-index: 1000;
+}
+.selected:before {
+  position: absolute;
+  content: "\2714";
+  color: #fff;
+  right: 5px;
+  font-family: Tahoma;
+  z-index: 2000;
+}
+/*
+ * Metro UI CSS v 0.1.4
+ * Copyright 2012 Sergey Pimenov
+ * Licensed under the MIT Lilcense
+ *
+ * Variables.less
+ */
+.fg-color-blue {
+  color: #2d89ef !important;
+}
+.fg-color-blueLight {
+  color: #44a3aa !important;
+}
+.fg-color-blueDark {
+  color: #0a5ac2 !important;
+}
+.fg-color-green {
+  color: #00a300 !important;
+}
+.fg-color-greenLight {
+  color: #99b433 !important;
+}
+.fg-color-greenDark {
+  color: #005200 !important;
+}
+.fg-color-red {
+  color: #b91d47 !important;
+}
+.fg-color-yellow {
+  color: #ffc40d !important;
+}
+.fg-color-orange {
+  color: #e3a21a !important;
+}
+.fg-color-orangeDark {
+  color: #da532c !important;
+}
+.fg-color-pink {
+  color: #c3325f !important;
+}
+.fg-color-pinkDark {
+  color: #9f00a7 !important;
+}
+.fg-color-purple {
+  color: #603cba !important;
+}
+.fg-color-darken {
+  color: #1d1d1d !important;
+}
+.fg-color-white {
+  color: #ffffff !important;
+}
+.fg-color-grayDark {
+  color: #525252 !important;
+}
+.bg-color-blue {
+  background-color: #2d89ef !important;
+}
+.bg-color-blueLight {
+  background-color: #44a3aa !important;
+}
+.bg-color-blueDark {
+  background-color: #0a5ac2 !important;
+}
+.bg-color-green {
+  background-color: #00a300 !important;
+}
+.bg-color-greenLight {
+  background-color: #99b433 !important;
+}
+.bg-color-greenDark {
+  background-color: #005200 !important;
+}
+.bg-color-red {
+  background-color: #b91d47 !important;
+}
+.bg-color-yellow {
+  background-color: #ffc40d !important;
+}
+.bg-color-orange {
+  background-color: #e3a21a !important;
+}
+.bg-color-orangeDark {
+  background-color: #da532c !important;
+}
+.bg-color-pink {
+  background-color: #c3325f !important;
+}
+.bg-color-pinkDark {
+  background-color: #9f00a7 !important;
+}
+.bg-color-purple {
+  background-color: #603cba !important;
+}
+.bg-color-darken {
+  background-color: #1d1d1d !important;
+}
+.bg-color-white {
+  background-color: #ffffff !important;
+}
+.bg-color-grayDark {
+  background-color: #525252 !important;
+}
+[class*=border-color] {
+  border: 2px solid;
+}
+.border-color-blue {
+  border-color: #2d89ef !important;
+}
+.border-color-blueLight {
+  border-color: #44a3aa !important;
+}
+.border-color-blueDark {
+  border-color: #0a5ac2 !important;
+}
+.border-color-green {
+  border-color: #00a300 !important;
+}
+.border-color-greenLight {
+  border-color: #99b433 !important;
+}
+.border-color-greenDark {
+  border-color: #005200 !important;
+}
+.border-color-red {
+  border-color: #b91d47 !important;
+}
+.border-color-yellow {
+  border-color: #ffc40d !important;
+}
+.border-color-orange {
+  border-color: #e3a21a !important;
+}
+.border-color-orangeDark {
+  border-color: #da532c !important;
+}
+.border-color-pink {
+  border-color: #c3325f !important;
+}
+.border-color-pinkDark {
+  border-color: #9f00a7 !important;
+}
+.border-color-purple {
+  border-color: #603cba !important;
+}
+.border-color-darken {
+  border-color: #1d1d1d !important;
+}
+.border-color-white {
+  border-color: #ffffff !important;
+}
+.border-color-grayDark {
+  border-color: #525252 !important;
+}
+/*
+@baseFontUI: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+@baseFontText: 'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
+
+.font-ui          {font-family: @baseFontUI;}
+.font-text        {font-family: @baseFontText;}
+
+.light-text            {font-weight: 200;}
+.semilight-text        {font-weight: 300;}
+.regular-text          {font-weight: 400;}
+.semibold-text         {font-weight: 600;}
+.bold-text             {font-weight: 700;}
+*/
+.text-rest-state {
+  color: #000000;
+}
+.text-rest2-state {
+  color: rgba(0, 0, 0, 0.6);
+}
+.text-hover-state {
+  color: rgba(0, 0, 0, 0.8);
+}
+.text-pressed-state {
+  color: rgba(0, 0, 0, 0.4);
+}
+#font .header {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 42pt;
+  letter-spacing: 0.00em;
+  line-height: 44pt;
+}
+#font .subheader,
+#font .subheader-secondary {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 20pt;
+  letter-spacing: 0.01em;
+  line-height: 24pt;
+}
+#font .subheader-smaller,
+#font .subheader-secondary-smaller {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  letter-spacing: 0.01em;
+  line-height: 24pt;
+  font-size: 16pt;
+}
+#font .small-subheader,
+#font .small-subheader-secondary {
+  font-family: 'Segoe UI Semibold', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 11pt;
+  letter-spacing: 0.01em;
+  line-height: 14pt;
+}
+#font .navigation {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 11pt;
+  letter-spacing: 0.01em;
+  line-height: 14pt;
+}
+#font .body,
+#font .body-secondary,
+#font .normal {
+  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 11pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+}
+#font .link {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 11pt;
+}
+#font .tertiary,
+#font .tertiary-secondary {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 9pt;
+}
+#font .control {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 9pt;
+}
+#font .small {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 8pt;
+}
+#font .long-text {
+  font-family: 'PT Serif Caption', sans-serif, serif !important;
+  font-weight: 300;
+  font-size: 10pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+}
+#font .long-text-smaller {
+  font-family: 'PT Serif Caption', sans-serif, serif !important;
+  font-weight: 300;
+  font-size: 10pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+  font-size: 9pt;
+}
+#font .long-text-lead {
+  font-family: 'PT Serif Caption', sans-serif, serif !important;
+  font-weight: 300;
+  font-size: 10pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+  font-size: 20pt;
+}
+#state .header,
+#state .subheader,
+#state .small-subheader,
+#state .navigation,
+#state .body,
+#state .tertiary {
+  color: #000000;
+}
+#state .header:hover,
+#state .subheader:hover,
+#state .small-subheader:hover,
+#state .navigation:hover,
+#state .body:hover,
+#state .tertiary:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+#state .header:active,
+#state .subheader:active,
+#state .small-subheader:active,
+#state .navigation:active,
+#state .body:active,
+#state .tertiary:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+#state .subheader-secondary,
+#state .subheader-secondary-smaller,
+#state .small-subheader,
+#state .small-subheader-secondary,
+#state .body-secondary,
+#state .tertiary-secondary {
+  color: rgba(0, 0, 0, 0.6);
+}
+#state .subheader-secondary:hover,
+#state .subheader-secondary-smaller:hover,
+#state .small-subheader:hover,
+#state .small-subheader-secondary:hover,
+#state .body-secondary:hover,
+#state .tertiary-secondary:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+#state .subheader-secondary:active,
+#state .subheader-secondary-smaller:active,
+#state .small-subheader:active,
+#state .small-subheader-secondary:active,
+#state .body-secondary:active,
+#state .tertiary-secondary:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+#state .link {
+  color: #4f1acb;
+}
+#state .link:hover {
+  color: rgba(79, 26, 203, 0.8);
+}
+#state .link:active {
+  color: rgba(79, 26, 203, 0.6);
+}
+a,
+.link {
+  font-family: 'Microsoft YaHei', Arial, 'Segoe UI Light', 'Open Sans', Verdana, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 11pt;
+  color: #4f1acb;
+  text-decoration: none;
+}
+a:hover,
+.link:hover {
+  color: rgba(79, 26, 203, 0.8);
+}
+a:active,
+.link:active {
+  color: rgba(79, 26, 203, 0.6);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 10px 0;
+  padding: 0;
+}
+h1 {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 42pt;
+  letter-spacing: 0.00em;
+  line-height: 44pt;
+  color: #000000;
+}
+h1:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h1:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+h2 {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 20pt;
+  letter-spacing: 0.01em;
+  line-height: 24pt;
+  color: #000000;
+}
+h2:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h2:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+h3 {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 200;
+  font-size: 20pt;
+  letter-spacing: 0.01em;
+  line-height: 24pt;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16pt;
+  line-height: 24px;
+}
+h3:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h3:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+h4 {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 11pt;
+  letter-spacing: 0.01em;
+  line-height: 14pt;
+  color: #000000;
+  color: rgba(0, 0, 0, 0.6);
+}
+h4:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h4:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+h4:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h4:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+h5 {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 11pt;
+  letter-spacing: 0.01em;
+  line-height: 14pt;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 90%;
+}
+h5:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h5:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+h6 {
+  font-family: 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 11pt;
+  letter-spacing: 0.01em;
+  line-height: 14pt;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 80%;
+}
+h6:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+h6:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+body,
+p {
+  font-family: 'Microsoft YaHei', 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 11pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+}
+p.long-text {
+  font-family: 'PT Serif Caption', sans-serif, serif !important;
+  font-weight: 300;
+  font-size: 10pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+}
+p {
+  margin: 0 0 10px;
+}
+p.indent:first-letter {
+  padding-left: 25px;
+}
+.lead {
+  font-size: 120%;
+  line-height: 26px;
+}
+.tertiary-info-text,
+.tertiary-text {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 9pt;
+  color: #000000;
+}
+.tertiary-info-text:hover,
+.tertiary-text:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+.tertiary-info-text:active,
+.tertiary-text:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+.tertiary-info-secondary-text,
+.tertiary-secondary-text {
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 9pt;
+  color: rgba(0, 0, 0, 0.6);
+}
+.tertiary-info-secondary-text:hover,
+.tertiary-secondary-text:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+.tertiary-info-secondary-text:active,
+.tertiary-secondary-text:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+abbr.initialism {
+  font-size: 90%;
+  text-transform: uppercase !important;
+}
+abbr[title] {
+  cursor: help !important;
+}
+address {
+  display: block;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 11pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+  line-height: 20px;
+  font-style: normal;
+}
+blockquote {
+  margin: 0;
+  padding: 5px 20px;
+  border-left: 4px #ccc solid;
+  display: block;
+  background-color: rgba(204, 204, 204, 0.1);
+}
+blockquote p {
+  margin-bottom: 0;
+}
+blockquote small:before {
+  content: '\2014';
+  color: rgba(0, 0, 0, 0.4);
+  margin-right: 5px;
+}
+blockquote.place-right {
+  float: none !important;
+  text-align: right;
+  border: 0;
+  border-right: 4px #ccc solid;
+}
+blockquote.place-right small {
+  text-align: right;
+}
+blockquote.place-right small:before {
+  content: "";
+}
+blockquote.place-right small:after {
+  content: '\2014';
+  color: rgba(0, 0, 0, 0.4);
+  margin-left: 5px;
+}
+ul,
+ol {
+  padding: 0;
+  margin: 0 0 10px 0px;
+  display: block;
+}
+ul:nth-child(1) {
+  margin-left: 25px;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+  margin-bottom: 0 !important;
+}
+ul {
+  list-style-position: inside;
+  list-style-type: disc;
+}
+ul ul {
+  list-style-type: circle;
+}
+ul,
+ol {
+  list-style-position: inside;
+}
+ul li,
+ol li {
+  display: list-item;
+  font-size: 14px;
+  line-height: 20px;
+}
+ol {
+  list-style-type: decimal;
+}
+ul.unstyled,
+ol.unstyled,
+.unstyled {
+  margin-left: 0;
+  list-style: none;
+}
+/*
+ * Metro UI CSS v 0.1.4
+ * Copyright 2012 Sergey Pimenov
+ * Licensed under the MIT Lilcense
+ *
+ * Layout.less
+ */
+*,
+*:after,
+*:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.one-column {
+  -moz-columns: 1;
+  -webkit-columns: 1;
+  columns: 1;
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+}
+.two-columns {
+  -moz-columns: 2;
+  -webkit-columns: 2;
+  columns: 2;
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+}
+.three-columns {
+  -moz-columns: 3;
+  -webkit-columns: 3;
+  columns: 3;
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+}
+.four-columns {
+  -moz-columns: 4;
+  -webkit-columns: 4;
+  columns: 4;
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+}
+.five-columns {
+  -moz-columns: 5;
+  -webkit-columns: 5;
+  columns: 5;
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+}
+.page {
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  *zoom: 1;
+}
+.page:before,
+.page:after {
+  display: table;
+  content: "";
+}
+.page:after {
+  clear: both;
+}
+.page .page-header {
+  width: 100%;
+  position: relative;
+  display: block;
+}
+.page .page-header .page-header-content {
+  height: 100px;
+  min-height: 100px;
+  width: 100%;
+  position: relative;
+  display: block;
+}
+.page .page-header .page-header-content h1,
+.page .page-header .page-header-content h2,
+.page .page-header .page-header-content h3,
+.page .page-header .page-header-content h4,
+.page .page-header .page-header-content h5 {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 20px;
+  bottom: 0;
+}
+.page .page-header .page-header-content h1 small {
+  font-size: 12pt;
+  margin-left: 5px;
+}
+.page .page-header .page-header-content h1.sub-menu {
+  cursor: pointer;
+}
+.page .page-header .page-header-content h1.sub-menu:after {
+  position: absolute;
+  content: "\3009";
+  display: inline-block;
+  font-size: 10pt;
+  bottom: -5px;
+  right: -15px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.page .page-header .page-header-content  > .page-back {
+  position: absolute;
+  top: 34px;
+  left: 30px;
+}
+.page .page-header .page-header-content .user-login {
+  float: right;
+  margin: 55px 44px 0 0;
+  cursor: pointer;
+}
+.page .page-header .page-header-content .user-login .avatar {
+  float: right;
+  border: 1px #ccc solid;
+  width: 40px;
+  height: 40px;
+}
+.page .page-header .page-header-content .user-login .avatar img {
+  width: 100%;
+  height: 100%;
+}
+.page .page-header .page-header-content .user-login .name {
+  font-family: 'Microsoft YaHei', Arial, 'Segoe UI Light', 'Open Sans', Verdana, Helvetica, sans-serif;
+  float: left;
+  margin: 0px 10px;
+  text-align: right;
+}
+.page .page-header .page-header-content .user-login .name .first-name {
+  font-size: 18pt;
+  display: block;
+  margin: 0;
+}
+.page .page-header .page-header-content .user-login .name .last-name {
+  font-size: 9pt;
+  display: block;
+  margin: 0;
+}
+.page .page-region {
+  display: block;
+}
+.page .page-region .page-region-content {
+  padding-top: 10px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 20px;
+  display: block;
+  height: 100%;
+  position: relative;
+}
+.page.secondary .page-header .page-header-content h1,
+.page.secondary .page-header .page-header-content h2,
+.page.secondary .page-header .page-header-content h3,
+.page.secondary .page-header .page-header-content h4,
+.page.secondary .page-header .page-header-content h5 {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 150px;
+  bottom: 0;
+}
+.page.secondary .page-region .page-region-content {
+  padding-left: 150px;
+}
+.page.snapped {
+  width: 33.33%;
+  height: 100%;
+  float: left;
+  border-right: 1px #ccc solid;
+}
+.page.fill {
+  width: 66.66%;
+  height: 100%;
+  float: right;
+  border-left: 1px #ccc solid;
+}
+.page.snapped .page .page-header .page-header-content h1,
+.page.snapped .page .page-header .page-header-content h2,
+.page.snapped .page .page-header .page-header-content h3,
+.page.snapped .page .page-header .page-header-content h4,
+.page.snapped .page .page-header .page-header-content h5 {
+  margin-left: 20px;
+}
+.page.snapped .page .page-region .page-region-content {
+  padding-left: 20px;
+}
+.page.fixed-header .page-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.page.fixed-header .page-region {
+  padding-top: 140px;
+}
+.app-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 100px;
+  background-color: #1d1d1d !important;
+}
+.charms {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  min-width: 200px;
+  width: auto;
+}
+.charms.place-left {
+  left: 0;
+  right: auto;
+}
+.message-dialog {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: auto;
+  min-height: 100px;
+  top: 30%;
+  padding: 10px 10px 0;
+}
+.error-bar,
+.warning-bar,
+.info-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 20px;
+  color: #fff;
+  min-height: 100px;
+}
+.error-bar {
+  background-color: #b91d47 !important;
+}
+.warning-bar {
+  background-color: #ffc40d !important;
+}
+.info-bar {
+  background-color: #2d89ef !important;
+}
+
+/*
+ * Metro UI CSS v 0.1.4
+ * Copyright 2012 Sergey Pimenov
+ * Licensed under the MIT Lilcense
+ *
+ * Tiles.less
+ *
+ */
+.tile-group {
+  margin: 0;
+  margin-right: 80px;
+  float: left;
+  width: auto;
+  height: auto;
+  min-height: 1px;
+  width: 482px;
+}
+.tile {
+  display: block;
+  float: left;
+  background-color: #525252;
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  box-shadow: inset 0px 0px 1px #FFFFCC;
+  text-decoration: none;
+  color: #ffffff;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Segoe UI Semilight', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 11pt;
+  letter-spacing: 0.02em;
+  line-height: 20px;
+  margin: 0 10px 10px 0;
+}
+.tile * {
+  color: #ffffff;
+}
+.tile .tile-content {
+  width: 150px;
+  height: 110px;
+  padding: 0;
+  vertical-align: top;
+  padding: 10px 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 9pt;
+  color: #000000;
+  color: #ffffff;
+  line-height: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tile .tile-content:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+.tile .tile-content:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+.tile .tile-content:hover {
+  color: #ffffff;
+}
+.tile .tile-content h1,
+.tile .tile-content h2,
+.tile .tile-content h3,
+.tile .tile-content h4,
+.tile .tile-content h5,
+.tile .tile-content h6,
+.tile .tile-content p {
+  padding: 0;
+  margin: 0;
+  line-height: 24px;
+}
+.tile .tile-content h1:hover,
+.tile .tile-content h2:hover,
+.tile .tile-content h3:hover,
+.tile .tile-content h4:hover,
+.tile .tile-content h5:hover,
+.tile .tile-content h6:hover,
+.tile .tile-content p:hover {
+  color: #ffffff;
+}
+.tile .tile-content h3{
+  font-family: 'Segoe UI Light','Segoe UI','Open Sans',Verdana,Arial,Helvetica,sans-serif;
+}
+.tile .tile-content p {
+  font-weight: 400;
+  font-size: 18pt;
+  color: #000000;
+  color: #ffffff;
+  line-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.title .title-content p.
+.tile .tile-content p:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+.tile .tile-content p:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+.tile .tile-content p:hover {
+  color: #ffffff;
+}
+.tile .tile-content.icon {
+  padding-top: 20px;
+  display: table-cell !important;
+  vertical-align: middle !important;
+  text-align: center;
+}
+.tile .tile-content.icon img {
+  width: 64px;
+  height: 64px;
+}
+.tile .tile-content.image {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  text-align: center;
+}
+.tile .tile-content.image img {
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  max-width: 100%;
+}
+.tile .tile-content.images-set {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  max-height: 150px;
+}
+.tile .tile-content.images-set img {
+  width: 25%;
+  min-height: 50%;
+  float: left;
+  border: 1px #1e1e1e solid;
+}
+.tile .tile-content.images-set img:first-child {
+  float: left;
+  width: 50%;
+  min-height: 100%;
+}
+.tile.double {
+  width: 310px;
+}
+.tile.double .tile-content {
+  width: 310px;
+}
+.tile.triple {
+  width: 470px;
+}
+.tile.triple .tile-content {
+  width: 470px;
+}
+.tile.quadro {
+  width: 630px;
+}
+.tile.quadro .tile-content {
+  width: 630px;
+}
+.tile.double-vertical {
+  height: 310px;
+}
+.tile.double-vertical .tile-content {
+  height: 270px;
+}
+.tile.triple-vertical {
+  height: 470px;
+}
+.tile.triple-vertical .tile-content {
+  height: 430px;
+}
+.tile.quadro-vertical {
+  height: 630px;
+}
+.tile.quadro-vertical .tile-content {
+  height: 590px;
+}
+.tile .brand,
+.tile .tile-status {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 30px;
+  background-color: transparent;
+  *zoom: 1;
+}
+.tile .brand:before,
+.tile .tile-status:before,
+.tile .brand:after,
+.tile .tile-status:after {
+  display: table;
+  content: "";
+}
+.tile .brand:after,
+.tile .tile-status:after {
+  clear: both;
+}
+.tile .brand  > .badge,
+.tile .tile-status  > .badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  right: 5px;
+  margin-bottom: 0;
+  color: #ffffff;
+  width: 34px;
+  height: 28px;
+  text-align: center;
+  font-family: 'Segoe UI Semibold', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  font-size: 11pt;
+  letter-spacing: 0.01em;
+  line-height: 14pt;
+  padding-top: 3px;
+}
+.tile .brand  > .name,
+.tile .tile-status  > .name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 5px;
+  margin-left: 15px;
+  font-family: 'Microsoft YaHei', 'Segoe UI Light', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 12pt;
+  color: #ffffff;
+}
+.tile .brand  .iconic-name {
+  position: absolute;
+  margin-top: 9px;
+  margin-left: -9px;
+  font-size: 15pt;
+  color: #ffffff;
+}
+.tile .brand  > .name:hover,
+.tile .tile-status  > .name:hover {
+  color: #ffffff;
+}
+.tile .brand  .icon,
+.tile .tile-status  > .icon {
+  margin: 5px 12px;
+  width: 32px;
+  height: 32px;
+}
+.tile .brand  > .icon  > img,
+.tile .tile-status  > .icon  > img {
+  width: 100%;
+  height: 100%;
+}
+.tile .brand  > .text,
+.tile .tile-status  > .text {
+  position: absolute;
+  left: 60px;
+  top: 5px;
+  right: 50px;
+  font-family: 'Segoe UI', 'Open Sans', Verdana, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 9pt;
+  color: #000000;
+  color: #ffffff;
+  line-height: 14px;
+}
+.tile .brand  > .text:hover,
+.tile .tile-status  > .text:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+.tile .brand  > .text:active,
+.tile .tile-status  > .text:active {
+  color: rgba(0, 0, 0, 0.4);
+}
+.tile .brand  > .text:hover,
+.tile .tile-status  > .text:hover {
+  color: #ffffff;
+}
+.tile:hover {
+  outline: 3px #3a3a3a solid;
+}

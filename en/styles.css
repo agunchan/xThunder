@@ -1,0 +1,119 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	font: 0.8em "Lucida Sans Unicode", "Lucida Grande", Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+	background: #121212;
+	margin: 0;
+	padding: 0;
+}
+#page_translations {
+	text-align:right;
+}
+#page_translations ul li{
+	display:inline;
+}
+#page_translations ul li a, div#page_translations ul li span {
+    background-position: left 50%;
+    background-repeat: no-repeat;
+    margin-right: 1em;
+    padding: 0.2em 0 0.2em 18px;
+}
+#wrapper {
+	width: 710px;
+	margin: 30px auto;
+	padding: 25px 25px 25px 25px;
+	border: 12px solid #2e2e2e;
+	position:relative;
+}
+h1 {
+	font-size: 3em;
+	text-align: center;
+	margin: 0;
+	padding: 0.3em 0;
+}
+h1 span {
+	color: #FE4902;
+}
+#nav {
+	list-style: none;
+	padding: 0;
+	margin: 10px 0 20px 0;
+	background: #2e2e2e url(images/nav_bar.jpg) repeat-x;
+	display: block;
+	overflow: hidden;
+	font-size: 0.9em;
+	height:33px;
+	text-transform:capitalize;
+}
+#nav li {
+	display: inline;
+}
+#nav li a {
+	display: block;
+	float: left;
+	padding: 10px 20px;
+	color: white;
+	text-decoration: none;
+}
+#nav li a:hover {
+	background: #1b1b1b url(images/nav_bar_o.jpg) repeat-x;
+}
+#load {
+	display: none;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	background: url(images/ajax-loader.gif);
+	width: 43px;
+	height: 11px;
+	text-indent: -9999em;
+}
+
+#content {
+}
+h2 {
+	margin: 0;
+	padding: 0.5em 0;
+	color:#568945;
+	font-family:Helvetica, Arial, Sans-serif;
+}
+p {
+	margin: 0;
+	padding: 0.4em 0;
+	color:#A0A0A0;
+	line-height:1.4em;
+}
+#content img.right {
+	float: right;
+	margin: 0 0 8px 8px;
+	border-style: none;
+}
+#content a.install {
+	color: #FFFFFF;
+    text-align: center;
+    background: url("images/button-bg.png") repeat scroll 0 0 transparent;
+    border: 1px solid #D04949;
+    border-radius: 7px 7px 7px 7px;
+    box-shadow: 1px 1px 4px #666666;
+    height: 32px;
+    margin: 0 0 0 5px;
+	text-decoration: none;
+    position: relative;
+}
+#content p a {
+	color: #D14A4A;
+	text-decoration: none;
+}
+#foot {
+	width:98%;
+	margin:20px auto; 
+	text-align:center; 
+	padding:50px 0; 
+	clear:both; 
+	overflow:hidden;
+}
+
+#foot a{
+	letter-spacing: 0.1em;
+}

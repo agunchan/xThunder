@@ -1,79 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="description" content="xThunder是为中国用户定制的火狐下载器扩展" />
+    <meta name="author" content="agunchan">
+    <meta name="keywords" content="xThunder,PopVideo,迅雷,火狐,Firefox,Modern UI" />
 
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Xthunder : Manage popular downloaders with this Firefox extension">
+    <link href="css/modern.min.css" rel="stylesheet">
+    <link href="css/theme-dark.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="js/google-analytics.js"></script>
+    <script src="js/jquery.mousewheel.min.js"></script>
 
-    <title>Xthunder</title>
-  </head>
+    <title>xThunder - 为中国用户定制的火狐下载器扩展</title>
 
-  <body>
+    <style>
+        body {
+            background: #1d1d1d;
+        }
+    </style>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/agunchan/xThunder">View on GitHub</a>
+    <script>
+        function Resize(){
+            var h1 = $(".page.secondary .page-header .page-header-content h1");
+            if (h1.offset().left !== 150) {
+                //God bless IE
+                return;
+            }
+            
+            var tiles_area = 0;
+            $(".tile-group").each(function(){
+                tiles_area += $(this).outerWidth() + 70;
+            });
+            var marginLeft = ($(document).width() - tiles_area) / 2 + 40;
+            h1.css("left", marginLeft);
+            $(".page.secondary .page-region .page-region-content").css("padding-left", marginLeft);
+            $(".tiles").css("width", tiles_area + marginLeft + 20);
+        }
 
-          <h1 id="project_title">Xthunder</h1>
-          <h2 id="project_tagline">Manage popular downloaders with this Firefox extension</h2>
+        function AddMouseWheel(){
+            $("body").mousewheel(function(event, delta){
+                var scroll_value = delta * 50;
+                if (!jQuery.browser.chrome) {
+                    document.documentElement.scrollLeft -= scroll_value;
+                } else {
+                    this.scrollLeft -= scroll_value;
+                }
+                return false;
+            });
+        }
+        
+        function AddClick(){
+            $(".tile").click(function(event){
+                var url = $(this).attr("href");
+                if (url)
+                    window.location.href = url;
+            });
+        }
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/agunchan/xThunder/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/agunchan/xThunder/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+        $(function(){
+            Resize();
+            AddMouseWheel();
+            AddClick();
+        })
+
+
+    </script>
+</head>
+<body class="modern-ui" onresize="Resize()">
+<div class="page secondary fixed-header">
+    <div class="page-header ">
+        <div id="page_translations">
+            <ul>
+                <li><span style="color:white;background-image:url('/images/flags/zh-cn.png');">简体中文</span></li>
+                <li><a style="background-image:url('/images/flags/en.png');" href="/en/">English</a></li>
+            </ul>
+        </div>
+        <div class="page-header-content">
+            <div class="user-login">
+                <a href="http://fxthunder.com/blog/about" style="display:inline;">
+                    <div class="name">
+                        <span class="first-name">agunchan</span>
+                        <span class="last-name">&copy;2011-2014</span>
+                    </div>
+                    <div class="avatar">
+                        <img src="images/myface.jpg"/>
+                    </div>
+                </a>
+            </div>
+            <h1>火狐扩展</h1>
+        </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+    <div class="page-region">
+        <div class="page-region-content tiles">
+            <div class="tile-group">
+                <div class="tile triple bg-color-blueDark" href="http://fxthunder.com/blog/archives/909">
+                    <div class="tile-content">
+                        <img src="images/xthunder.png" class="place-left" style="margin-right:32px;"/>
+                        <h3 style="margin-bottom: 5px;">xThunder</h3>
+                        <p>
+                            调用迅雷/QQ旋风/快车等下载器的支持火狐3.5+的扩展
+                        </p>
+                    </div>
+                    <div class="brand">
+                        <a href="/files/xthunder.xpi" >
+                            <img src="images/download.png" class="icon"/>
+                            <span class="iconic-name">1.3.4</span>
+                        </a>
+                    </div>
+                </div>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+                <div class="tile triple" href="http://fxthunder.com/blog/archives/1139">
+                    <div class="tile-content">
+                        <img src="images/popvideo.png" class="place-left" style="margin-right:32px;"/>
+                        <h3 style="margin-bottom: 5px;">PopVideo</h3>
+                        <p>
+                            让视频独立窗口播放的支持火狐3.6+的轻量级扩展
+                        </p>
+                    </div>
+                    <div class="brand">
+                        <a href="/files/popvideo.xpi">
+                            <img src="images/download.png" class="icon"/>
+                            <span class="iconic-name">0.6.8</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="tile triple bg-color-blueLight" href="http://fxthunder.com/blog/archives/2866">
+                    <div class="tile-content">
+                        <img src="images/autoproxy.png" class="place-left" style="margin-right:32px;" width="64px" height="64px"/>
+                        <h3 style="margin-bottom: 5px;">AutoProxy</h3>
+                        <p>
+                            支持火狐21+的智能切换代理扩展修改版
+                        </p>
+                    </div>
+                    <div class="brand">
+                        <a href="/files/autoproxy.xpi">
+                            <img src="images/download.png" class="icon"/>
+                            <span class="iconic-name">0.4b2</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+            <div class="tile-group" style="width: 482px;">
+                <div class="tile bg-color-greenLight" href="http://fxthunder.com/dev/">
+                    <div class="tile-content icon">
+                        <img src="images/dev.png"/>
+                    </div>
+                    <div class="brand">
+                        <span class="name">开发</span>
+                    </div>
+                </div>                
+                
+                <div class="tile double bg-color-green" style="cursor:default;">
+                    <div class="tile-content icon">
+                        <img src="images/mail.png">
+                    </div>
+                    <div class="brand">
+                        <img style="margin:10px 0 0 10px;" src="images/email.png">
+                    </div>
+                </div>        
+                
+                <div class="tile double-vertical bg-color-orangeDark" href="http://fxthunder.com/blog/">
+                    <div class="tile-content icon">
+                        <img src="images/blog.png"/>
+                    </div>
+                    <div class="brand">
+                        <span class="name">博客</span>
+                    </div>
+                </div>                
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
+                <div class="tile double bg-color-purple" href="http://weibo.com/agunchan">
+                    <div class="tile-content icon">
+                        <img src="images/weibo.png"/>
+                    </div>
+                    <div class="brand">
+                        <span class="name">weibo.com/agunchan</span>
+                    </div>
+                </div>
+                
+                <div class="tile double bg-color-yellow" href="http://twitter.com/agunchan">
+                    <div class="tile-content icon">
+                        <img src="images/twitter.png"/>
+                    </div>
+                    <div class="brand">
+                        <span class="name">twitter.com/agunchan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Xthunder maintained by <a href="https://github.com/agunchan">agunchan</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
+</body>
 </html>
