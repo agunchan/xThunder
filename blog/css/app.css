@@ -64,8 +64,8 @@ header p {
 header .logo {
     position: absolute;
     top: 2px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
     right: 2px;
+    border: 0px;
 }
 .article {
     margin:5px 0;
