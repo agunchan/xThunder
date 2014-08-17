@@ -15,7 +15,7 @@ layout: default
     <div class="tags">
        标签：
        {% for tag in page.tags %}
-           <a href="/tag.html#{{tag}}" class="tag">{{tag}} <span class="tagcount">{{site.tags[tag] | size}}</span></a>
+           <a href="/blog/tag.html#{{tag}}" class="tag">{{tag}} <span class="tagcount">{{site.tags[tag] | size}}</span></a>
        {% endfor %}
     </div>
     <div class="datetime">
