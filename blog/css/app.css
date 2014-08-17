@@ -1,0 +1,339 @@
+/*** first 320px **/
+ html {
+    background: #6C7989;
+    background: #6c7989 -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c7989), color-stop(100%, #434b55)) fixed;
+    background: #6c7989 -webkit-linear-gradient(#6c7989, #434b55) fixed;
+    background: #6c7989 -moz-linear-gradient(#6c7989, #434b55) fixed;
+    background: #6c7989 -o-linear-gradient(#6c7989, #434b55) fixed;
+    background: #6c7989 -ms-linear-gradient(#6c7989, #434b55) fixed;
+    background: #6c7989 linear-gradient(#6c7989, #434b55) fixed;
+}
+body {
+    color: #000;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAeCAYAAABNChwpAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAAAUdEVYdENyZWF0aW9uIFRpbWUAMy82LzEygrTcTAAAAFRJREFUSIljfPDggZRf5RIGGNjUHsNATz6jXmSL1Kb2GLiAX+USBnrymRgGGDCORgFmoNAXjEbBaBSMRsFoFIxGwWgUjEbBaBSMRsFoFIxGwWgUAABYNujumib3wAAAAABJRU5ErkJggg==') fixed;
+}
+.container {
+    width: 320px;
+    margin: 0 auto;
+    background: #DEDEDE;
+    position:relative;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 1px, rgba(0, 0, 0, 0.45) 0 3px 10px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 1px, rgba(0, 0, 0, 0.45) 0 3px 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 1px, rgba(0, 0, 0, 0.45) 0 3px 10px;
+}
+header, section, footer {
+    display: block;
+}
+a {
+    color: #069;
+    text-decoration: none;
+}
+a:hover {
+    color: #339ACC;
+}
+header {
+    background: #C6EAFA;
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ddfbfc), color-stop(100%, #c6eafa));
+    background: -webkit-linear-gradient(#ddfbfc, #c6eafa);
+    background: -moz-linear-gradient(#ddfbfc, #c6eafa);
+    background: -o-linear-gradient(#ddfbfc, #c6eafa);
+    background: -ms-linear-gradient(#ddfbfc, #c6eafa);
+    background: linear-gradient(#ddfbfc, #c6eafa);
+    position: relative;
+    padding:5px;
+    border-bottom: 1px solid #B2D2E1;
+    z-index:3;
+    min-height:54px;
+}
+header h1 {
+    margin: 0;
+    padding: 0;
+    color: #069;
+    text-shadow: rgba(255, 255, 255, 0.9) 0 1px 0;
+}
+header p {
+    margin: 0;
+    color: #61778B;
+    width: 260px;
+}
+header .logo {
+    position: absolute;
+    top: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    right: 2px;
+}
+.article {
+    margin:5px 0;
+    margin-left:20px;
+}
+.article .datetime {
+    vertical-align:top;
+    margin-right:10px;
+    display:inline-block;
+}
+.article .title {
+    max-width:80%;
+    display:inline-block;
+    word-break:break-all;
+}
+.related-post .article .title {
+    max-width:70%;
+}
+.post {
+    border-bottom:1px solid #888;
+}
+section {
+    padding: 5px;
+    border-top: 1px solid #fff;
+    background: #fafafa;
+    background: -webkit-gradient(linear, 50% 0%, 50% 700, color-stop(0%, #fafafa), color-stop(100%, #dedede));
+    background: -webkit-linear-gradient(#fafafa, #dedede 700px);
+    background: -moz-linear-gradient(#fafafa, #dedede 700px);
+    background: -o-linear-gradient(#fafafa, #dedede 700px);
+    background: -ms-linear-gradient(#fafafa, #dedede 700px);
+    background: linear-gradient(#fafafa, #dedede 700px);
+    position: relative;
+    min-height:400px;
+    z-index:3;
+}
+blockquote {
+    margin: 0 -20px 20px;
+    padding: 15px 20px 1px 40px;
+    font-style: italic;
+    background: #ccc;
+    background: rgba(0, 0, 0, 0.06);
+    color: #222;
+}
+img {
+    max-width: 100%;
+    border:none;
+    vertical-align:middle;
+    margin:2px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    padding: 5px 10px;
+    border-bottom: 1px solid #aaa;
+}
+th {
+    color: #222;
+}
+hr {
+    border: 0;
+    background: #aaa;
+    height: 1px;
+    margin: 0 0 20px;
+}
+footer {
+    width: 100%;
+    color: #ccc;
+    overflow: hidden;
+    background:#FFF;
+    border-top:5px #C6EAFA solid;
+}
+table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.table {
+    width: 100%;
+    margin-bottom: 18px;
+}
+.table th, .table td {
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid #dddddd;
+}
+.table th {
+    font-weight: bold;
+}
+.table thead th {
+    vertical-align: bottom;
+}
+.msg-global {
+    position:absolute;
+    background:#FF6C14;
+    color:#FFF;
+    padding:10px;
+    z-index:999
+}
+.msg404 {
+    text-align:center;
+    padding:300px 0;
+}
+.tag {
+    padding: 2px 3px;
+    margin-left:5px;
+    margin-bottom:3px;
+}
+.tag:hover .tagcount {
+    background:#BBB;
+}
+.tagcount {
+    min-width: 5px;
+    padding: 3px 6px;
+    color: #ffffff;
+    font-size:12px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #999999;
+    border-radius: 3px;
+    margin-left:2px;
+}
+.tags-con {
+    padding:10px 0 10px 10px;
+    overflow:hidden;
+}
+.tags-con a {
+    float:left;
+}
+.content li {
+    margin:5px 0;
+}
+.links-con {
+    padding:10px;
+}
+.links-con ul, .links-aboutme ul {
+    margin-left:0;
+    padding-left:0;
+    -webkit-margin-before: 0em;
+    list-style:none;
+}
+.links-con ul li, .links-aboutme ul li {
+    margin:5px 0;
+}
+.links-aboutme {
+    padding:10px;
+}
+.meta {
+    margin:10px 0 20px 0;
+    overflow:hidden;
+}
+.meta .tags {
+    float:left;
+}
+.meta .datetime {
+    float:right;
+}
+.site-info {
+    text-align:center;
+    padding:10px 0;
+}
+.type code {
+    background:#222;
+    color:#FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    padding:3px 5px;
+}
+.site_video{
+    width:100%;
+    height:194px;
+}
+
+.type pre {
+    background-color: transparent;
+    border: none;
+    overflow: auto;
+    word-break: break-all;
+    word-wrap: break-word;
+    -webkit-overflow-scrolling: touch;
+}
+
+/** 480px __________________________________________________________________________________________________________ */
+ @media only screen and (min-width: 480px) {
+    .container {
+        width: 480px;
+    }
+    .site_video{
+        height:293px;
+    }
+}
+/**768px __________________________________________________________________________________________________________ */
+ @media only screen and (min-width: 768px) {
+    body {
+        padding: 32px 0;
+    }
+    .container {
+        width: 768px;
+    }
+    header {
+        padding: 15px 20px;
+        -webkit-border-radius: 8px 8px 0 0;
+        -moz-border-radius: 8px 8px 0 0;
+        -ms-border-radius: 8px 8px 0 0;
+        -o-border-radius: 8px 8px 0 0;
+        border-radius: 8px 8px 0 0;
+    }
+    header p {
+        width: auto;
+        width:350px;
+    }
+    header .logo {
+        top: 18px;
+        border: 4px solid rgba(255, 255, 255, 0.8);
+        right: 21px;
+    }
+    section {
+        padding: 15px 20px;
+        -webkit-border-radius: 0 0 8px 8px;
+        -moz-border-radius: 0 0 8px 8px;
+        -ms-border-radius: 0 0 8px 8px;
+        -o-border-radius: 0 0 8px 8px;
+        border-radius: 0 0 8px 8px;
+    }
+    .pagination {
+        height: 40px;
+        margin: 20px 0;
+    }
+    .tags-con {
+        float:left;
+        width:48%;
+        padding:10px 0 10px 20px;
+    }
+    .links-aboutme {
+        float:right;
+        width:20%;
+    }
+    .links-con {
+        float:right;
+        width:20%;
+    }
+    .site_video{
+        height:455px;
+    }
+}
+/** 960px __________________________________________________________________________________________________________ */
+ @media only screen and (min-width: 960px) {
+    body {
+        padding: 50px 0;
+    }
+    .container {
+        width: 960px;
+    }
+    .site_video{
+        height:575px;
+    }
+}
+/** 1280px __________________________________________________________________________________________________________ */
+ @media only screen and (min-width: 1280px) {
+    .container {
+        width: 960px;
+    }
+}

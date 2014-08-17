@@ -1,0 +1,34 @@
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+
+<div class="post">
+{{ content }}
+
+文章地址： <a href="{{site.url}}{{ page.url }}">{{page.title}}</a>
+
+</div>
+
+<div class="meta">
+    <div class="tags">
+       标签：
+       {% for tag in page.tags %}
+           <a href="/tag.html#{{tag}}" class="tag">{{tag}} <span class="tagcount">{{site.tags[tag] | size}}</span></a>
+       {% endfor %}
+    </div>
+    <div class="datetime">
+        <span>{{ page.date | date:"%Y-%m-%d"}}</span>
+    </div>
+</div>
+
+<div class="related-post">
+    <h2>相关文章</h2>
+    {% for post in site.related_posts limit:5 %}
+        <div class="article">
+            <span class="datetime">{{ post.date | date:"%Y-%m-%d"}}</span>
+            <a class="title" href="{{ post.url }}">{{ post.title }}</a>
+        </div>
+    {% endfor %}
+</div>

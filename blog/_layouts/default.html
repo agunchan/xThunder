@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>{{ page.title }}</title>
+    <meta name="keywords" content="Firefox,xThunder,PopVideo,AutoPorxy">
+    <meta name="description" content="这是agunchan的个人博客">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="/css/app-min.css" type="text/css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <link href="/css/app_media_query_back.css" type="text/css" rel="stylesheet">
+    <![endif]-->
+    <!--[if lt IE 9]>
+    <script>
+      (function(l,f){function m(){var a=e.elements;return"string"==typeof a?a.split(" "):a}function i(a){var b=n[a[o]];b||(b={},h++,a[o]=h,n[h]=b);return b}function p(a,b,c){b||(b=f);if(g)return b.createElement(a);c||(c=i(b));b=c.cache[a]?c.cache[a].cloneNode():r.test(a)?(c.cache[a]=c.createElem(a)).cloneNode():c.createElem(a);return b.canHaveChildren&&!s.test(a)?c.frag.appendChild(b):b}function t(a,b){if(!b.cache)b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag();
+      a.createElement=function(c){return!e.shivMethods?b.createElem(c):p(c,a,b)};a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+m().join().replace(/\w+/g,function(a){b.createElem(a);b.frag.createElement(a);return'c("'+a+'")'})+");return n}")(e,b.frag)}function q(a){a||(a=f);var b=i(a);if(e.shivCSS&&!j&&!b.hasCSS){var c,d=a;c=d.createElement("p");d=d.getElementsByTagName("head")[0]||d.documentElement;c.innerHTML="x<style>article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}mark{background:#FF0;color:#000}</style>";
+      c=d.insertBefore(c.lastChild,d.firstChild);b.hasCSS=!!c}g||t(a,b);return a}var k=l.html5||{},s=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,r=/^<|^(?:a|b|button|code|div|fieldset|form|h1|h2|h3|h4|h5|h6|i|iframe|img|input|label|li|link|ol|option|p|param|q|script|select|span|strong|style|table|tbody|td|textarea|tfoot|th|thead|tr|ul)$/i,j,o="_html5shiv",h=0,n={},g;(function(){try{var a=f.createElement("a");a.innerHTML="<xyz></xyz>";j="hidden"in a;var b;if(!(b=1==a.childNodes.length)){f.createElement("a");
+      var c=f.createDocumentFragment();b="undefined"==typeof c.cloneNode||"undefined"==typeof c.createDocumentFragment||"undefined"==typeof c.createElement}g=b}catch(d){g=j=!0}})();var e={elements:k.elements||"abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video",shivCSS:!1!==k.shivCSS,supportsUnknownElements:g,shivMethods:!1!==k.shivMethods,type:"default",shivDocument:q,createElement:p,createDocumentFragment:function(a,
+      b){a||(a=f);if(g)return a.createDocumentFragment();for(var b=b||i(a),c=b.frag.cloneNode(),d=0,e=m(),h=e.length;d<h;d++)c.createElement(e[d]);return c}};l.html5=e;q(f)})(this,document);
+  </script>
+  <![endif]-->
+  </head>
+  <body> 
+    <div id="container" class="container">
+      <header>
+        <h1><a href="/">{{ site.name }}</a></h1>
+        <p> 三十功名尘与土，八千里路云和月</p>
+        <a href="/about.html"><img src="/images/logo.png" class="logo"></a>
+      </header>
+      <section class="content type">
+        {{content}}
+      </section>
+
+        <footer class="global-footer">
+            <div class="tags-con">
+                <h2>Tags</h2>
+                {% for tag in site.tags %}
+                <a class="tag" href="/tag.html#{{tag[0]}}">{{tag[0]}}<span class="tagcount">{{tag[1] | size}}</span></a>
+                {% endfor %}
+            </div>
+            <div class="links-aboutme">
+                <h2>联系我</h2>
+                <ul>
+                    <li> <a href="http://www.cheneg.com">关于 @agunchan</a></li>
+                    <li> <a href="http://weibo.com/agunchan" target="_blank">新浪微博(@agunchan)</a></li>
+                    <li> <a href="http://twitter.com/agunchan" target="_blank">Twitter(@agunchan)</a></li>
+                    <li> <a href="/rss" target="_blank">订阅RSS</a></li>
+                </ul>
+            </div>
+            <div class="links-con">
+                <h2>友情链接</h2>
+                <ul>
+                    <li><a href="http://www.mozilla.com/en-US/firefox/all.html" title="Firefox官方多语言版下载" target="_blank">Firefox原版下载 </a></li>
+                    <li><a href="http://www.jayxon.com" title="绿色精简版迅雷和QQ" target="_blank">JayXon</a></li>
+                </ul>
+            </div>
+        </footer>
+        <div class="site-info"> Copyright © 2011-2014 fxthunder. Power By <a href="http://jser.me/">草依山</a> </div>
+    </div>
+  </body>
+</html>
