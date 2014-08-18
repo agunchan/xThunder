@@ -6,7 +6,7 @@ layout: default
 
 <div class="post">
 {{ content }}
-
+<br/>
 文章地址： <a href="{{site.url}}{{ page.url }}">{{page.title}}</a>
 
 </div>
@@ -21,14 +21,4 @@ layout: default
     <div class="datetime">
         <span>{{ page.date | date:"%Y-%m-%d"}}</span>
     </div>
-</div>
-
-<div class="related-post">
-    <h2>相关文章</h2>
-    {% for post in site.related_posts limit:5 %}
-        <div class="article">
-            <span class="datetime">{{ post.date | date:"%Y-%m-%d"}}</span>
-            <a class="title" href="{{ post.url }}">{{ post.title }}</a>
-        </div>
-    {% endfor %}
 </div>

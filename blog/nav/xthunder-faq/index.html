@@ -1,0 +1,69 @@
+---
+layout : post 
+title : xThunder常见问题解答
+tags : xThunder 
+---
+<p><span class="question" id="q1">xThunder是什么？</span><br />
+<span class="answer" id="q1-answer">xThunder是调用迅雷/QQ旋风/快车等下载器的火狐3.5+的轻量级扩展，体积只有FlashGot的1/6。</span></p>
+<p><span class="question" id="q2">xThunder不是什么？</span><br />
+<span class="answer" id="q2-answer">xThunder本身不是下载软件，只是充当火狐与下载器之间的桥梁，额外具有链接解码的功能。</span></p>
+<p><span class="question" id="q3">xThunder会不会更改名字或图标？</span><br />
+<span class="answer" id="q3-answer">由于xThunder已经提交到AMO，对应了一个Name/ID/Statistics。因此不会改名了，图标也暂时不会修改。</span></p>
+<p><span class="question" id="q4">xThunder会不会移植到Chrome浏览器？</span><br />
+<span class="answer" id="q4-answer">近期内没有时间移植至Chrome，可以使用Chrome类似扩展<a href="https://chrome.google.com/webstore/detail/lfjamigppmepikjlacjdpgjaiojdjhoj">Downloaders</a>。</span></p>
+<p><span class="question" id="q5">我应该安装哪个版本？</span><br />
+<span class="answer" id="q5-answer">一般而言，您总应该安装xThunder<a href="/files/xthunder.xpi">最新版</a>，有更多的特性和更少的BUG，并始终保持轻量级。</span></p>
+<p><span class="question" id="q6">为什么Mozilla主页显示的不是最新版？</span><br />
+<span class="answer" id="q6-answer">Mozilla主页显示的是审核通过的版本，所以最新版可能还在审核中，你可以在<a href="https://addons.mozilla.org/zh-CN/firefox/addon/xthunder/versions/">版本历史</a>中找到。</span></p>
+<p><span class="question" id="q7">出现错误对话框提示“由于应用程序配置不正确，应用程序未能启动”？</span><br />
+<span class="answer" id="q7-answer">早前的操作系统缺少VC2005运行库，请安装微软的<a href="http://download.microsoft.com/download/6/B/B/6BB661D6-A8AE-4819-B79F-236472F6070C/vcredist_x86.exe">VC补丁</a>。</span></p>
+<p><span class="question" id="q8">出现错误对话框提示“Cannot open job file”？</span><br />
+<span class="answer" id="q8-answer">无法找到临时文件。如果操作系统用户名是中文的，请尝试修改为英文。</span></p>
+<p><span class="question" id="q9">无法调用<span style="background-color: #ffff00;">绿色版或修改版迅雷</span>“Call Thunder error, please check if it was properly installed”？</span><br />
+<span class="answer" id="q9-answer">注册表信息不完整导致无法调用，可尝试下面几种方法。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;1）下载我写的 <a href="/files/ThunderBHO.7z" rel="nofollow">批处理程序</a> 解压后将BAT放在迅雷的根目录下运行。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;2）尝试迅雷菜单项“工具-&gt;浏览器支持-&gt;迅雷作为IE默认下载工具”修复此问题。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;3）用命令行cmd注册组件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regsvr32 “迅雷目录\Comdlls\ThunderAgent.dll”   (迅雷5)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regsvr32 “迅雷目录\BHO\ThunderAgent.dll”   (迅雷7)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;△检查注册表项值 “Path” = “迅雷目录\Thunder.exe”，不存在则新建Path<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x86 路径：[HKEY_LOCAL_MACHINE\SOFTWARE\Thunder Network\ThunderOem\thunder_backwnd<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x64 路径：[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Thunder Network\ThunderOem\thunder_backwnd]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;4）win7用户请重新安装在系统盘默认位置，避免UAC问题。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;5）不想捣鼓注册表的，可以通过xThunder选项中“新增”下载器指定迅雷可执行程序路径</span></p>
+<p><span class="question" id="q10">无法调用<span style="background-color: #ffff00;">迅雷官方精简版</span> “Call ThunderLite error, please check if it was properly installed”？</span><br />
+<span class="answer" id="q10-answer">注册表信息不完整导致无法调用，可尝试下面几种方法。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;1）下载我写的 <a href="/files/ThunderMiniBHO.7z" rel="nofollow">批处理程序2</a> 解压后将BAT放在迅雷精简版的根目录下运行。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;2）用命令行cmd注册组件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regsvr32 &#8220;迅雷精简版目录\BHO\ThunderAgent.dll&#8221;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;△检查注册表项值 “Path” = “迅雷精简版目录\MiniThunder.exe”，不存在则新建Path<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x86 路径：[HKEY_LOCAL_MACHINE\SOFTWARE \Thunder Network\MiniXLOEM\thunder]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x64 路径：[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Thunder Network\MiniXLOEM\thunder]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;3）win7用户请重新安装迅雷精简版在系统盘默认位置。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;4）不想捣鼓注册表的，可以通过xThunder选项中“新增”下载器指定迅雷精简版可执行程序路径</span></p>
+<p><span class="question" id="q11">无法调用<span style="background-color: #ffff00;">QQ旋风</span>“Call QQDownload error, please check if it was properly installed”？</span><br />
+<span class="answer" id="q11-answer">在旋风之后安装或更新迅雷破坏了QQ旋风的BHO，regsvr32 QQIEHelper01.dll或重装QQ旋风。</span></p>
+<p><span class="question" id="q12">选择下载器为<span style="background-color: #ffff00;">QQ旋风</span>却调用了迅雷？</span><br />
+<span class="answer" id="q12-answer">与本扩展无关。迅雷的“破解专用链接”插件会修改注册表导致此问题，不要安装此插件。</span></p>
+<p><span class="question" id="q13">第一次调用<span style="background-color: #ffff00;">BitComet</span>无法成功新建任务？</span><br />
+<span class="answer" id="q13-answer">启动慢导致的问题，BitComet选项-&gt;界面外观-&gt;默认显示的详细信息选项卡-&gt;更改为“起始页”外的其他值。</span></p>
+<p><span class="question" id="q14">专用链接无法破解？</span><br />
+<span class="answer" id="q14-answer">国内下载站纷繁复杂，专用链不一定按照标准格式，只支持Alexa 10000以内的大型下载站。</span></p>
+<p><span class="question" id="q15">某些链接破解后下载却没有速度？</span><br />
+<span class="answer" id="q15-answer">少部分资源是存放在迅雷/旋风/快车服务器上的，因此只有使用它们的软件才能下载对应的资源。</span></p>
+<p><span class="question" id="q16">为何左键点击迅雷/快车/磁力等专用链接直接弹出迅雷进行下载？</span><br />
+<span class="answer" id="q16-answer">在xThunder设置中“左键直接下载”可以取消你不想关联的专用链接。</span></p>
+<p><span class="question" id="q17">为何左键点击.exe/.zip等普通文件或论坛附件直接弹出迅雷进行下载？</span><br />
+<span class="answer" id="q17-answer">在xThunder设置中取消“关联普通文件类型”或者删除你不想关联的后缀（如.mp3;）。</span></p>
+<p><span class="question" id="q18">使用中出现异常情况，重装xThunder仍然不行？</span><br />
+<span class="answer" id="q18-answer">因为Firefox扩展配置保留在profile，即使重装扩展也不会删除，在xThunder选项中点“恢复默认配置”即可。</span></p>
+<p><span class="question" id="q19">不定时弹出迅雷下载.js等文件？</span><br />
+<span class="answer" id="q19-answer">与本扩展无关。在迅雷设置中取消SPI多浏览器支持，如还有问题则取消监视浏览器。</span></p>
+<p><span class="question" id="q20">诺顿杀毒软件报“智能网络威胁”，自动删除xThunder.exe？</span><br />
+<span class="answer" id="q20-answer">本扩展绝对绿色，完全开源且通过Mozilla审核和Softpedia认证。属诺顿误报，添加信任即可。</span></p>
+<p><span class="question" id="q21">使用wine-thunder，下载前会弹出一个对话框？</span><br />
+<span class="answer" id="q21-answer">vi ~/.wine-thunder/drive_c/Program Files/Thunder/thunder.vbs 删除第7行 msgBox url 即可。</span></p>
+<p><span class="question" id="q22">迅雷5没有选择下载目录对话框就直接下载？</span><br />
+<span class="answer" id="q22-answer">在迅雷菜单中勾选“配置-&gt;高级-&gt;通过IE右键菜单&#8217;使用迅雷下载&#8217;添加任务”。</span></p>
+<script type="text/javascript" src="/blog/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/blog/js/faq.js"></script>
