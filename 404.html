@@ -1,0 +1,28 @@
+---
+layout: default
+title: 气吞寰宇 
+---
+
+<h1>
+    404 Page Not Found!
+</h1>
+<h1>
+    你是不是在找: <span id="lookfor"></span>
+</h1>
+
+<script>
+    window.data =  {};
+    window.onload=function(){
+        var jumpUrl = location.href;
+        jumpUrl = jumpUrl.split('/').reverse()[0];
+        if( jumpUrl == 478 || jumpUrl == 1004) {
+            document.getElementById('lookfor').innerHTML = data[jumpUrl].title + '？请加QQ群 191286681 ，验证通过信息：海贼王';
+        }
+        else if( data[jumpUrl] ) {
+            document.getElementById('lookfor').innerHTML = '<a href="/'+ data[jumpUrl].url +'.html">'+ data[jumpUrl].title +'</a>';
+        }
+        else {
+            document.getElementById('lookfor').innerHTML = '<a href="/">'+ '火狐扩展程序' +'</a>';
+        }
+    }
+</script>
